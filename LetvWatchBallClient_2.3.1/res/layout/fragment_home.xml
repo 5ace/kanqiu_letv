@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/head"
+        style="@style/letv_header" >
+
+        <ImageView
+            android:id="@+id/toggle_left"
+            style="@style/letv_header_leftbtn"
+            android:src="@drawable/live_navi_icon_bg" />
+        <!-- 首页导航 -->
+
+        <LinearLayout
+            android:id="@+id/navi_home"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/title_group"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/live"
+                    android:layout_width="80dp"
+                    android:layout_height="36dp"
+                    style="@style/main_tab_bottom"
+                    android:background="@drawable/event_title_top_left"
+                    android:text="直播"/>
+                <RadioButton
+                    android:id="@+id/news"
+                    style="@style/main_tab_bottom"
+                    android:layout_width="80dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/event_title_top_mid"
+                    android:text="新闻" />
+                <RadioButton
+                    android:id="@+id/world_cup"
+                    style="@style/main_tab_bottom"
+                    android:layout_width="80dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/event_title_top_right"
+                  />
+            </RadioGroup>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/toggle_right"
+            style="@style/letv_header_rightbtn"
+            android:src="@drawable/live_subscribe_icon_bg" />
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/container_live"
+        android:name="com.letv.watchball.fragment.GLiveInfoFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <fragment
+        android:id="@+id/container_video_news"
+        android:name="com.letv.watchball.fragment.VideoNewsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
+
+    <fragment
+        android:id="@+id/container_world_cup"
+        android:name="com.letv.watchball.fragment.WorldCupFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
+
+</LinearLayout>

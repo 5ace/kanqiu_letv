@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_frame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:id="@+id/left"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/middle"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="15dp" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <com.letv.watchball.view.RoundImageView
+                    android:id="@+id/team_home_icon"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:src="@drawable/ic_default" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="7dp" >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:text="textView"
+                android:textColor="#333333"
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/letv_color_ffe4e4e4" />
+
+                <ImageView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/live_look_back_no" />
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/letv_color_ffe4e4e4" />
+            </LinearLayout>
+            
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginTop="-4dp"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:text="TextView"
+                    android:textColor="#333333"
+                    android:textSize="27sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/right"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/middle"
+            android:gravity="center_vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="15dp" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
+
+                    <com.letv.watchball.view.RoundImageView
+                        android:id="@+id/team_guest_icon"
+                        android:layout_width="37dp"
+                        android:layout_height="37dp"
+                        android:src="@drawable/ic_default" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/team_home"
+            style="@style/match_item_home_guset_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/left"
+            android:layout_below="@+id/left"
+            android:layout_marginLeft="23dp"
+            android:text="homeadfsasfdasfasdf" />
+
+        <TextView
+            android:id="@+id/team_guest"
+            style="@style/match_item_home_guset_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/right"
+            android:layout_below="@+id/right"
+            android:layout_marginRight="23dp"
+            android:text="guest" />
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/letv_color_ffd5d5d5"/>
+    </RelativeLayout>
+
+</FrameLayout>

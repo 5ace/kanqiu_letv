@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.letv.watchball.view.LetvGallery xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/newfeatures_gallery"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fadingEdge="none"
+    android:spacing="0dip"
+    android:background="#ff000000"/>

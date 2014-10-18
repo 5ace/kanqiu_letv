@@ -1,0 +1,20 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AD_Dialog_Notitle_Fullscreen">
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="letv_text_16_blue_white">
+        <item name="android:textColor">@drawable/blue_white_text_selecter</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_ad_text_18_ffffffff">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

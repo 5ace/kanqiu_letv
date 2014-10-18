@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@color/letv_color_fff6f6f6"
+    android:gravity="center" >
+
+    <TextView
+        android:id="@+id/video_episode_text"
+        style="@style/letv_text_13_ff5c5c5c"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:singleLine="true" />
+
+</LinearLayout>

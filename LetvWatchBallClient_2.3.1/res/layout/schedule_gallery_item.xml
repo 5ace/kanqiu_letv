@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center" >
+
+    <!--
+    <TextView
+        android:id="@+id/schedule_gallery_item_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#ff666666"
+        android:textSize="16sp" />
+    -->
+
+    <LinearLayout
+        android:layout_width="95dp"
+        android:layout_height="44dp"
+        android:background="@drawable/right_fragment_navi_bg"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/schedule_gallery_item_tv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="第1轮"
+            android:textColor="@drawable/right_navi_textcolor"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/bottom_line_left"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/letv_color_ff0f93de" />
+    </LinearLayout>
+
+</LinearLayout>

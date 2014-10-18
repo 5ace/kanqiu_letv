@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00ffffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/head"
+        style="@style/letv_header">
+
+        <TextView
+            android:id="@+id/my_team_match_name"
+            style="@style/title_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/title_name_text" />
+
+        <ImageView
+            android:id="@+id/my_focus_close"
+            style="@style/letv_header_leftbtn"
+            android:src="@drawable/back_btn" />
+
+        <ImageView
+            android:id="@+id/toggle_manager_my_team"
+           	style="@style/letv_header_rightbtn"
+            android:src="@drawable/myfocus_item_child_add_sel" />
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/my_teams_fragment"
+        android:name="com.letv.watchball.fragment.GMyTeamMatchFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:adview="http://schemas.android.com/apk/res/com.letv.android.client"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/welcome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/icon_welcome">
+    </ImageView>
+
+    <com.letv.cache.view.LetvImageView 
+       android:id="@+id/push_ad_img"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:scaleType="fitXY"
+       android:visibility="gone"
+       />
+
+    <com.letv.ads.view.ImageAdView
+            android:id="@+id/ad_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="bottom"
+            android:background="@color/letv_color_ff000000"
+            android:visibility="invisible" />
+
+</LinearLayout>

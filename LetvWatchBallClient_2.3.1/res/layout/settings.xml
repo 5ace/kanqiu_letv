@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+            android:id="@+id/head"
+            style="@style/letv_header">
+
+        <ImageView
+                android:id="@+id/head_back"
+                style="@style/letv_header_leftbtn"
+                android:src="@drawable/back_btn"/>
+
+        <TextView
+                style="@style/title_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设置"/>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+        <ScrollView
+                android:id="@+id/scrollView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp">
+
+                    <TextView
+                            style="@style/settings_group_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:text="清晰度设置"/>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                                android:visibility="gone"
+                                android:id="@+id/settins_item_hd"
+                                style="@style/settings_item"
+                                android:background="@drawable/settings_one_item">
+
+                            <TextView
+                                    android:id="@+id/textView2"
+                                    style="@style/settings_item_text1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="播放时优先选择"/>
+
+                            <TextView
+                                    android:id="@+id/settings_play_hd"
+                                    style="@style/settings_item_text2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toLeftOf="@+id/imageView1"
+                                    android:text="高清"/>
+
+                            <ImageView
+                                    android:id="@+id/imageView1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="5dp"
+                                    android:src="@drawable/settings_item_get_in"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TextView
+                            style="@style/settings_group_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="推送设置"/>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <RelativeLayout
+                                android:id="@+id/seting_item_game_start_ctrl"
+                                style="@style/settings_item"
+                                android:visibility="gone"
+                                android:background="@drawable/settings_top_item"
+                                >
+
+                            <TextView
+                                    android:id="@+id/TextView01"
+                                    style="@style/settings_item_text1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="开球提醒"/>
+
+                            <TextView
+                                    android:id="@+id/seting_item_game_start_tv"
+                                    style="@style/settings_item_text2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toLeftOf="@+id/ImageView01"
+                                    android:text="10分钟"/>
+
+                            <ImageView
+                                    android:id="@+id/ImageView01"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="5dp"
+                                    android:src="@drawable/settings_item_get_in"/>
+                        </RelativeLayout>
+
+                        <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="fill_parent"
+                                android:layout_height="1dp"
+                                android:background="@drawable/settings_item_divider"/>
+
+                        <RelativeLayout
+                                style="@style/settings_item"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/settings_bottom_item"
+                                android:layout_marginBottom="5dp">
+
+                            <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    >
+
+                                <TextView
+                                        style="@style/settings_item_text1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:text="消息提醒"/>
+
+                                <TextView
+                                        android:layout_width="wrap_content"
+                                        android:textSize="13sp"
+                                        android:layout_height="wrap_content"
+                                        android:text="开始提醒、赛果提醒"/>
+                            </LinearLayout>
+
+                            <com.letv.watchball.view.SwitchView
+                                    android:id="@+id/seting_item_game_result_switchview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true">
+                            </com.letv.watchball.view.SwitchView>
+                        </RelativeLayout>
+
+                        <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:background="@color/letv_color_ffd5d5d5"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+
+                        <RelativeLayout
+                                style="@style/settings_item"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/settings_bottom_item"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp">
+
+                            <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                <TextView
+                                        style="@style/settings_item_text1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:text="免打扰模式"/>
+
+                                <TextView
+                                        android:layout_width="wrap_content"
+                                        android:textSize="13sp"
+                                        android:layout_height="wrap_content"
+                                        android:text="夜间23点-早7点停止消息提醒"/>
+                            </LinearLayout>
+
+                            <com.letv.watchball.view.SwitchView
+                                    android:id="@+id/seting_item_sleep_switchview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true">
+                            </com.letv.watchball.view.SwitchView>
+                        </RelativeLayout>
+                        <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:background="@color/letv_color_ffd5d5d5"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+                    </LinearLayout>
+
+                    <TextView
+                            style="@style/settings_group_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="软件信息"/>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <RelativeLayout
+                                android:id="@+id/setting_item_update"
+                                style="@style/settings_item"
+                                >
+
+                            <TextView
+                                    style="@style/settings_item_text1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/check_new_version"
+                                    android:layout_centerVertical="true"
+                                    android:text="新版本检测"/>
+                            <TextView
+                                    android:id="@+id/new_version"
+                                    android:visibility="gone"
+                                    android:textColor="@color/red"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_toRightOf="@id/check_new_version"
+                                    android:text="new"/>
+
+                            <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/list_right_allow"/>
+                        </RelativeLayout>
+                        <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:background="@color/letv_color_ffd5d5d5"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+
+                        <RelativeLayout
+                                android:id="@+id/setting_item_proposal"
+                                style="@style/settings_item"
+                                >
+
+                            <TextView
+                                    style="@style/settings_item_text1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="意见反馈"/>
+                            <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/list_right_allow"/>
+                        </RelativeLayout>
+
+                        <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:background="@color/letv_color_ffd5d5d5"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+                        <RelativeLayout
+                                android:id="@+id/setting_item_about"
+                                style="@style/settings_item"
+                                >
+
+                            <TextView
+                                    style="@style/settings_item_text1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="关于我们"/>
+                            <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/list_right_allow"/>
+                        </RelativeLayout>
+
+                        <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:background="@color/letv_color_ffd5d5d5"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

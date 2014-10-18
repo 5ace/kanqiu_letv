@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="45dip"
+    android:layout_gravity="top"
+    android:background="@color/letv_color_fff6f6f6" >
+
+    <LinearLayout
+        android:id="@+id/spinner_selecter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@color/letv_color_fff6f6f6"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/spinner_name"
+            style="@style/letv_text_15_ff393939"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dip"
+            android:paddingRight="12dip"
+            android:text="自定义" />
+
+        <ImageView
+            android:id="@+id/spinner_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/down_arrow_selecter" />
+    </LinearLayout>
+
+</RelativeLayout>

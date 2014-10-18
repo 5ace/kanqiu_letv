@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailplay_half_progress"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@null"
+    android:orientation="vertical"
+    android:visibility="visible" >
+
+    <RelativeLayout
+        android:id="@+id/play_progressbar_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#ff000000"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/play_progressbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_centerInParent="true"
+            android:progressDrawable="@drawable/play_progress_style"
+            android:thumbOffset="0dip" />
+
+        <View
+            android:id="@+id/play_progressbar_skip_begin"
+            android:layout_width="2dip"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@color/letv_color_ffffffff" />
+
+        <View
+            android:id="@+id/play_progressbar_skip_end"
+            android:layout_width="2dip"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@color/letv_color_ffffffff" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/play_seekbar_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+
+        <SeekBar
+            android:id="@+id/play_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:maxHeight="14dip"
+            android:minHeight="14dip"
+            android:progressDrawable="@drawable/seek_holo_light"
+            android:thumb="@drawable/seek_thumb" />
+
+        <ImageView
+            android:id="@+id/play_seekbar_skip_begin"
+            android:layout_width="wrap_content"
+            android:layout_height="14dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="100dip"
+            android:scaleType="centerInside"
+            android:src="@drawable/play_skip" />
+
+        <ImageView
+            android:id="@+id/play_seekbar_skip_end"
+            android:layout_width="wrap_content"
+            android:layout_height="14dip"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/play_skip" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/play_support"
+        android:layout_width="fill_parent"
+        android:layout_height="10dip"
+        android:layout_gravity="center"
+        android:background="@color/letv_color_b3000000"
+        android:visibility="gone" />
+
+</LinearLayout>

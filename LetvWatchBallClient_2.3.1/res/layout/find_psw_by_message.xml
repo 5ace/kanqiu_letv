@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/setting_info_title" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="240dip"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/letv_text_13_ffa1a1a1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="15dip"
+            android:text="@string/send" />
+
+        <TextView
+            style="@style/letv_text_15_ff393939"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dip"
+            android:layout_marginTop="15dip"
+            android:text="@string/send_message" />
+
+        <TextView
+            style="@style/letv_text_13_ff969696"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dip"
+            android:layout_marginTop="15dip"
+            android:text="@string/send_msg_format" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/send_btn"
+        style="@style/letv_text_15_red_white"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:background="@drawable/btn_red_selecter"
+        android:text="@string/send_btn" />
+    
+    <include
+        android:id="@+id/find_psd_include_supertv_copy"
+        android:layout_gravity="center"
+        layout="@layout/include_supertv_copy"
+        android:visibility="visible" />
+
+</LinearLayout>

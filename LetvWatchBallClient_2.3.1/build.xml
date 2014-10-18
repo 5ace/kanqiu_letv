@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="LetvWatchBallClient" default="deploy">  
+    <!-- ANT环境变量 -->  
+    <property environment="env" />
+	<!-- 使用第三方的ant包，使ant支持for循环
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">  
+	  <classpath>  
+		<pathelement location="lib/ant-contrib-1.0b3.jar"/>  
+	  </classpath>  
+	</taskdef>
+	-->
+	<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+	
+    <!-- 应用名称 -->
+    <property name="appName" value="${ant.project.name}"/>
+     <property name="sdk-folder" value="D:\androidADT\adt-bundle-windows-x86-20131030\sdk" />
+    <!-- SDK指定平台目录 -->
+    <property name="sdk-platform-folder" value="${sdk-folder}/platforms/android-16"/>
+    <!-- SDK中tools目录 -->
+    <property name="sdk-tools" value="${sdk-folder}/tools" />
+    <!-- SDK指定平台中tools目录 -->
+    <property name="sdk-platform-tools" value="${sdk-folder}/platform-tools" />
+	 
+    <!-- 使用到的命令(当前系统为windows,如果系统为linux,可将.bat文件替换成相对应的命令) -->  
+    <property name="aapt" value="${sdk-platform-tools}/aapt" />  
+    <property name="aidl" value="${sdk-platform-tools}/aidl" />  
+    <property name="dx" value="${sdk-platform-tools}/dx.bat" />  
+    <property name="apkbuilder" value="${sdk-tools}/apkbuilder.bat" />  
+    <property name="jarsigner" value="C:\Java\jdk1.6.0_37\bin\jarsigner" />  
+	<property name="zipalign" value="${sdk-tools}/zipalign.exe" />
+	<property name="proguard" value="${sdk-tools}/proguard/lib" />
+      
+    <!-- 编译需要的jar; 如果项目使用到地图服务则需要maps.jar -->  
+    <property name="android-jar" value="${sdk-platform-folder}/android.jar" />  
+    
+	<!-- -->
+	<property name="channelname" value="letvwwwaphone" />
+	<property name="channelkey" value="010110000" />
+		
+    <!-- 编译aidl文件所需的预处理框架文件framework.aidl -->  
+    <property name="framework-aidl" value="${sdk-platform-folder}/framework.aidl" />  
+  
+    <!-- 签名文件   -->
+	<property name="key_file" value="F:\letvClientKey\letvAndroidClientKey" />
+
+    <!-- 清单文件 -->  
+    <property name="manifest-xml" value="AndroidManifest.xml" />  
+    <!-- 源文件目录 -->  
+    <property name="resource-dir" value="res" />  
+    <property name="asset-dir" value="assets" />  
+    <!-- java源文件目录 -->  
+    <property name="srcdir" value="src" />  
+    <property name="srcdir-ospath" value="${basedir}/${srcdir}" />
+    <!-- 外部类库所在目录 -->
+    <property name="external-lib" value="libs" />
+    <property name="external-lib-ospath" value="${basedir}/${external-lib}" />
+
+	<!-- 渠道名:渠道号 -->
+	
+	<property
+	    name="key"
+		value="appnt1:120110415,appnt2:120110416,appnt3:120110417,appnt4:120110418,appnt5:120110419"/> 
+  		<!-- value="letvwwwaphone:120110000,360:120110106,hiapk:120110014,baidu:120110263,baiduso:120110264,goapk:120110013,
+				google:120110016,91:120110042,wandoujia:120110105,miui:120110065,tencent:120110041,letvm:120110183,yingyonghui:120110043,
+				jifeng:120110012,nduoa:120110015,yidongmm:120110052,eoemarket:120110017,mumayi:120110022,wangyi:120110072,sougou:120110169,
+				taobao:120110380,lenovostore:120110045,nearme:120110174,huawei:120110175,yiyonghui:120110170,
+				letvm1:120110374,letvm2:120110375,letvm3:120110376,letvm4:120110377,letvm5:120110378,
+				meizu:120110061,kupai:120110173,samsung:120110039,haixin:120110401,bbkstore:120110313,zhongxing:120110182,storewo:120110172,
+				3gcn:120110108,LeshiC1:120110413,LeshiC2:120110414,LeshiC3:120110421,LeshiC4:120110422"/>   -->
+		
+	<!-- <property name="key" value="hiapk:120110014"/>   -->
+	<!-- 版本 -->
+	<property name="version" value="2.3.1" />
+
+	
+	<!-- 初始化工作 -->  
+    <target name="init">  
+        <echo>目录初始化....</echo>  
+        	<!-- 生成class目录 -->  
+			<var name="outdir-classes" value="${outdir-bin}/classes" />  
+		    <var name="outdir-classes-ospath" value="${basedir}/${outdir-classes}" />  
+			<!-- classes.dex相关变量 -->  
+			<var name="dex-path" value="${outdir-bin}/classes.dex" />  
+			<var name="dex-ospath" value="${basedir}/${dex-path}" />  
+		  
+			<!-- 经过aapt生成的资源包文件 -->  
+			<var name="resources-package" value="${outdir-bin}/resources.ap_" />
+			<var name="resources-package-ospath" value="${basedir}/${resources-package}" />  
+			<!-- 未认证apk包 -->  
+			<var name="out-unsigned-package" value="${outdir-bin}/${appName}-unsigned.apk" />  
+			<var name="out-unsigned-package-ospath" value="${basedir}/${out-unsigned-package}" />  
+			  
+			<!-- 证书文件 -->  
+			<var name="keystore-file" value="${key_file}" />  
+			  
+			<!-- 已认证apk包 -->  
+<!--            <var name="out-signed-package" value="${outdir-bin}/${appName}_${version}_${channelname}.apk" />   -->
+<!--            <var name="out-signed-package-ospath" value="${basedir}/${out-signed-package}" />   -->
+<!--            <var name="out-signed-package-align" value="${outdir-bin}/${appName}_V${version}_${channelname}.apk" /> -->
+<!--            <var name="out-signed-package-align-ospath" value="${basedir}/${out-signed-package-align}" /> -->
+            
+            <var name="out-signed-package" value="${outdir-bin}/V${channelkey}.apk" />  
+            <var name="out-signed-package-ospath" value="${basedir}/${out-signed-package}" />  
+            <var name="out-signed-package-align" value="${outdir-bin}/${channelkey}.apk" />
+            <var name="out-signed-package-align-ospath" value="${basedir}/${out-signed-package-align}" />
+			
+			<mkdir dir="${outdir-classes}" />
+    </target>  
+	
+	<!--循环打包 -->
+	<target name="deploy">
+	    <!-- 编译后的文件放置目录 -->  
+		<var name="outdir-bin" value="deploy" />  
+		    
+	    <delete dir="${outdir-bin}" />  
+        <mkdir dir="${outdir-bin}" />  
+       
+	   <foreach target="modify_properties" list="${key}" param="nameandchannel" delimiter=",">  
+	   </foreach>  
+	 </target>  
+	 
+	<target name="modify_properties">  
+		<!-- 获取渠道名字 -->
+		<propertyregex override="true" property="channelname" input="${nameandchannel}" regexp="(.*):" select="\1"/>
+		<!-- 获取渠道号码 -->
+		<propertyregex override="true" property="channelkey" input="${nameandchannel}" regexp=":(.*)" select="\1"/>
+
+		<!-- 正则匹配替换渠道号 -->
+		<replaceregexp flags="g" byline="false" encoding="UTF-8">
+			<regexp pattern='letv.pcode=(.*)' />
+			<substitution expression='letv.pcode=${channelkey}' />
+		<fileset dir="${basedir}/src/" includes="letv.properties" />
+		</replaceregexp>
+		
+		<!-- 正则匹配替换渠道号 -->
+		<replaceregexp flags="g" byline="false" encoding="UTF-8">
+			<regexp pattern='meta-data android:name="UMENG_CHANNEL" android:value="(.*)"'/>
+			<substitution expression='meta-data android:name="UMENG_CHANNEL" android:value="${channelname}"'/>
+			<fileset dir="${basedir}" includes="AndroidManifest.xml" />
+		</replaceregexp>
+		
+		<antcall target="zipalign" />
+	</target>  
+	
+	<!-- 根据工程中的资源文件生成R.java文件  -->  
+    <target name="gen-R" depends="init">  
+        <echo>生成R.java文件....</echo>  
+        <echo>generating R.java for project to dir gen (using aapt) ... </echo>
+    	<exec executable="${aapt}" failonerror="true">  
+            <arg value="package" />
+        	<arg value="--auto-add-overlay" />
+            <arg value="-m" />  <!-- 使生成的包的目录存放在-J参数指定的目录 -->
+            <arg value="-J" />  <!-- 指定生成的R.java 的输出目录 -->
+            <arg value="gen" />  
+            <arg value="-M" />  
+            <arg value="${manifest-xml}" /> 
+            <arg value="-S" /> <!-- res文件夹路径 -->
+            <arg value="res" />
+    		<arg value="-S" />
+        	<arg value="../umeng-sdk-example_watchball_lib1.0/res" />
+    		<arg value="-S" />
+    		<arg value="../letv_slidingmenu_watchball_lib1.0/res" />
+    		<arg value="-S" />
+    		<arg value="../letv_pulltorefresh_lib1.0/res" />
+    		<arg value="-S" />
+    		<arg value="../QQ_SDK_v1.2_5.0/res" />
+    		<arg value="-S" />
+    		<arg value="../weibo.sdk.android_5.0/res" />
+    		<arg value="-S" />
+    		<arg value="../renren_android_connect_5.0/res" />
+    		<arg value="-S" />
+    		<arg value="../letv_star_android_5.0/res" />
+    		<arg value="-S" />
+    		<arg value="../Letv_Ads_5.3/res" />
+    		
+        	<!-- <arg value="-S" />
+        	<arg value="../LetvZXing/res" />
+        	<arg value="-S" />
+        	<arg value="../letv_star_android/res" />
+        	<arg value="-S" />
+        	<arg value="../weibo.sdk.android/res" />
+        	<arg value="-S" />
+        	<arg value="../renren_android_connect/res" />
+        	<arg value="-S" />
+        	<arg value="../Letv_Alipay/res" />
+            <arg value="-S" />
+            <arg value="../Letv_Ads/res" /> -->
+        	<arg value="-A" />
+            <arg value="${asset-dir}" />
+        	<arg value="--extra-packages" /><!--extra-packages. 其参数的说明如下:generate R.java for libraries. Separate libraries with ':'-->
+        	<arg value="com.umeng.example:com.letv.android.slidingmenu.lib:com.handmark.pulltorefresh.library:com.tencent.weibo:com.weibo.sdk.android:com.renren.api.connect.android:com.letv.star:com.letv.watchball.ads" />
+            <arg value="-I" />  <!-- 某个版本平台的android.jar的路径 -->
+            <arg value="${android-jar}" />
+        </exec>
+    	
+    	<!--
+        <echo>generating R.java for library to dir gen (using aapt) ... </echo>
+        <exec executable="${aapt}" failonerror="true">
+            <arg value="package" />
+            <arg value="-m" />
+           	<arg value="__non-constant-id" />为了库应用的资源更好的可重用，库应用生成的R.java字段不需要修饰为final,加上参数non-constant-id即可。
+        	<arg value="__auto-add-overlay" />
+            <arg value="-J" />
+            <arg value="gen" />
+        	<arg value="-M" />
+        	<arg value="../secondEngine/AndroidManifest.xml" />
+        	<arg value="-M" />
+        	<arg value="../QQ_SDK_v1.2/AndroidManifest.xml" />
+        	<arg value="-M" />
+        	<arg value="../letv_star_android/AndroidManifest.xml" />
+        	<arg value="-M" />
+        	<arg value="../weibo.sdk.android/AndroidManifest.xml" />
+            <arg value="-M" />
+            <arg value="../renren_android_connect/AndroidManifest.xml" />
+        	<arg value="-M" />
+        	<arg value="../kaixin_android_sdk2.0/AndroidManifest.xml" />
+        	<arg value="-M" />
+        	<arg value="../umeng-sdk-example/AndroidManifest.xml" />
+            <arg value="-S" />
+            <arg value="res" />
+        	<arg value="-S" />
+        	<arg value="../secondEngine/res" />
+        	<arg value="-S" />
+        	<arg value="../QQ_SDK_v1.2/res" />
+        	<arg value="-S" />
+        	<arg value="../letv_star_android/res" />
+        	<arg value="-S" />
+        	<arg value="../weibo.sdk.android/res" />
+        	<arg value="-S" />
+        	<arg value="../renren_android_connect/res" />
+            <arg value="-S" />
+            <arg value="../kaixin_android_sdk2.0/res" />
+            <arg value="-S" />
+            <arg value="../umeng-sdk-example/res" />
+            <arg value="-I" />
+            <arg value="${android-jar}" />
+        </exec>
+        --> 
+    </target>  
+           <!-- 编译aidl文件 -->  
+    <target name="aidl" depends="gen-R">  
+        <echo>Compiling .aidl into java files...</echo>  
+        <apply executable="${aidl}" failonerror="true">  
+            <!-- 指定预处理文件 -->  
+            <arg value="-p${framework-aidl}" />  
+            <!-- aidl声明的目录 -->  
+            <arg value="-I${srcdir}" />  
+            <!-- 目标文件目录 -->  
+            <arg value="-o${outdir-gen}" />  
+            <!-- 指定哪些文件需要编译 -->  
+            <fileset dir="${srcdir}">  
+                <include name="**/*.aidl" />  
+            </fileset>  
+        </apply>  
+    </target> 
+	
+	<!-- 将工程中的java源文件编译成class文件 -->  
+    <target name="compile" depends="aidl">  
+        <echo>java源文件编译成class文件....</echo>  
+        <javac 	destdir="${outdir-classes}" 
+				bootclasspath="${android-jar}"
+				verbose="false"
+				includeantruntime="on"
+				>  
+        <!-- 	<src path="../letv_ts_1.0/src" />
+        	<src path="../letv_ts_1.0/gen/com/letv/itv/threenscreen/service" />
+        	<src path="../QQ_SDK_v1.2/src" /> 
+            <src path="../LetvZXing/src" />
+            <src path="../letv_star_android/src" />
+            <src path="../weibo.sdk.android/src" />
+            <src path="../weibo.sdk.android/gen/com/sina/sso" />
+            <src path="../renren_android_connect/src" />
+            <src path="../Letv_Alipay/src" />
+            <src path="../LetvLoader/src" />
+            <src path="../Letv_Ads/src" />-->
+        	<src path="../umeng-sdk-example_watchball_lib1.0/src" />
+        	<src path="../letv_cache_5.0/src" />
+        	<src path="../letv_pinnedHeaderListView_lib/src" />
+        	<src path="../Letv_player_5.2.2/src" />
+        	<src path="../letv_pulltorefresh_lib1.0/src" />
+			<src path="../letv_http_api_3.0/src" />
+        	<src path="../Letv_DataStatistics_5.0/src" />
+        	<src path="../letv_slidingmenu_watchball_lib1.0/src" />
+        	<src path="../letv_star_android_5.0/src" />
+        	<src path="../QQ_SDK_v1.2_5.0/src" />
+        	<src path="../renren_android_connect_5.0/src" />
+        	<src path="../weibo.sdk.android_5.0/src" />
+        	<src path="../weibo.sdk.android_5.0/gen/com/sina/sso " />
+        	<src path="../Letv_Ads_5.3/src" />
+        	<src path="../ImageLoader/src" />
+			<src path="src" />
+			<src path="gen" />
+			<compilerarg line="-encoding UTF-8 "/> 
+            <classpath>  
+                <fileset dir="${external-lib}" includes="*.jar"/>
+            </classpath>
+        </javac>  
+    </target> 
+    
+	<!-- 将.class文件转化成.dex文件 -->  
+	<target name="dex" depends="compile">
+        <echo>将.class文件转化成.dex文件....</echo>  
+        <exec executable="${dx}" failonerror="true" >  
+            <arg value="--dex" /> 
+            <!-- 输出文件 -->  
+            <arg value="--output=${dex-ospath}" />  
+            <!-- 要生成.dex文件的源classes和libraries -->  
+            <arg value="${outdir-classes-ospath}" />  
+            <arg value="${external-lib-ospath}"/>  
+        </exec>  
+        <delete dir="${outdir-classes-ospath}" />
+		
+		<!-- 临时打包加入下面两句,需要把classes.dex放入dexfiles文件夹下 (目前已经将depends="compile"改成了depends="init")
+		<delete file="${outdir-bin}/classes.dex"></delete>
+		<copy todir="${outdir-bin}" file="${outdir-bin}/../dexfiles/classes.dex" />
+		-->
+		
+    </target>
+	
+	<!-- 将资源文件放进输出目录 -->
+	<target name="package-res-and-assets">  
+        <echo>将资源文件放进输出目录....</echo>  
+        <exec executable="${aapt}" failonerror="true">  
+            <arg value="package" />  
+            <arg value="-f" />  <!-- 如果编译出来的文件已经存在，强制覆盖 -->
+            <arg value="-M" />
+            <arg value="${manifest-xml}" />  
+            <arg value="-S" />  <!-- res文件夹路径 -->
+            <arg value="${resource-dir}" />
+    		<arg value="-S" />
+        	<arg value="../umeng-sdk-example_watchball_lib1.0/res" />
+    		<arg value="-S" />
+    		<arg value="../letv_slidingmenu_watchball_lib1.0/res" />
+    		<arg value="-S" />
+    		<arg value="../letv_pulltorefresh_lib1.0/res" />
+    		<arg value="-S" />
+    		<arg value="../QQ_SDK_v1.2_5.0/res" />
+    		<arg value="-S" />
+    		<arg value="../weibo.sdk.android_5.0/res" />
+    		<arg value="-S" />
+    		<arg value="../renren_android_connect_5.0/res" />
+    		<arg value="-S" />
+    		<arg value="../letv_star_android_5.0/res" />
+    		<arg value="-S" />
+    		<arg value="../Letv_Ads_5.3/res" />
+          <!--   <arg value="-S" />
+            <arg value="../LetvZXing/res" />
+        	<arg value="-S" />
+        	<arg value="../letv_star_android/res" />
+        	<arg value="-S" />
+        	<arg value="../weibo.sdk.android/res" />
+        	<arg value="-S" />
+        	<arg value="../renren_android_connect/res" />
+        	<arg value="-S" />
+        	<arg value="../Letv_Alipay/res" />
+            <arg value="-S" />
+            <arg value="../Letv_Ads/res" /> -->
+            
+            <arg value="-A" />  
+            <arg value="${asset-dir}" />  
+            <arg value="-I" />  <!-- 某个版本平台的android.jar的路径 -->
+            <arg value="${android-jar}" />  
+            <arg value="-F" />  <!-- 具体指定APK文件的输出 -->
+            <arg value="${resources-package}" />
+        	<arg value="--auto-add-overlay" /> 
+        </exec>  
+    </target>
+	
+	<!-- 打包成未签证的apk -->  
+    <target name="package"  depends="dex,package-res-and-assets">   
+        <echo>打包成未签证的apk....</echo>  
+        <exec executable="${apkbuilder}" failonerror="true">  
+            <arg value="${out-unsigned-package-ospath}" />  
+            <arg value="-u" />  
+            <arg value="-z" />  
+            <arg value="${resources-package-ospath}" />  
+            <arg value="-f" />  
+            <arg value="${dex-ospath}" />  
+            <arg value="-rf" />  
+            <arg value="${srcdir-ospath}" />
+            <arg value="-rj" />
+            <arg value="${external-lib-ospath}" />
+            <arg value="-nf" />
+            <arg value="${external-lib-ospath}" />
+        </exec>
+    	
+    	<delete file="${resources-package-ospath}" />
+    </target>  
+	
+	<!-- 对apk进行签证 -->  
+    <target name="jarsigner" depends="package">  
+        <echo>Packaging signed apk for release...</echo>  
+        <exec executable="${jarsigner}" failonerror="true">  
+            <arg value="-keystore" />  
+            <arg value="${keystore-file}" />  
+            <arg value="-storepass" />  
+            <arg value="dkeu*&amp;kdue" />  
+            <arg value="-keypass" />  
+            <arg value="dkeu*&amp;kdue" />
+            <arg value="-signedjar" />  
+            <arg value="${out-signed-package-ospath}" />  
+            <arg value="${out-unsigned-package-ospath}"/>  
+            <!-- 不要忘了证书的别名 -->  
+            <arg value="letvAndroidClientKey"/>  
+        </exec>  
+    </target>  
+	
+	<!-- 发布 -->  
+    <target name="release" depends="jarsigner">  
+        <!-- 删除未签证apk -->  
+        <delete file="${out-unsigned-package-ospath}"/>  
+        <echo>APK is released. path:${out-signed-package-ospath}</echo>  
+    </target>  
+	
+	<target name="zipalign" depends="release">
+		<exec executable="${zipalign}" failonerror="true">
+            <arg value="-v" />
+            <arg value="4" />
+            <arg value="${out-signed-package-ospath}" />
+            <arg value="${out-signed-package-align-ospath}" />
+        </exec>
+        
+		<delete file="${out-signed-package-ospath}" />
+	</target>
+	
+</project>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+       <!--  <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:src="@drawable/login_main_top_bg"
+            android:visibility="gone" /> -->
+        
+        <include 
+            android:id="@+id/include_supertv_copy"
+            android:layout_gravity="center"
+            layout="@layout/include_supertv_copy"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            android:id="@+id/login_weibo"
+            android:layout_width="fill_parent"
+            android:layout_height="37dip"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:background="@drawable/btn_blue_selecter"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:duplicateParentState="true"
+                android:src="@drawable/weibo_login_icon_selector" />
+
+            <TextView
+                style="@style/letv_text_13_blue_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:duplicateParentState="true"
+                android:text="@string/login_weibo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/login_qq"
+            android:layout_width="fill_parent"
+            android:layout_height="37dip"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/btn_blue_selecter"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:duplicateParentState="true"
+                android:src="@drawable/qq_login_icon_selector" />
+
+            <TextView
+                style="@style/letv_text_13_blue_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:duplicateParentState="true"
+                android:text="@string/login_qq" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/login_letv"
+            android:layout_width="fill_parent"
+            android:layout_height="37dip"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/btn_blue_selecter"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:duplicateParentState="true"
+                android:src="@drawable/letv_login_icon_selector" />
+
+            <TextView
+                style="@style/letv_text_13_blue_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:duplicateParentState="true"
+                android:text="@string/login_letv" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/login_main_findpsw"
+            style="@style/letv_text_13_blue_white"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dip"
+            android:gravity="center"
+            android:text="@string/login_main_findpsw_text"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</ScrollView>

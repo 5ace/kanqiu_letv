@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical" >
+
+    <RelativeLayout
+        android:id="@+id/myfocus_parent_main"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="@color/white"
+        android:gravity="center_vertical" >
+
+        <com.letv.cache.view.LetvImageView
+            android:id="@+id/parent_icon"
+            style="@style/myfocus_icon_style"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_default" />
+
+        <TextView
+            android:id="@+id/parent_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/parent_icon"
+            android:text="TextView"
+            android:textColor="#333333"
+            android:textSize="19sp" />
+
+        <ImageView
+            android:id="@+id/parent_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/parent_name"
+            android:padding="10dp"
+            android:src="@drawable/myfocus_item_parent_open" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全选"
+                android:textColor="@color/letv_color_ffb9baba"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/focus_all"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/myfocus_item_child_add_nor" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/setting_info_title" />
+<ScrollView 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        
+   
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        android:background="@color/letv_color_ffffffff" >
+
+        <TextView
+            style="@style/letv_text_15_ff393939"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="@string/letv_account" />
+
+        <com.letv.watchball.view.EmailAutoCompleteTextView
+            android:id="@+id/letv_account"
+            style="@style/letv_text_15_ffa1a1a1"
+            android:layout_width="fill_parent"
+            android:layout_height="44dp"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:completionThreshold="1"
+            android:dropDownHeight="200dip"
+            android:dropDownSelector="#00000000"
+            android:dropDownWidth="fill_parent"
+            android:gravity="center_vertical"
+            android:hint="@string/letv_account_inhit"
+            android:inputType="textEmailAddress"
+            android:maxLength="255"
+            android:paddingLeft="22dp"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="15dip"
+        layout="@layout/personal_info_line" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        android:background="@color/letv_color_ffffffff" >
+
+        <TextView
+            style="@style/letv_text_15_ff393939"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="@string/password" />
+
+        <EditText
+            android:id="@+id/letv_account_password"
+            style="@style/letv_text_15_ffa1a1a1"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/letv_color_00000000"
+            android:gravity="center_vertical"
+            android:hint="@string/password_hint_text"
+            android:paddingLeft="22dp"
+            android:password="true" />
+    </LinearLayout>
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="15dip"
+        layout="@layout/personal_info_line" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="160dip"
+        android:background="@color/letv_color_ffffffff" >
+
+        <Button
+            android:id="@+id/letv_login_btn"
+            style="@style/letv_text_15_blue_white"
+            android:layout_width="fill_parent"
+            android:layout_height="37dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:background="@drawable/btn_blue_selecter"
+            android:text="@string/login" />
+    </RelativeLayout>
+
+    <include layout="@layout/setting_driver_line" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="44dip"
+            android:background="@drawable/setting_center_selecter" >
+
+            <TextView
+                android:id="@+id/letv_account_registe_btn"
+                style="@style/letv_text_15_ff00a0e9"
+                android:layout_width="fill_parent"
+                android:layout_height="44dip"
+                android:background="@drawable/setting_center_selecter"
+                android:gravity="center|left"
+                android:paddingLeft="15dip"
+                android:text="@string/register" />
+        </LinearLayout>
+
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="15dip"
+            layout="@layout/setting_driver_line" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="44dip"
+            android:background="@drawable/setting_center_selecter" >
+
+            <TextView
+                android:id="@+id/letv_account_forgetpass_btn"
+                style="@style/letv_text_15_ff00a0e9"
+                android:layout_width="fill_parent"
+                android:layout_height="44dip"
+                android:background="@drawable/setting_center_selecter"
+                android:gravity="center|left"
+                android:paddingLeft="15dip"
+                android:text="@string/forget_pass" />
+        </LinearLayout>
+
+        <include
+            android:layout_marginLeft="15dip"
+            layout="@layout/setting_driver_line" />
+    </LinearLayout>
+    
+    <include layout="@layout/include_supertv_copy"/>
+ </LinearLayout>
+</ScrollView>
+</LinearLayout>

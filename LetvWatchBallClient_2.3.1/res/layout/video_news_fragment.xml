@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_video"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/video_news_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/video_news_fragment_filterLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal" >
+			<!-- 最新 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/video_news_fragment_filterRadioButton_orderBy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/right_fragment_navi_bg"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/news_list_selector_title1"
+                        style="@style/news_list_selector_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="最新" />
+
+                    <ImageView
+                        android:id="@+id/news_list_selector_icon1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="24dp"
+                        android:src="@drawable/news_list_selector_btn_nor" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/bottom_line_left"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/letv_color_ff0f93de" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/news_list_selector_divider" />
+			<!-- 全部 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/video_news_fragment_filterRadioButton_itemId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/right_fragment_navi_bg"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/news_list_selector_title2"
+                        style="@style/news_list_selector_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="全部" />
+
+                    <ImageView
+                        android:id="@+id/news_list_selector_icon2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="24dp"
+                        android:src="@drawable/news_list_selector_btn_nor" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/bottom_line_left"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/letv_color_ff0f93de" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--
+             <LinearLayout
+            android:id="@+id/video_news_fragment_filterLayout_cover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/video_news_fragment_filterLayout"
+            android:background="@drawable/video_news_fragment_filter_radiobutton_cover"
+            android:orientation="horizontal" />
+        -->
+
+        <FrameLayout
+            android:id="@+id/video_news_fragment_listview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/video_news_fragment_filterLayout" >
+
+            <!-- ListFragment 展示数据 -->
+
+            <fragment
+                android:id="@+id/video_news_fragment_videoList"
+                android:name="com.letv.watchball.fragment.VideoListFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#a0000000" />
+
+            <LinearLayout
+                android:id="@+id/video_news_lstFilter_cover"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#a0000000"
+                android:visibility="gone" >
+
+                <!-- 筛选ListView -->
+
+                <ListView
+                    android:id="@+id/video_news_lstFilter"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/white"
+                    android:cacheColorHint="#00000000"
+                    android:divider="#d1d1d1"
+                    android:scrollbars="none"
+                    android:dividerHeight="1dp"
+                    android:fadingEdge="none"
+                    android:listSelector="@drawable/right_fragment_navi_bg" />
+            </LinearLayout>
+        </FrameLayout>
+        
+        <ImageView
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dip"
+            android:layout_marginBottom="16dip"
+            android:src="@drawable/refresh_selecter" />
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/bad_network"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/letv_main_bg"
+        android:gravity="center"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/badnetwork" />
+    </LinearLayout>
+	
+</FrameLayout>

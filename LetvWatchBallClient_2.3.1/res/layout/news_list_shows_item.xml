@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@drawable/videolist_bg"
+    android:padding="10dp"
+    android:gravity="center_vertical" >
+
+    <com.letv.cache.view.LetvImageView
+        android:id="@+id/news_items_icon"
+        android:layout_width="89dp"
+        android:layout_height="67dp"
+        android:layout_marginRight="16dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/news_ic_default" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/news_items_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="#333333"
+            android:textSize="17sp"
+            android:lines="2"
+        	android:ellipsize="end"
+             />
+
+        <TextView
+            android:id="@+id/news_items_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="TextView"
+            android:textColor="#999999"
+            android:textSize="11sp"
+      />
+    </RelativeLayout>
+
+</LinearLayout>

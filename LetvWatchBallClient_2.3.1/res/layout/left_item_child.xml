@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/fragment_left_list_selector"
+    
+     >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp" >
+
+        <View
+            android:id="@+id/left_item_parent_selected"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="35dp"
+            android:background="@color/letv_color_ff0f93de" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <com.letv.cache.view.LetvImageView
+                    android:id="@+id/row_icon"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_default" />
+
+                <TextView
+                    android:id="@+id/child_title"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/letv_color_ffdfdfdf"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/left_itme_child_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="36dp"
+                android:background="@color/letv_color_ff3690d4" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

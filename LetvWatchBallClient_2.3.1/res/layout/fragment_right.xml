@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_right"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical" >
+
+            <View
+                android:layout_width="28dp"
+                android:layout_height="10dp"
+                android:background="@drawable/line_stroke_personal_center" />
+
+            <com.letv.watchball.view.RoundImageView
+                android:id="@+id/btn_head_login"
+                android:layout_width="86dp"
+                android:layout_height="86dp"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_head"
+                android:scaleType="fitCenter" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textv_nickname"
+                    android:layout_width="wrap_content"
+                    android:paddingRight="27dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/user_not_login"
+                    android:textColor="@color/letv_color_ff333333"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@drawable/line_stroke_personal_center" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:id="@+id/textv_nickname_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="登录后可以发表评论哟!"
+                        android:textColor="@color/letv_color_ffb9baba"
+                        android:textSize="11sp" />
+
+                    <Button
+                        android:id="@+id/btn_head_loginout"
+                        style="@style/letv_text_13_blue_white"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/btn_blue_selecter"
+                        android:text="注销" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:src="@drawable/right_seeting_icon" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/letv_color_ffcecece" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp" >
+
+        <LinearLayout
+            android:id="@+id/right_mysubscribe"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/right_fragment_navi_bg"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="我的预约"
+                android:textColor="@drawable/right_navi_textcolor"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/right_mysubscribe_bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/letv_color_ff0f93de" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/letv_color_ffcecece" />
+
+        <LinearLayout
+            android:id="@+id/right_myteams"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/right_fragment_navi_bg"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="我的球队"
+                android:textColor="@drawable/right_navi_textcolor"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/right_myteams_bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/letv_color_ff0f93de" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/my_subscribe_fragment"
+        android:name="com.letv.watchball.fragment.GMySubscribeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ListView
+        android:id="@+id/my_teams"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:cacheColorHint="@color/transparent"
+        android:divider="@color/letv_list_divider"
+        android:dividerHeight="1dp"
+        android:fadingEdgeLength="0dp" />
+
+</LinearLayout>

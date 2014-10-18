@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailplay_half_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/detailplay_half_detail_normal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+         >
+        <com.letv.watchball.view.ScrollTabIndicator
+            android:id="@+id/detailplay_half_detail_indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/letv_color_fff6f6f6" />
+
+        <com.letv.watchball.view.SettingViewPager
+            android:id="@+id/detailplay_half_detail_viewpager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/detailplay_half_detail_indicator"
+            android:background="@color/letv_color_fff6f6f6" />
+        <TextView 
+		    android:id="@+id/no_program"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerInParent="true"
+		    android:text="今日无直播节目"
+		    android:textColor="@color/letv_color_ff5c5c5c"
+		    android:visibility="gone"
+		    />
+    </RelativeLayout>
+
+
+</FrameLayout>

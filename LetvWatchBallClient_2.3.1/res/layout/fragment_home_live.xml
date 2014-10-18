@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/root_live"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/settings_bg"
+        android:orientation="vertical" >
+
+        <!--
+            <ProgressBar
+            android:id="@+id/auto_refrsh_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:progressDrawable="@drawable/home_auto_refresh_progress_style" /> 
+        -->
+
+        <com.letv.watchball.view.PullToRefreshListViewHeader
+            android:id="@+id/fragment_home_live"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/bad_network"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/letv_main_bg"
+            android:gravity="center"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/badnetwork" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dip"
+        android:layout_marginRight="16dip"
+        android:src="@drawable/refresh_selecter"
+        android:visibility="visible" />
+
+    <com.letv.watchball.view.MyProgressBar
+        android:id="@+id/refreshBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/refresh"
+        android:layout_alignTop="@+id/refresh"
+        android:layout_marginBottom="16dip"
+        android:layout_marginRight="16dip" />
+
+</RelativeLayout>

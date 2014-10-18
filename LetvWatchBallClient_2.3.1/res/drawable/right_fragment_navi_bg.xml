@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <item android:drawable="@color/letv_color_ffe7e7e7" android:state_pressed="true"/>
+    <item android:drawable="@color/letv_color_ffe7e7e7" android:state_focused="true"/>
+    <item android:drawable="@color/letv_color_ffe7e7e7" android:state_selected="true"/>
+   <!--  <item android:drawable="@color/lowBlue" android:top="10dp"
+        android:left="10dp"/> -->
+<!--     <item android:drawable="@color/letv_color_ff0f93de" android:top="10dp"
+        android:left="10dp"/> -->
+	
+</selector>

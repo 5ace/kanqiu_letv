@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     创建相册的界面(竖屏) 本资源文件以renren_前缀开头，并且文件中定义的id均以renren_开头，用户自定义的资源文件和id等标识均不能使用renren_前缀，以示区分 
+	@Author sunting ting.sun@renren-inc.com
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/renren_sdk_activity_title_bg"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingBottom="1dip"
+            android:src="@drawable/renren_sdk_logo" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:paddingBottom="1dip"
+            android:paddingLeft="3dip"
+            android:text="@string/renren_sdk_title_label"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:padding="10dip" >
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="50dip"
+                android:layout_marginBottom="10dip"
+                android:orientation="horizontal"
+                android:paddingLeft="10dip" >
+
+                <com.renren.api.connect.android.view.ProfilePhotoView
+                    android:id="@+id/renren_sdk_profile_photo"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip" />
+
+                <com.renren.api.connect.android.view.ProfileNameView
+                    android:id="@+id/renren_sdk_profile_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:paddingLeft="10dip"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dip" >
+
+                <TextView
+                    android:id="@+id/renren_sdk_album_name_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/renren_sdk_album_name_label"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/renren_sdk_album_name_value"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:background="@drawable/renren_sdk_edittext_bg"
+                    android:hint="@string/renren_sdk_album_name_hint"
+                    android:padding="5dip"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dip" >
+
+                <TextView
+                    android:id="@+id/renren_sdk_album_visible_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/renren_sdk_album_visible_label"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/renren_sdk_album_visible_value"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:textSize="14sp" >
+                </Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dip" >
+
+                <TextView
+                    android:id="@+id/renren_sdk_album_location_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/renren_sdk_album_location_label"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/renren_sdk_album_location_value"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:background="@drawable/renren_sdk_edittext_bg"
+                    android:hint="@string/renren_sdk_album_location_hint"
+                    android:padding="5dip"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dip" >
+
+                <TextView
+                    android:id="@+id/renren_sdk_album_description_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/renren_sdk_album_description_label"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/renren_sdk_album_description_value"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:background="@drawable/renren_sdk_edittext_bg"
+                    android:hint="@string/renren_sdk_album_description_hint"
+                    android:padding="5dip"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:gravity="right"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/renren_sdk_create_album_submit"
+                    android:layout_width="80dip"
+                    android:layout_height="36dip"
+                    android:text="@string/renren_sdk_submit" />
+
+                <Button
+                    android:id="@+id/renren_sdk_create_album_cancel"
+                    android:layout_width="80dip"
+                    android:layout_height="36dip"
+                    android:text="@string/renren_sdk_cancel" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

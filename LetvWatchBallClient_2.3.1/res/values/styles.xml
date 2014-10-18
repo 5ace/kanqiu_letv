@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <style name="letv_16_ffffff">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_20_ececec">
+        <item name="android:textColor">#ececec</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="letv_20_e6e6e6">
+        <item name="android:textColor">#E6E6E6</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="letv_20_9b9b9b">
+        <item name="android:textColor">#9B9B9B</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="letv_18_e6e6e6">
+        <item name="android:textColor">#e6e6e6</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="letv_18_ececec">
+        <item name="android:textColor">#ececec</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="letv_18_afafaf">
+        <item name="android:textColor">#afafaf</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="letv_18_ffffff">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="letv_16_e2e2e2">
+        <item name="android:textColor">#e2e2e2</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_14_54bceb">
+        <item name="android:textColor">#54bceb</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_16_faf0ed">
+        <item name="android:textColor">#faf0ed</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_16_f3f3f3">
+        <item name="android:textColor">#f3f3f3</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_16_54bceb">
+        <item name="android:textColor">#54bceb</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_16_b1b1b1">
+        <item name="android:textColor">#b1b1b1</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_16_e6e6e6">
+        <item name="android:textColor">#e6e6e6</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_15_e6e6e6">
+        <item name="android:textColor">#e6e6e6</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="letv_16_ff2418">
+        <item name="android:textColor">#ff2418</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_15_ececec">
+        <item name="android:textColor">#ececec</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="letv_14_faf0ed">
+        <item name="android:textColor">#faf0ed</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_14_b1b1b1">
+        <item name="android:textColor">#b1b1b1</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_14_ffffff">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_14_ffffff_bold">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="letv_20_ffffff">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="letv_30_bold_ffffff">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#ff000000</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">2.0</item>
+        <item name="android:shadowRadius">5.0</item>
+    </style>
+
+    <style name="letv_20_000000">
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="letv_20_d8d8d8">
+        <item name="android:textColor">#ffd8d8d8</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="letv_14_ff2418">
+        <item name="android:textColor">#ff2418</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_12_aeaeae">
+        <item name="android:textColor">#aeaeae</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="letv_11_54bceb">
+        <item name="android:textColor">#54bceb</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="letv_16_000000">
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_16_9b9b9b">
+        <item name="android:textColor">#ff9b9b9b</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_16_313131">
+        <item name="android:textColor">#ff313131</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_10_ff2418">
+        <item name="android:textColor">#ff2418</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="letv_14_e2e2e2">
+        <item name="android:textColor">#e2e2e2</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_16_ff2216">
+        <item name="android:textColor">#ff2216</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_12_ff2216">
+        <item name="android:textColor">#ff2216</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="letv_11_ffffff">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="letv_12_a5a5a5">
+        <item name="android:textColor">#a5a5a5</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="letv_14_ececec">
+        <item name="android:textColor">#ececec</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="letv_14_616161">
+        <item name="android:textColor">#616161</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="letv_12_ececec">
+        <item name="android:textColor">#ececec</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="letv_14_8c8c8c">
+        <item name="android:textColor">#8c8c8c</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- <style name="letv_14_aeaeae"> -->
+    <!-- <item name="android:textColor">#aeaeae</item> -->
+    <!-- <item name="android:textSize">14sp</item> -->
+    <!-- </style> -->
+
+    <style name="letv_14_aeaeae">
+        <item name="android:textColor">#aeaeae</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="letv_16_aeaeae">
+        <item name="android:textColor">#aeaeae</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_20_aeaeae">
+        <item name="android:textColor">#aeaeae</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="letv_14_313131">
+        <item name="android:textColor">#313131</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_14_a61500_bold">
+        <item name="android:textColor">#a61500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="letv_14_a0a0a0">
+        <item name="android:textColor">#a0a0a0</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_12_9b9b9b">
+        <item name="android:textColor">#9b9b9b</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="letv_15_9b9b9b">
+        <item name="android:textColor">#9b9b9b</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_14_a5a5a5">
+        <item name="android:textColor">#a5a5a5</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_12_a0a0a0">
+        <item name="android:textColor">#a0a0a0</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="letv_22_ececec">
+        <item name="android:textColor">#ececec</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="letv_16_bababa">
+        <item name="android:textColor">#ffbababa</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_14_bababa">
+        <item name="android:textColor">#ffbababa</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_15_8e8d8d">
+        <item name="android:textColor">#FF8e8d8d</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="letv_14_8e8d8d">
+        <item name="android:textColor">#FF8e8d8d</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="letv_16_aeaea">
+        <item name="android:textColor">#FFaeaeae</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="letv_16_ececec">
+        <item name="android:textColor">#FFececec</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- <style name="letv_tab_text"> -->
+    <!-- <item name="android:textColor">@drawable/tab_text_selecter</item> -->
+    <!-- <item name="android:textSize">16sp</item> -->
+    <!-- </style> -->
+
+
+    <!-- ratingbar 风格 -->
+    <!-- <style name="gradeRatingBar" parent="@android:style/Widget.RatingBar"> -->
+    <!-- <item name="android:progressDrawable">@drawable/grade_star</item> -->
+    <!-- <item name="android:minHeight">12dip</item> -->
+    <!-- <item name="android:maxHeight">12dip</item> -->
+    <!-- <item name="android:maxWidth">12dip</item> -->
+    <!-- <item name="android:minWidth">12dip</item> -->
+    <!-- <item name="android:isIndicator">true</item> -->
+    <!-- </style> -->
+
+    <style name="FullScreenDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="StatusStyle" parent="android:Theme.Light">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="Dialog_Fullscreen">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="LoadingDialog_Fullscreen">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="loading_dialog_progress">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:indeterminateDrawable">@drawable/progressbar</item>
+    </style>
+
+    <style name="Dialog_Hastitle_Fullscreen">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="Dialog_Notitle_Fullscreen">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Transparent">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
+
+    <style name="login_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item> <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item> <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">false</item> <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:backgroundDimEnabled">false</item> <!-- 模糊 -->
+    </style>
+
+    <!-- <style name="AnimationActivity" parent="@android:style/Animation.Activity"> -->
+    <!-- <item name="android:activityOpenEnterAnimation">@anim/zoom_enter</item>当前activity打开时，进入的activity的动画 -->
+    <!-- <item name="android:activityOpenExitAnimation">@null</item>当前activity打开时，退出的activity的动画 -->
+    <!-- <item name="android:activityCloseEnterAnimation">@null</item>当前activity关闭时，进入的activity的动画 -->
+    <!-- <item name="android:activityCloseExitAnimation">@anim/zoom_exit</item>当前activity关闭时，退出的activity的动画 -->
+    <!-- </style> -->
+
+
+    <!-- <style name="ThemeActivity"> -->
+    <!-- <item name="android:windowAnimationStyle">@style/AnimationActivity</item> -->
+    <!-- </style> -->
+
+    <style name="main_tab_bottom">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@drawable/main_tab_textcolor</item>
+    </style>
+
+    <style name="right_navi_radio_button">
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="match_item_home_guset_name">
+        <item name="android:ellipsize">marquee</item>
+        <!--
+        <item name="android:focusable">true</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:scrollHorizontally">true</item>
+        -->
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="title_name_textview">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="myfocus_icon_style">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+    </style>
+
+    <style name="news_list_selector_tv">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@drawable/right_navi_textcolor</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="settings_item">
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+    <style name="settings_group_text">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#999999</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="settings_item_text1">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+
+    <style name="settings_item_text2">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#7cd0ff</item>
+    </style>
+
+    <style name="event_rank_line_divider_head">
+        <item name="android:background">@drawable/evnet_rank_line</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="event_rank_line_divider">
+        <item name="android:background">#ffdbdbdb</item>
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="event_rank_line_divider_horizontal">
+        <item name="android:background">#ffdbdbdb</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+    </style>
+
+    <style name="event_rank_tv_normal">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#575757</item>
+    </style>
+
+    <style name="event_rank_tv_bold">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <declare-styleable name="PorterDuffView">
+        <attr name="porterduffMode" format="boolean"></attr>
+        <attr name="isShowText" format="boolean"></attr>
+        <attr name="isLoading" format="boolean"></attr>
+        <attr name="textSize" format="integer"></attr>
+        <attr name="textFormat" format="string"></attr>
+        <attr name="textColor" format="color"></attr>
+        <attr name="foregroundColor" format="color"></attr>
+    </declare-styleable>
+
+    <style name="letv_text_30_bold_shadow_ffffff">
+        <item name="android:textColor">@color/letv_color_ffffffff</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_30</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@color/letv_color_ff000000</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">2.0</item>
+        <item name="android:shadowRadius">5.0</item>
+    </style>
+
+    <style name="letv_text_13_ffffffff">
+        <item name="android:textColor">@color/letv_color_ffffffff</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_13</item>
+    </style>
+
+    <style name="letv_text_20_ffffffff">
+        <item name="android:textColor">@color/letv_color_ffffffff</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_20</item>
+    </style>
+
+    <style name="letv_text_17_blue_white">
+        <item name="android:textColor">@drawable/blue_white_text_selecter</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_17</item>
+    </style>
+
+    <style name="letv_text_11_ffadadad">
+        <item name="android:textColor">@color/letv_color_ffadadad</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_11</item>
+    </style>
+
+    <style name="letv_text_14_ffffffff">
+        <item name="android:textColor">@color/letv_color_ffffffff</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_14</item>
+    </style>
+
+    <style name="letv_text_13_ff5c5c5c">
+        <item name="android:textColor">@color/letv_color_ff5c5c5c</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_13</item>
+    </style>
+
+    <style name="letv_text_11_ffdfdfdf">
+        <item name="android:textColor">@color/letv_color_ffdfdfdf</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_11</item>
+    </style>
+
+    <style name="letv_text_15_ffa1a1a1">
+        <item name="android:textColor">@color/letv_color_ffa1a1a1</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+
+    <style name="letv_text_15_blue_white_style">
+        <item name="android:textColor">@drawable/blue_white_text_selecter</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+        <item name="android:background">@drawable/btn_blue_selecter</item>
+    </style>
+   <style name="letv_text_12_ff000000">
+        <item name="android:textColor">@color/letv_color_ff000000</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_12</item>
+    </style>
+    <style name="letv_text_15_ff000000">
+        <item name="android:textColor">@color/letv_color_ff000000</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+
+    <style name="letv_text_15_ff00a0e9">
+        <item name="android:textColor">@color/letv_color_ff00a0e9</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+
+    <style name="letv_header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@color/letv_left_bg_blue</item>
+    </style>
+
+    <style name="letv_header_leftbtn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@drawable/letv_header_left_right_selector</item>
+    </style>
+
+    <style name="letv_header_rightbtn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/letv_header_left_right_selector</item>
+    </style>
+
+    <style name="letv_text_13_blue_white">
+        <item name="android:textColor">@drawable/blue_white_text_selecter</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_13</item>
+    </style>
+
+    <style name="letv_text_15_ff969696">
+        <item name="android:textColor">@color/letv_color_ff969696</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+
+    <style name="letv_text_15_ff393939">
+        <item name="android:textColor">@color/letv_color_ff393939</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+
+    <style name="letv_text_15_blue_white">
+        <item name="android:textColor">@drawable/blue_white_text_selecter</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+
+    <style name="letv_text_21_ff393939">
+        <item name="android:textColor">@color/letv_color_ff393939</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_21</item>
+    </style>
+
+    <style name="letv_text_15_red_white">
+        <item name="android:textColor">@drawable/red_white_text_selecter</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+     <style name="letv_text_13_ffa1a1a1">
+        <item name="android:textColor">@color/letv_color_ffa1a1a1</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_13</item>
+    </style>
+       <style name="letv_text_13_ff969696">
+        <item name="android:textColor">@color/letv_color_ff969696</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_13</item>
+    </style>
+      <style name="letv_application_theme" parent="@android:style/Theme.NoTitleBar">
+        <item name="android:windowBackground">@color/letv_color_fff6f6f6</item>
+    </style>
+     <style name="letv_text_15_ffffffff_shadow">
+        <item name="android:textColor">@color/letv_color_ffffffff</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+        <item name="android:shadowColor">@color/letv_color_cd000000</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">5.0</item>
+    </style>
+     <style name="letv_text_11_ffffffff_shadow">
+        <item name="android:textColor">@color/letv_color_ffffffff</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_11</item>
+        <item name="android:shadowColor">@color/letv_color_cd000000</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">5.0</item>
+    </style>
+    <style name="letv_text_15_ff5c5c5c">
+        <item name="android:textColor">@color/letv_color_ff5c5c5c</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+
+    <!--feed back-->
+    <style name="letv_text_15_blue_white_unenable">
+        <item name="android:textColor">@drawable/white_blue_text_selecter</item>
+        <item name="android:textSize">@dimen/letv_dimens_text_15</item>
+    </style>
+
+</resources>

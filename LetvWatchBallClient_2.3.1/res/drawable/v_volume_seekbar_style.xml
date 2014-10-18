@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle" >
+            <corners android:radius="0dip" />
+
+            <stroke
+                android:width="1px"
+                android:color="@color/letv_color_ff000000" />
+
+            <gradient
+                android:angle="270"
+                android:centerColor="@color/letv_color_ff46474a"
+                android:centerY="0.75"
+                android:endColor="@color/letv_color_ff46474a"
+                android:startColor="@color/letv_color_ff46474a" />
+        </shape>
+    </item>
+    <item android:id="@android:id/secondaryProgress">
+        <clip
+            android:clipOrientation="horizontal"
+            android:gravity="left" >
+            <shape android:shape="rectangle" >
+                <corners android:radius="0dip" />
+
+                <stroke
+                    android:width="1px"
+                    android:color="@color/letv_color_00000000" />
+
+                <gradient
+                    android:angle="270"
+                    android:centerColor="@color/letv_color_ff46474a"
+                    android:centerY="0.75"
+                    android:endColor="@color/letv_color_ff46474a"
+                    android:startColor="@color/letv_color_ff46474a" />
+            </shape>
+        </clip>
+    </item>
+    <item android:id="@android:id/progress">
+        <clip
+            android:clipOrientation="horizontal"
+            android:gravity="left" >
+            <shape android:shape="rectangle" >
+                <corners android:radius="0dip" />
+
+                <stroke
+                    android:width="1px"
+                    android:color="@color/letv_color_00000000" />
+
+                <gradient
+                    android:angle="270"
+                    android:centerColor="@color/letv_color_ff00a0e9"
+                    android:centerY="0.75"
+                    android:endColor="@color/letv_color_ff00a0e9"
+                    android:startColor="@color/letv_color_ff00a0e9" />
+            </shape>
+        </clip>
+    </item>
+
+    <!-- <item -->
+    <!-- android:id="@android:id/background" -->
+    <!-- android:drawable="@drawable/volume_seekbar_bg"/> -->
+    <!-- <item -->
+    <!-- android:id="@android:id/secondaryProgress" -->
+    <!-- android:drawable="@drawable/volume_seekbar_bg"/> -->
+    <!-- <item -->
+    <!-- android:id="@android:id/progress" -->
+    <!-- android:drawable="@drawable/volume_seekbar_progress"/> -->
+
+</layer-list>

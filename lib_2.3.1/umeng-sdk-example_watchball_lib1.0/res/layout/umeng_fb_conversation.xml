@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:background="@drawable/content_bg">
+	<TextView android:id="@+id/umeng_fb_conversation_title"
+		android:layout_width="fill_parent" android:textColor="#ffececec"
+		android:layout_height="wrap_content" android:layout_gravity="center"
+		android:gravity="center" android:text="@string/UMFeedbackConversationTitle" android:textSize="22sp"
+		android:background="@drawable/title_bg" />
+
+	<com.umeng.fb.ui.ThreadView android:id="@+id/android:list"
+		android:layout_gravity="top" android:layout_width="fill_parent"
+		android:layout_weight="1.0" android:layout_height="wrap_content"
+		android:background="#00000000" android:divider="@null"
+		android:cacheColorHint="@null" 
+		android:listSelector="#00000000"/>
+	<RelativeLayout android:id="@+id/umeng_fb_bottom_sub"
+		android:background="#00000000"
+		android:layout_gravity="bottom" android:gravity="center_vertical"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingTop="5dip"
+		android:paddingBottom="5dip">
+		<EditText android:id="@+id/umeng_fb_editTxtFb"
+			android:layout_width="fill_parent" android:layout_marginLeft="8dip"
+			android:layout_height="wrap_content" android:maxLines="2"
+			android:layout_weight="1" android:layout_alignParentLeft="true"
+			android:layout_toLeftOf="@+id/umeng_fb_btnSendFb" 
+			android:background="@drawable/search_edit_bg"
+			android:textColor="#ffececec"
+			android:textSize="14sp"
+			android:layout_centerInParent="true"/>
+		<Button android:id="@+id/umeng_fb_btnSendFb"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_marginLeft="12dip" android:layout_marginRight="6dip"
+			android:layout_alignParentRight="true" android:layout_centerVertical="true"
+			android:background="@drawable/umeng_red_button_selecter"
+			android:text="Submit" android:textColor="#FFFFFF" />
+	</RelativeLayout>
+</LinearLayout>

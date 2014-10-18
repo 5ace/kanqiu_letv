@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/head"
+        style="@style/letv_header" >
+
+        <ImageView
+            android:id="@+id/head_back"
+            style="@style/letv_header_leftbtn"
+            android:src="@drawable/back_btn" />
+
+        <TextView
+            style="@style/title_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清晰度设置" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/settings_bg" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/settings_item_all_bg_nor"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/setting_play_hd_gaoqing"
+                style="@style/settings_item"
+                android:layout_width="match_parent"
+                android:background="@drawable/settings_middle_item" >
+
+                <TextView
+                    style="@style/settings_item_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="高清模式" />
+
+                <TextView
+                    android:id="@+id/select_item1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/select_time"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/settings_item_divider" />
+
+            <RelativeLayout
+                android:id="@+id/setting_play_hd_liuchang"
+                style="@style/settings_item"
+                android:background="@drawable/settings_bottom_item" >
+
+                <TextView
+                    style="@style/settings_item_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="流畅模式" />
+
+                <TextView
+                    android:id="@+id/select_item2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/select_time"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

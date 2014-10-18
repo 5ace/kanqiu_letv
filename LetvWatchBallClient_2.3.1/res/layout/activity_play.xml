@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/play_upper_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@null" >
+
+        <fragment
+            android:id="@+id/play_fragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_vertical"
+            class="com.letv.watchball.ui.impl.BasePlayFragment" />
+
+        <include layout="@layout/play_gesture_layout" />
+
+        <com.letv.watchball.view.PlayAdLayout
+                android:id="@+id/play_ad_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+
+        <FrameLayout
+            android:id="@+id/play_upper"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            android:background="@null" />
+        <TextView 
+		    android:id="@+id/no_play_program"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:text="没有直播节目" 
+		    android:textColor="#ffffffff"
+		    android:gravity="center"
+		    android:visibility="gone"
+		    />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/play_lower"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/play_upper_layout"
+        android:layout_marginBottom="30dp"
+        android:background="@null"
+        android:visibility="gone" >
+    </RelativeLayout>
+	 <!-- 评论 -->
+    <include layout="@layout/detailplay_half_add_comments" />
+</RelativeLayout>

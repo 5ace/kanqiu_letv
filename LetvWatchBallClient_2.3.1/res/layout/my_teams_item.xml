@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical" >
+
+    <RelativeLayout
+        android:id="@+id/myfocus_child_main"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="@drawable/right_fragment_my_team"
+        android:gravity="center_vertical" >
+
+        <com.letv.cache.view.LetvImageView
+            android:id="@+id/child_icon"
+            style="@style/myfocus_icon_style"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_default" />
+
+        <TextView
+            android:id="@+id/child_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/child_icon"
+            android:text="TextView"
+            android:textColor="#525252"
+            android:textSize="19sp" />
+
+        <ImageView
+            android:id="@+id/focus_switcher"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+</LinearLayout>

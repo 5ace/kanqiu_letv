@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 原创节目Fragment -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/original_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/head"
+        style="@style/letv_header" >
+
+        <ImageView
+            android:id="@+id/toggle_left"
+            style="@style/letv_header_leftbtn"
+            android:src="@drawable/live_navi_icon_bg" />
+
+        <TextView
+            android:id="@+id/original_fragment_title_tag"
+            style="@style/title_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:singleLine="true"
+            android:text="体育直播间" />
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/original_fragment_videoList"
+        android:name="com.letv.watchball.fragment.OriginalVideoListFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+</LinearLayout>

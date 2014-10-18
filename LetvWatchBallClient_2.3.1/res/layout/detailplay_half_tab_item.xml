@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="33dip"
+    android:layout_height="wrap_content"
+    android:gravity="center" >
+
+    <TextView
+        android:id="@+id/detailplay_half_tab_item_text"
+        style="@style/letv_text_13_ff5c5c5c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+</LinearLayout>

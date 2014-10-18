@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/letv_color_ffffffff"
+    android:orientation="vertical" >
+
+    <!-- Title -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="44dip"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/top_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="18dip"
+            android:background="@drawable/back_selecter"
+            android:contentDescription="@string/pim_desc_back"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/top_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="42dip"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/share_tab_title"
+            android:textColor="@color/letv_color_ff393939"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/top_button_Share"
+            style="@style/letv_text_15_blue_white_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="15dip"
+            android:text="@string/share_tab_title" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@color/letv_color_ffa1a1a1" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dip" >
+
+        <EditText
+            android:id="@+id/ShareText"
+            android:layout_width="fill_parent"
+            android:layout_height="180dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:gravity="left|top"
+            android:lineSpacingExtra="5dip"
+            android:paddingBottom="8dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip" />
+
+        <TextView
+            android:id="@+id/maxlength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/ShareText"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:textColor="@color/letv_color_ff393939"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+</LinearLayout>

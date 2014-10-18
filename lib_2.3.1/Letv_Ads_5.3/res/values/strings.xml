@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">Letv_Ads</string>
+
+    <string name="play_ad_second">广告剩余%d秒</string>
+    
+    <string name="ad_play_view_text_top">2G/3G网络下观看会消耗大量流量</string>
+    <string name="ad_play_view_text_bottom">继续观看点击播放按钮</string>
+</resources>

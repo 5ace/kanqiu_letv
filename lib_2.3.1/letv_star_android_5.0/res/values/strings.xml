@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, Letv_star_androidActivity!</string>
+    <string name="app_name">Letv_star_android</string>
+	<string name="letv_star_info">大咔--用精彩视频，超酷的滤镜图片，当然还可以是文字来记录精彩生活，并分享给你的社交圈... 点击这里下载</string>
+
+	<string name="name_null">用户名不能为空</string>
+	<string name="password_null">密码不能为空</string>
+		<string name="maintitle">大咔</string>
+</resources>

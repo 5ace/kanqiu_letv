@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+        
+        <LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:gravity="center"
+		    android:background="@drawable/title_bg"
+		    android:paddingLeft="8dip"
+		    android:paddingRight="8dip">
+		    <Button
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:background="@drawable/back_selecter"
+		        android:id="@+id/top_button"
+		        android:visibility="gone"/>
+		
+		    <TextView
+		        android:paddingLeft="5dip"
+		        android:paddingRight="5dip"
+		        android:layout_width="0dip"
+		        android:gravity="center"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:singleLine="true"
+		        android:ellipsize="end"
+		        android:id="@+id/top_title"
+		        android:text="@string/umeng_recomment_title"
+		        android:textSize="22sp"
+		        android:textColor="#FFececec"/>
+		    
+		    <Button
+		        android:id="@+id/top_button_right"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:visibility="gone"
+		        android:background="@drawable/back_selecter"/>
+		</LinearLayout>
+        
+        <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="47dip"
+	        android:background="@drawable/sort_bg"
+	        android:gravity="center">
+	        <TabWidget
+	            android:id="@android:id/tabs"
+	            android:layout_width="306dip"
+	            android:layout_height="45dp"/>
+	   	</LinearLayout>
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <RelativeLayout
+                android:id="@+id/father1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp" >
+                <ListView
+                    android:id="@+id/list_1"
+                    android:layout_width="fill_parent"
+			    	android:layout_height="wrap_content"
+			    	android:fastScrollEnabled="true"
+			    	android:listSelector="#00000000"
+			    	android:cacheColorHint="@null"
+			    	android:divider="@drawable/line_bg"
+			    	android:fadingEdge="none">
+                </ListView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/father2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp">
+                <ListView
+                    android:id="@+id/list_2"
+                    android:layout_width="fill_parent"
+			    	android:layout_height="wrap_content"
+			    	android:fastScrollEnabled="true"
+			    	android:listSelector="#00000000"
+			    	android:cacheColorHint="@null"
+			    	android:divider="@drawable/line_bg"
+			    	android:fadingEdge="none">
+                </ListView>
+            </RelativeLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+
+</TabHost>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_left"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/letv_left_bg_blue"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <ExpandableListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:childDivider="@color/transparent"
+            android:choiceMode="singleChoice"
+            android:divider="@color/transparent"
+            android:fadingEdge="none"
+            android:groupIndicator="@null"
+            android:scrollbars="none" >
+        </ExpandableListView>
+    </FrameLayout>
+<!--             android:listSelector="@drawable/fragment_left_list_selector" -->
+
+</LinearLayout>

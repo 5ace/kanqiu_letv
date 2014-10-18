@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@null"
+    android:orientation="vertical" >
+    <ListView
+        android:id="@+id/detailplay_half_related_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:fadingEdge="none"
+        android:cacheColorHint="@color/transparent" />
+
+</LinearLayout>

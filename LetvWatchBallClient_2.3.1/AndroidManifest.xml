@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.letv.watchball"
+    android:versionCode="7"
+    android:versionName="2.3.2" >
+
+   <uses-sdk android:minSdkVersion="4" />
+
+    <application
+        android:name=".LetvApplication"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:debuggable="false"
+        android:hardwareAccelerated="true"
+        android:theme="@style/letv_application_theme">
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" >
+        </activity>
+
+        <activity
+                android:name="com.letv.ads.view.LetvWebViewActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:screenOrientation="sensor"
+                android:theme="@android:style/Theme.Black.NoTitleBar" />
+
+        <activity
+            android:name=".activity.MyFocusManagerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".activity.MyTeamMatchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+       <activity
+            android:name=".ui.impl.BasePlayActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="sensor"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:mimeType="video/*" />
+                <data android:mimeType="video/mp4" />
+                <data android:mimeType="application/mp4" />
+                <data android:mimeType="*/3gp" />
+                <data android:mimeType="application/vnd.3gp" />
+                <data android:mimeType="*/avi" />
+                <data android:mimeType="*/rmvb" />
+                <data android:mimeType="*/rm" />
+                <data android:mimeType="*/wmv" />
+                <data android:mimeType="*/flv" />
+                <data android:mimeType="*/mkv" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" >
+                </action>
+
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+                <category android:name="android.intent.category.BROWSABLE" >
+                </category>
+
+                <data android:mimeType="video/*" >
+                </data>
+                <data android:mimeType="application/mp4" >
+                </data>
+                <data android:mimeType="*/rmvb" >
+                </data>
+                <data android:mimeType="*/avi" >
+                </data>
+                <data android:mimeType="*/mkv" >
+                </data>
+                <data android:mimeType="application/mpeg*" >
+                </data>
+                <data android:mimeType="application/vnd.3gp*" >
+                </data>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" >
+                </action>
+
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+                <category android:name="android.intent.category.BROWSABLE" >
+                </category>
+
+                <data
+                    android:mimeType="video/*"
+                    android:scheme="http" >
+                </data>
+                <data
+                    android:mimeType="video/*"
+                    android:scheme="rtsp" >
+                </data>
+                <data
+                    android:mimeType="video/*"
+                    android:scheme="file" >
+                </data>
+                <data
+                    android:mimeType="video/*"
+                    android:scheme="content" >
+                </data>
+                <data
+                    android:mimeType="video/*"
+                    android:scheme="mms" >
+                </data>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" >
+                </action>
+
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+
+                <data android:scheme="content" >
+                </data>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" >
+                </action>
+
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+                <category android:name="android.intent.category.BROWSABLE" >
+                </category>
+
+                <data android:scheme="rtsp" >
+                </data>
+                <data android:scheme="mms" >
+                </data>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" >
+                </action>
+
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+
+                <data android:mimeType="video/*" >
+                </data>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" >
+                </action>
+
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+                <category android:name="android.intent.category.BROWSABLE" >
+                </category>
+
+                <data android:scheme="http" >
+                </data>
+                <data android:mimeType="video/*" >
+                </data>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.letv" />
+            </intent-filter>
+        </activity>
+        
+       <activity
+            android:name=".activity.SharePageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".activity.SettingsGameRemindActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".activity.SettingsHdActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".activity.SettingsAboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.letv.watchball.ui.impl.FeedBackActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+
+        <!-- 友盟 意见反馈 -->
+        <activity
+            android:name="com.umeng.fb.ui.SendFeedback"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name="com.umeng.fb.ui.FeedbackConversations"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.umeng.fb.ui.FeedbackConversation"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        
+        
+        
+        
+        
+           <activity
+            android:name=".activity.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".activity.FindLetvAccountPasswordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".activity.LetvWebViewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
+        <activity
+            android:name=".activity.PimBaseActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.ConsumeRecordActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.RechargeRecordActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.ShareActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.BoundEmail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.BoundMobile"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.ModifyPwd"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.FindPsswordByMessage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LetvAccountLogin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LetvOpenIDOAuthLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LoginMainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <!-- 分享 -->
+        <activity
+            android:name="com.weibo.sdk.android.WeiboLoginActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.tencent.weibo.LoginNewActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.renren.api.connect.android.view.RenrenLoginActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.letv.star.LetvStarLoginActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1150075690" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.tauth.AddShareView"
+            android:configChanges="keyboardHidden|navigation|orientation"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="letvqzone" />
+            </intent-filter>
+        </activity>
+        
+
+        <service
+            android:name=".push.LetvWbPushService"
+            android:process=":letvWbPush" >
+        </service>
+        <!-- 画中画服务 -->
+        <service
+            android:name=".service.PipService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":letvWbPip" >
+        </service>
+
+        <provider
+                android:name="com.letv.ads.db.AdsContentProviderForWB"
+                android:authorities="com.letv.ads.db.AdsContentProviderForWB" />
+        <provider
+            android:name="com.letv.datastatistics.db.StatisContentProvider"
+            android:authorities="com.letv.watchball.db.StatisContentProvider" />
+        <provider
+            android:name="com.letv.watchball.db.LetvContentProvider"
+            android:authorities="com.letv.watchball.db.LetvContentProvider" />
+
+        <receiver android:name="com.letv.watchball.receiver.BootCompletedBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.letv.watchball.receiver.LetvLiveReceiver" >
+        </receiver>
+        <receiver android:name="com.letv.watchball.receiver.NetStateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.letv.watchball.push.PushNotificationReceiver" >
+            <intent-filter>
+                <action android:name=".push.PushNotificationReceiver.NOTIFY" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="51f884fe56240ba2d7040413" >
+        </meta-data>
+        <meta-data android:name="UMENG_CHANNEL" android:value="appnt5" />
+    </application>
+
+    <!-- 所有权限 	请开发人员加入权限是，给出注释，在什么功能点用到 -->
+
+
+    <!-- 联网权限，联网需要 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 打电话权限，拨打客户电话需要 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- 获得电话信息，得到deviceId需要 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 查看网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 电池状态权限 -->
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <!-- 写外部储存的权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 读外部储存的权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 查看WIFI状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 播放器必须，禁止锁屏 -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!-- 播放器必须，禁止锁屏 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" >
+    </uses-permission>
+    <!-- 允许当前应用改变配置 暂留 -->
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+      <!-- 画中画必须 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+      <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <!-- 友盟统计需要的权限，用于：添加地理位置信息，在 launch 和 terminate 中添加三个字段 lng , lat, gps_time 用来获取启动和结束时的 地理位置信息。 -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
+    
+
+</manifest>

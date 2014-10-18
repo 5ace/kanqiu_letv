@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 用户中心-注册界面 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <!-- BODY -->
+
+            <include layout="@layout/my_top_title1" />
+
+            <ViewFlipper
+                android:id="@+id/regist_bodyViewFlipper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:measureAllChildren="false" >
+
+                <!-- BODY-手机注册 -->
+
+                <LinearLayout
+                    android:id="@+id/regist_bodyPhone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+<!-- 	android:background="@drawable/more_list_top_selecter" -->
+
+                    <RelativeLayout
+                        android:id="@+id/regist_phone_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="44dip"
+                        android:paddingLeft="15dip" >
+
+                        <TextView
+                            android:id="@+id/regist_phone_txt"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="86dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="left|center_vertical"
+                            android:singleLine="true"
+                            android:text="@string/phone_number" />
+
+                        <com.letv.watchball.view.DeleteButtonEditText
+                            android:id="@+id/regist_phone_edit"
+                            style="@style/letv_text_15_ffa1a1a1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="16dip"
+                            android:layout_toLeftOf="@+id/regist_getAuthCode"
+                            android:layout_toRightOf="@+id/regist_phone_txt"
+                            android:background="@null"
+                            android:hint="@string/phone_number_hint_text"
+                            android:inputType="phone"
+                            android:maxLength="11"
+                            android:numeric="integer"
+                            android:singleLine="true" />
+
+                        <!-- 获取验证码按钮 -->
+                        <!-- android:background="@drawable/personal_center_getcheckcode_selector" -->
+
+                        <Button
+                            android:id="@+id/regist_getAuthCode"
+                            style="@style/letv_text_13_blue_white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dip"
+                            android:background="@drawable/btn_blue_selecter"
+                            android:gravity="center"
+                            android:text="@string/get_veriycode" />
+                    </RelativeLayout>
+
+                    <include
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:layout_marginLeft="15dip"
+                        layout="@layout/setting_driver_line" />
+<!-- 	android:background="@drawable/more_list_middle_selecter" -->
+
+                    <RelativeLayout
+                        android:id="@+id/regist_checknum_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="44dip"
+                        android:paddingLeft="15dip" >
+
+                        <TextView
+                            android:id="@+id/regist_phoneCheckNum_txt"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="86dip"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="left|center_vertical"
+                            android:singleLine="true"
+                            android:text="@string/register_verifycode" />
+
+                        <com.letv.watchball.view.DeleteButtonEditText
+                            android:id="@+id/regist_phoneCheckNum_edit"
+                            style="@style/letv_text_15_ffa1a1a1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/regist_phoneCheckNum_txt"
+                            android:background="@null"
+                            android:hint="@string/register_verifycode_hint_text"
+                            android:maxLength="20"
+                            android:singleLine="true" />
+                    </RelativeLayout>
+
+                    <include
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:layout_marginLeft="15dip"
+                        layout="@layout/setting_driver_line" />
+<!-- 	android:background="@drawable/more_list_middle_selecter" -->
+
+                    <RelativeLayout
+                        android:id="@+id/regist_password_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="44dip"
+                        android:paddingLeft="15dip" >
+
+                        <TextView
+                            android:id="@+id/regist_password_txt"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="86dip"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="left|center_vertical"
+                            android:singleLine="true"
+                            android:text="@string/password" />
+
+                        <com.letv.watchball.view.DeleteButtonEditText
+                            android:id="@+id/regist_password_edit"
+                            style="@style/letv_text_15_ffa1a1a1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/regist_password_txt"
+                            android:background="@null"
+                            android:hint="@string/password_hint_text"
+                            android:maxLength="20"
+                            android:password="true"
+                            android:singleLine="true" />
+                    </RelativeLayout>
+
+                    <include
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:layout_marginLeft="15dip"
+                        layout="@layout/setting_driver_line" />
+                    <!-- android:background="@drawable/more_list_bottom_selecter" -->
+
+                    <RelativeLayout
+                        android:id="@+id/regist_password_confirm_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="44dip"
+                        android:paddingLeft="15dip" >
+
+                        <TextView
+                            android:id="@+id/regist_password_confirm_txt"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="86dip"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="left|center_vertical"
+                            android:singleLine="true"
+                            android:text="@string/password_confirm" />
+
+                        <com.letv.watchball.view.DeleteButtonEditText
+                            android:id="@+id/regist_password_confirm_edit"
+                            style="@style/letv_text_15_ffa1a1a1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/regist_password_confirm_txt"
+                            android:background="@null"
+                            android:hint="@string/password_confirm_hint_text"
+                            android:maxLength="20"
+                            android:password="true"
+                            android:singleLine="true" />
+                    </RelativeLayout>
+
+                    <include
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:layout_marginLeft="15dip"
+                        layout="@layout/setting_driver_line" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="44dip"
+                        android:layout_marginTop="5dip"
+                        android:gravity="center|left"
+                        android:orientation="horizontal" >
+
+                        <!--
+         android:button="@drawable/check_box_bg" 
+	        <CheckBox
+	            android:id="@+id/regist_agreeCheckBox"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:checked="true"
+	            android:singleLine="true"
+	            android:textColor="#FFf3f3f3"
+	            
+	            android:layout_marginLeft="15dip"/>
+                        -->
+
+                        <ImageView
+                            android:id="@+id/regist_agreeCheckBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dip"
+                            android:src="@drawable/setting_select_sure" />
+
+                        <TextView
+                            android:id="@+id/regist_protocol_txt_phone"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dip"
+                            android:text="@string/letv_agree" />
+                    </LinearLayout>
+
+                    <include layout="@layout/setting_driver_line" />
+
+                    <Button
+                        android:id="@+id/regist_btnLogin_phone"
+                        style="@style/letv_text_15_red_white"
+                        android:layout_width="fill_parent"
+                        android:layout_height="37dip"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="15dip"
+                        android:layout_marginTop="22dip"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_red_selecter"
+                        android:gravity="center"
+                        android:text="@string/register" />
+                    
+                </LinearLayout>
+
+                <!-- BODY-邮箱注册 -->
+
+                <LinearLayout
+                    android:id="@+id/regist_bodyMail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+<!-- 	 android:background="@drawable/more_list_top_selecter" -->
+
+                    <RelativeLayout
+                        android:id="@+id/regist_mail_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="44dip"
+                        android:paddingLeft="15dip" >
+
+                        <TextView
+                            android:id="@+id/regist_mail_txt"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="86dip"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="left|center_vertical"
+                            android:singleLine="true"
+                            android:text="@string/email" />
+
+                        <com.letv.watchball.view.EmailAutoCompleteTextView
+                            android:id="@+id/regist_mail_edit"
+                            style="@style/letv_text_15_ffa1a1a1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/regist_mail_txt"
+                            android:background="@null"
+                            android:completionThreshold="1"
+                            android:dropDownHeight="200dip"
+                            android:dropDownSelector="#00000000"
+                            android:dropDownWidth="fill_parent"
+                            android:hint="@string/email_hint_text"
+                            android:inputType="textEmailAddress"
+                            android:maxLength="255"
+                            android:singleLine="true" />
+                    </RelativeLayout>
+<!-- 	android:background="@drawable/more_list_middle_selecter" -->
+
+                    <include
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:layout_marginLeft="15dip"
+                        layout="@layout/setting_driver_line" />
+
+                    <RelativeLayout
+                        android:id="@+id/regist_mail_password_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dip"
+                        android:paddingLeft="15dip" >
+
+                        <TextView
+                            android:id="@+id/regist_mail_password_txt"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="86dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="left|center_vertical"
+                            android:singleLine="true"
+                            android:text="@string/password" />
+
+                        <com.letv.watchball.view.DeleteButtonEditText
+                            android:id="@+id/regist_mail_password_edit"
+                            style="@style/letv_text_15_ffa1a1a1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/regist_mail_password_txt"
+                            android:background="@null"
+                            android:hint="@string/password_hint_text"
+                            android:maxLength="20"
+                            android:password="true"
+                            android:singleLine="true" />
+                    </RelativeLayout>
+
+                    <include
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:layout_marginLeft="15dip"
+                        layout="@layout/setting_driver_line" />
+<!-- 	            android:background="@drawable/more_list_bottom_selecter" -->
+
+                    <RelativeLayout
+                        android:id="@+id/regist_mail_password_confirm_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="44dip"
+                        android:paddingLeft="15dip" >
+
+                        <TextView
+                            android:id="@+id/regist_mail_password_confirm_txt"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="86dip"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="left|center_vertical"
+                            android:singleLine="true"
+                            android:text="@string/password_confirm" />
+
+                        <com.letv.watchball.view.DeleteButtonEditText
+                            android:id="@+id/regist_mail_password_confirm_edit"
+                            style="@style/letv_text_15_ffa1a1a1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/regist_mail_password_confirm_txt"
+                            android:background="@null"
+                            android:hint="@string/password_confirm_hint_text"
+                            android:maxLength="20"
+                            android:password="true"
+                            android:singleLine="true" />
+                    </RelativeLayout>
+
+                    <include
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:layout_marginLeft="15dip"
+                        layout="@layout/setting_driver_line" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="44dip"
+                        android:layout_marginTop="5dip"
+                        android:gravity="center|left"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:id="@+id/regist_agreeCheckBtn2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dip"
+                            android:src="@drawable/setting_select_sure" />
+
+                        <TextView
+                            android:id="@+id/regist_protocol_txt_email"
+                            style="@style/letv_text_15_ff393939"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dip"
+                            android:text="@string/letv_agree" />
+                        
+                    </LinearLayout>
+
+                    <include layout="@layout/setting_driver_line" />
+
+                    <Button
+                        android:id="@+id/regist_btnLogin_email"
+                        style="@style/letv_text_15_red_white"
+                        android:layout_width="fill_parent"
+                        android:layout_height="37dip"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="15dip"
+                        android:layout_marginTop="62dip"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_red_selecter"
+                        android:gravity="center"
+                        android:text="@string/register" />
+                    
+                </LinearLayout>
+                
+            </ViewFlipper>
+            
+            <include
+                android:id="@+id/sign_up_include_supertv_copy"
+                android:layout_gravity="center"
+                layout="@layout/include_supertv_copy"
+                android:visibility="visible" />
+
+            <!-- 报错提示 -->
+
+            <TextView
+                android:id="@+id/regist_errorMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                android:gravity="center"
+                android:maxLines="2"
+                android:textColor="#FFff2418"
+                android:textSize="14sp"
+                android:visibility="visible" />
+        </LinearLayout>
+        
+    </ScrollView>
+
+</LinearLayout>

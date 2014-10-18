@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00ffffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/head"
+        style="@style/letv_header" >
+
+        <TextView
+            style="@style/title_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加球队" />
+
+        <ImageView
+            android:id="@+id/my_focus_close"
+            style="@style/letv_header_leftbtn"
+            android:src="@drawable/back_btn" />
+    </RelativeLayout>
+
+    <ExpandableListView
+        android:id="@+id/my_focus_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/letv_main_bg"
+        android:cacheColorHint="#00000000"
+        android:childDivider="@color/letv_list_divider"
+        android:divider="@color/letv_list_divider"
+        android:dividerHeight="1dp"
+        android:fadingEdge="none" >
+    </ExpandableListView>
+
+</LinearLayout>

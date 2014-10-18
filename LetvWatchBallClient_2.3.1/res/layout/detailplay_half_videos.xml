@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/letv_color_fff6f6f6"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/detailplay_half_video_anthology_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- <com.letv.android.client.view.HoriGallery -->
+        <!-- android:id="@+id/detailplay_half_video_anthology_horigallery" -->
+        <!-- android:layout_width="fill_parent" -->
+        <!-- android:layout_height="44dip" -->
+        <!-- android:layout_gravity="center" -->
+        <!-- android:visibility="gone" /> -->
+
+        <HorizontalScrollView
+            android:id="@+id/detailplay_half_video_anthology_scroll"
+            android:layout_width="fill_parent"
+            android:layout_height="44dip"
+            android:scrollbars="none"
+            android:visibility="gone" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <GridView
+                    android:id="@+id/detailplay_half_video_anthology_horigallery"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:listSelector="#00000000"
+                    android:scrollbars="none" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="@color/letv_color_ffdfdfdf" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/adperLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/spread"
+        android:layout_below="@id/detailplay_half_video_anthology_layout" >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/videos_loading_layout"
+                android:background="@color/letv_color_fff6f6f6"
+                android:visibility="visible"
+                android:gravity="center"
+                android:layout_height="match_parent">
+            <TextView
+                    android:layout_marginTop="65dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="加载中"
+                    android:textSize="16sp"
+                    />
+                </LinearLayout>
+
+        <GridView
+            android:id="@+id/detailplay_half_video_anthology_gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:horizontalSpacing="0px"
+            android:listSelector="#00000000"
+            android:numColumns="6"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="0px"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/detailplay_half_video_anthology_listview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="@null"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:listSelector="#00000000"
+            android:paddingTop="0dip"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@id/spread"
+        android:layout_width="fill_parent"
+        android:layout_height="30dip"
+        android:layout_alignParentBottom="true"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/schedule_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/head"
+        style="@style/letv_header"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/evnet_toggle_left"
+            style="@style/letv_header_leftbtn"
+            android:src="@drawable/live_navi_icon_bg" />
+
+        <TextView
+            android:id="@+id/schedule_fragment_title_tag"
+            style="@style/title_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/evnet_toggle_left"
+            android:singleLine="true"
+            android:text="欧洲杯" />
+
+        <RadioGroup
+            android:id="@+id/schedule_fragment_title_radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal" >
+            <RadioButton
+                    android:id="@+id/schedule_fragment_radio_video"
+                    style="@style/main_tab_bottom"
+                    android:layout_weight="1"
+                    android:background="@drawable/event_title_top_left"
+                    android:text="新闻" />
+            <RadioButton
+                android:id="@+id/schedule_fragment_radio_schedule"
+                style="@style/main_tab_bottom"
+                android:layout_weight="1"
+                android:background="@drawable/event_title_top_middle"
+
+                android:text="直播" />
+            <RadioButton
+                android:id="@+id/schedule_fragment_radio_ranker"
+                style="@style/main_tab_bottom"
+                android:layout_weight="1"
+                android:background="@drawable/event_title_top_right"
+                android:text="排名" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/schedule_fragment_group"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <!-- 视频Fragment -->
+
+        <fragment
+            android:id="@+id/schedule_fragment_group_video"
+            android:name="com.letv.watchball.fragment.EventsVideoNewsFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <!-- 赛程Fragment -->
+
+        <fragment
+            android:id="@+id/schedule_fragment_group_schedule"
+            android:name="com.letv.watchball.fragment.GScheduleListFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <!-- 排名Fragment -->
+
+        <fragment
+            android:id="@+id/schedule_fragment_group_rank"
+            android:name="com.letv.watchball.fragment.RankerFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </FrameLayout>
+
+</LinearLayout>

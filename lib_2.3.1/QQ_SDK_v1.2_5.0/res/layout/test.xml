@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textIntro" 
+    />
+    
+    <Button
+		android:id="@+id/btnOAuthV1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="登录"
+		android:onClick="login"
+	/>
+
+    
+    <Button
+		android:id="@+id/btnOAuthV2ImplicitGrant"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="分享"
+		android:onClick="share"
+	/>
+    
+        <Button
+		android:id="@+id/btnOAuthV2ImplicitGrant"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="分享(空间)"
+		android:onClick="share2"
+	/>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="退出"
+        android:onClick="logout" />
+
+</LinearLayout>
