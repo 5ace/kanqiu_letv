@@ -359,7 +359,9 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 //                                    BasePlayActivity.launchLives(getContext(),game);
 //                                          return;
-                                          LetvApplication.getInstance().saveLiveGame(game);
+						//鉴权流程--------------
+						
+                            LetvApplication.getInstance().saveLiveGame(game);
 							if(game.live_350!=null&&!"".equals(game.live_350)){
 								LiveTs liveTs = game.live_350;
 								BasePlayActivity.launchLives(getContext(), liveTs.code, liveTs.streamId, liveTs.liveUrl, game.getPid(), game.getVid(),game);

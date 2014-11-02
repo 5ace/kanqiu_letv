@@ -95,7 +95,11 @@ public class Game implements Serializable{
       public LiveTs live_350;
       public LiveTs live_800;
       public LiveTs live_1300;
-
+      /*
+       * 是否需要付费
+       */
+      public String pay;
+      
       public class LiveTs implements Serializable{
 				public String code;
 				public long tm;
