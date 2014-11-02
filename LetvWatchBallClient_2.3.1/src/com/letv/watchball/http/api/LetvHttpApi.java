@@ -1261,7 +1261,24 @@ public class LetvHttpApi {
 
 		return request(httpParameter);
 	}
-	
+	/*
+	 * 鉴权
+	 */
+	public static <T extends LetvBaseBean, D> LetvDataHull<T> dynamiccheck(int updataId, LetvMainParser<T, D> parser) {
+
+		String baseUrl = getDynamicUrl();
+
+		Bundle params = new Bundle();
+		params.putString(PUBLIC_PARAMETERS.MOD_KEY, TIMESTAMP_PARAMETERS.MOD_VALUE);
+		params.putString(PUBLIC_PARAMETERS.CTL_KEY, TIMESTAMP_PARAMETERS.CTL_VALUE);
+		params.putString(PUBLIC_PARAMETERS.ACT_KEY, TIMESTAMP_PARAMETERS.ACT_VALUE);
+		params.putString(PUBLIC_PARAMETERS.PCODE_KEY, PCODE);
+		params.putString(PUBLIC_PARAMETERS.VERSION_KEY, VERSION);
+
+		LetvHttpParameter<T, D> httpParameter = new LetvHttpParameter<T, D>(baseUrl, params, LetvHttpParameter.Type.GET, parser, updataId);
+
+		return request(httpParameter);
+	}
 	/**
 	 * 得到过期时间戳
 	 * */

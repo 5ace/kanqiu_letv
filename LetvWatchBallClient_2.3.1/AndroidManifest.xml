@@ -383,6 +383,46 @@
             android:value="51f884fe56240ba2d7040413" >
         </meta-data>
         <meta-data android:name="UMENG_CHANNEL" android:value="appnt5" />
+        <!-- 推送服务需要注册的 Start-->
+        <receiver
+            android:name="com.letv.watchball.pushservice.LePushMessageReceiver"
+            android:enabled="true"
+            android:permission="com.letv.lcm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.letv.android.push.RECEIVE_MESSAGE" />
+
+                <category android:name="com.letv.watchball" /> 
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.letv.watchball.pushservice.LetvPushIntentService"
+            android:enabled="true" >
+        </service>
+        <service
+            android:name="com.letv.android.push.pushservice.LetvCloudPushService"
+            android:exported="true"
+            android:process=":pushservice" >
+            <intent-filter android:priority="10" >
+                <action android:name="com.letv.android.cloud.pushservice" />
+            </intent-filter>
+        </service> 
+
+       <receiver android:name="com.letv.android.push.pushservice.LetvPushServiceReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.PACKAGE_RESTARTED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.letv.android.push.pushservice.AlarmReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="letv_push_start_service_action" />
+            </intent-filter>
+        </receiver> 
+        <!-- 推送服务需要注册的End -->
     </application>
 
     <!-- 所有权限 	请开发人员加入权限是，给出注释，在什么功能点用到 -->
@@ -417,6 +457,32 @@
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <!-- 友盟统计需要的权限，用于：添加地理位置信息，在 launch 和 terminate 中添加三个字段 lng , lat, gps_time 用来获取启动和结束时的 地理位置信息。 -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
-    
+    <!-- 推送服务需要的权限 start-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <!-- 读写文件的权限 -->
+    <uses-permission android:name="android.permission.RUN_INSTRUMENTATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <!-- 屏幕禁止休眠 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!-- 联网权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 读写文件的权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <permission android:name="com.letv.lcm.permission.SEND" />
+
+    <uses-permission android:name="com.letv.lcm.permission.SEND" />
+    <!-- 推送服务需要的权限 End -->
 
 </manifest>
