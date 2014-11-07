@@ -1,0 +1,50 @@
+<project name="MyJar" default="optimize" basedir=".">
+<description>
+  Lib JAR builder
+</description>
+
+<!-- set global properties for this build -->
+<property name="res" location="res" />
+<property name="bin" location="bin" />
+
+<!-- Output directories -->
+<property name="out.dir" value="bin" />
+<property name="out.absolute.dir" location="${out.dir}" />
+<property name="out.classes.dir" value="${out.absolute.dir}/com" />
+<property name="out.classes.absolute.dir" location="${out.classes.dir}" />
+
+
+<!-- Pack the jar -->
+ 
+<target name="jar">
+    <jar destfile="preJar.jar" basedir="bin/classes/">
+       
+    </jar>
+</target>
+
+
+<!-- Obfuscation with ProGuard -->
+
+<property name="version" value="2.0.0"/>            <!-- change this occasionally -->
+
+<property name="proguard-dir" value="proguard"/>
+<property name="libs-dir" value="libs"/>
+<property name="unoptimized" value="preJar.jar"/>
+<property name="optimized" value="mVideoTracker.jar"/>
+
+
+<!-- Run obfuscator -->
+<target name="optimize" unless="nooptimize" depends="jar">
+
+    
+    <java jar="${proguard-dir}/proguard.jar" fork="true" failonerror="true">
+        <jvmarg value="-Dmaximum.inlined.code.length=16"/>
+        <arg value="@${proguard-dir}/proguard.cfg"/>      
+        <arg value="-injars ${unoptimized}"/>
+        <arg value="-outjars ${optimized}"/>
+        <arg value="-libraryjars ${proguard-dir}/android.jar"/>
+       
+    </java>     
+</target>   
+
+</project>
