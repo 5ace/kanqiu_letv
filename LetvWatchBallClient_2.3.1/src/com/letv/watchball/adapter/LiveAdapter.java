@@ -363,17 +363,7 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 //                                    BasePlayActivity.launchLives(getContext(),game);
 //                                          return;
-						//鉴权流程--------------
-						LetvDataHull<DynamicCheck> dh = LetvHttpApi.dynamiccheck(0, new DynamicCheckParser());
-						if (dh != null && dh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-							DynamicCheck dc = DynamicCheck.getdc();
-							if (dc.getStatus().equals("1")) { //鉴权成功
-								
-							} else {
-								Toast.makeText(context, "请到网页端完成支付后再收看", Toast.LENGTH_LONG).show();
-							}
-						}
-						/*
+						
                             LetvApplication.getInstance().saveLiveGame(game);
 							if(game.live_350!=null&&!"".equals(game.live_350)){
 								LiveTs liveTs = game.live_350;
@@ -392,7 +382,7 @@ public class LiveAdapter extends SectionedBaseAdapter {
 							}
 							
 							Toast.makeText(context, "不好意思，没直播地址", Toast.LENGTH_SHORT).show();
-							*/
+							
 //						BasePlayActivity.launchLives(getContext(), game.live_350.code, game.live_350.streamId, game.live_350.liveUrl, game.pid, game.getVid(),game);
 //						LetvPlayFunction.playLiveVideo(getContext(), game.home, game.guest, game.live_url_350, game.live_url_350, false);
 					}

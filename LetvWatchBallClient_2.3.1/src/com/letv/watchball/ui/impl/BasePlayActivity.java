@@ -1,5 +1,13 @@
 package com.letv.watchball.ui.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,16 +23,25 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.letv.http.bean.LetvDataHull;
+import com.letv.star.bean.User;
+import com.letv.utils.MD5;
 import com.letv.watchball.LetvApplication;
 import com.letv.watchball.R;
 import com.letv.watchball.activity.LetvBaseActivity;
+import com.letv.watchball.bean.DynamicCheck;
 import com.letv.watchball.bean.Game;
+import com.letv.watchball.db.PreferencesManager;
+import com.letv.watchball.http.api.LetvHttpApi;
+import com.letv.watchball.parser.DynamicCheckParser;
 import com.letv.watchball.pip.LetvPipPlayFunction;
 import com.letv.watchball.service.PipService;
 import com.letv.watchball.share.LetvShareControl;
@@ -33,6 +50,7 @@ import com.letv.watchball.ui.PlayAlbumController;
 import com.letv.watchball.ui.PlayController;
 import com.letv.watchball.ui.PlayLiveController;
 import com.letv.watchball.utils.ChangeOrientationHandler;
+import com.letv.watchball.utils.LetvConstant;
 import com.letv.watchball.utils.LetvUtil;
 import com.letv.watchball.utils.OrientationSensorListener;
 import com.letv.watchball.utils.UIs;
@@ -427,6 +445,56 @@ public class BasePlayActivity extends LetvBaseActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_play);
 
+		//鉴权流程--------------
+		Game game = LetvApplication.getInstance().getLiveGame();
+		
+		String pid = game.pid;
+		String liveid = game.id;
+		String from = "mobile";
+		String streamId = PlayLiveController.LIVE_STREAMID;
+		String splatId = "1021";
+		String userId = PreferencesManager.getInstance().getUserId();
+
+		String lsstart = String.valueOf(game.status);
+		//(pid,liveid,from,streamId,splatId,userId,version,pcode)
+        
+        Map<String,String> map = new HashMap<String, String>(); 
+        map.put("pid", pid);
+        map.put("liveid", liveid);
+        map.put("from", from);
+        map.put("streamId", streamId);
+        map.put("splatId", splatId);
+        map.put("userId", userId);
+        map.put("version", LetvConstant.Global.VERSION);
+        map.put("pcode", LetvConstant.Global.PCODE);
+        Collection<String> keyset= map.keySet();  
+        List<String> list = new ArrayList<String>(keyset);  
+          
+        //对key键值按字典升序排序  
+        Collections.sort(list);  
+          
+        StringBuilder stringBuilder = new StringBuilder("");
+        for (int i = 0; i < list.size(); i++) {  
+            System.out.println("key键---值: "+list.get(i)+","+map.get(list.get(i)));  
+            stringBuilder.append(list.get(i)+"="+map.get(list.get(i)));
+        }  
+        String key = "";
+        stringBuilder.append(key);
+        
+		String apisign = MD5.toMd5(stringBuilder.toString());
+		//String pid, String liveid, 
+		//String from, String streamId, String splatId, String userId, String lsstart, String apisign,
+		
+		LetvDataHull<DynamicCheck> dh = LetvHttpApi.dynamiccheck(0,pid,liveid,from,streamId,splatId,userId,lsstart,apisign, new DynamicCheckParser());
+		if (dh != null && dh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
+			DynamicCheck dc = DynamicCheck.getdc();
+			if (dc.getStatus().equals("1")) { //鉴权成功
+				Log.i("Guoxj", "鉴权成功");
+			} else {
+				Toast.makeText(getApplicationContext(), "请到网页端完成支付后再收看", Toast.LENGTH_LONG).show();
+			}
+		}
+		
 		findView();
 
 		// 自定义旋转

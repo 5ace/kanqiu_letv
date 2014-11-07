@@ -97,12 +97,12 @@ public class LetvApplication extends Application {
      * Most applications use a single sender ID. You may use multiple senders 
      * if different servers may send messages to the app.
      */
-    private static final String SENDER_ID = "Your-Sender-ID";
+    private static final String SENDER_ID = "WpAq";
     /**
      * Substitute you own app ID here, you got from the push server,
      * it identify the application like package name.
      */
-    private static final String APP_ID = "Your-APP-ID";
+    private static final String APP_ID = "JbMz";
     
 	private static final String SHARED_PREFERENCE_FILE = "device_token";
 	private LetvPushManager mLpm;

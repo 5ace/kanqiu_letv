@@ -589,8 +589,24 @@ public class LetvHttpApi {
             public String ACT_VALUE = "detail";
             public String ID_KEY = "id";
       }
+      /*
+       * 鉴权参数
+       */
 
+      private static interface DYNAMICCHECK_PARAMETERS {
+  		public String MOD_VALUE = "pay";
+  		public String CTL_VALUE = "livevalidate";
+  		public String ACT_VALUE = "index";
 
+  		public String PID = "pid";
+  		public String LIVE_ID = "liveid";
+  		public String FROM = "from";
+  		public String STREAM_ID = "streamId";
+  		public String SPLAT_ID = "splatId";
+  		public String USER_ID = "userId";
+  		public String LSSTART = "lsstart";
+  		public String API_SIGN = "apisign";
+  	}
 	/**
 	 * 初始化化pcode 和 version
 	 * 
@@ -1264,14 +1280,23 @@ public class LetvHttpApi {
 	/*
 	 * 鉴权
 	 */
-	public static <T extends LetvBaseBean, D> LetvDataHull<T> dynamiccheck(int updataId, LetvMainParser<T, D> parser) {
+	public static <T extends LetvBaseBean, D> LetvDataHull<T> dynamiccheck(int updataId,String pid, String liveid, 
+			String from, String streamId, String splatId, String userId, String lsstart, String apisign, LetvMainParser<T, D> parser) {
 
 		String baseUrl = getDynamicUrl();
 
 		Bundle params = new Bundle();
-		params.putString(PUBLIC_PARAMETERS.MOD_KEY, TIMESTAMP_PARAMETERS.MOD_VALUE);
-		params.putString(PUBLIC_PARAMETERS.CTL_KEY, TIMESTAMP_PARAMETERS.CTL_VALUE);
-		params.putString(PUBLIC_PARAMETERS.ACT_KEY, TIMESTAMP_PARAMETERS.ACT_VALUE);
+		params.putString(PUBLIC_PARAMETERS.MOD_KEY, DYNAMICCHECK_PARAMETERS.MOD_VALUE);
+		params.putString(PUBLIC_PARAMETERS.CTL_KEY, DYNAMICCHECK_PARAMETERS.CTL_VALUE);
+		params.putString(PUBLIC_PARAMETERS.ACT_KEY, DYNAMICCHECK_PARAMETERS.ACT_VALUE);
+		params.putString(DYNAMICCHECK_PARAMETERS.PID, pid);
+		params.putString(DYNAMICCHECK_PARAMETERS.LIVE_ID, liveid);
+		params.putString(DYNAMICCHECK_PARAMETERS.FROM, from);
+		params.putString(DYNAMICCHECK_PARAMETERS.STREAM_ID, streamId);
+		params.putString(DYNAMICCHECK_PARAMETERS.SPLAT_ID, splatId);
+		params.putString(DYNAMICCHECK_PARAMETERS.USER_ID, userId);
+		params.putString(DYNAMICCHECK_PARAMETERS.LSSTART, lsstart);
+		params.putString(DYNAMICCHECK_PARAMETERS.API_SIGN, apisign);
 		params.putString(PUBLIC_PARAMETERS.PCODE_KEY, PCODE);
 		params.putString(PUBLIC_PARAMETERS.VERSION_KEY, VERSION);
 
