@@ -3,16 +3,22 @@ package com.letv.watchball.activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
+import cn.com.iresearch.mvideotracker.IRVideo;
+
 import com.letv.ads.AdsManager;
+import com.letv.android.lcm.LetvPushManager;
 import com.letv.android.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.letv.cache.LetvCacheMannager;
 import com.letv.datastatistics.DataStatistics;
@@ -45,7 +51,25 @@ import com.letv.ads.view.ImageAdView.AdLoadCompleteListener;
 import java.io.IOException;
 
 public class MainActivity extends SlidingFragmentActivity implements Icloseable {
-
+	 /**
+     * Substitute you own sender ID here. you got from the push server,
+     * Most applications use a single sender ID. You may use multiple senders 
+     * if different servers may send messages to the app.
+     */
+    private static final String SENDER_ID = "WpAq";
+    /**
+     * Substitute you own app ID here, you got from the push server,
+     * it identify the application like package name.
+     */
+    private static final String APP_ID = "JbMz";
+    
+	private static final String SHARED_PREFERENCE_FILE = "device_token";
+	private static final String UNREGISTER_SUCCESS = "unregister success";
+	private LetvPushManager mLpm;
+	public static final String PROPERTY_REG_ID = "registration_id";
+	Context mApplicationContext;
+    String regid;
+    //------------------------------------------------------------
       private FragmentManager manager;
       private static MainActivity instance;
       private boolean isForceClose = false;
@@ -65,7 +89,11 @@ public class MainActivity extends SlidingFragmentActivity implements Icloseable 
 
       @Override
       public void onCreate(Bundle savedInstanceState) {
+    	 
+    	  
             super.onCreate(savedInstanceState);
+            mApplicationContext = getApplicationContext();
+            
             instance = this;
 
             manager = new FragmentManager();
@@ -81,6 +109,9 @@ public class MainActivity extends SlidingFragmentActivity implements Icloseable 
       			IP ip = LetvApplication.getInstance().getIp();
       			DataStatistics.getInstance().sendEnvInfo(this, "0", "0", ip == null ? "" : ip.getClient_ip(),
       					LetvUtil.getSource(),false);
+      			// 开机时初始化艾瑞视频统计，获取设备UID，注册艾瑞分配的UAID
+    			IRVideo.getInstance(MainActivity.this).getUid();
+    			IRVideo.getInstance(MainActivity.this).init("letv-140001");
       		} catch (Exception e) {
       			e.printStackTrace();
       		}
@@ -353,6 +384,8 @@ public class MainActivity extends SlidingFragmentActivity implements Icloseable 
 
       @Override
       protected void onDestroy() {
+    	  //退出时清除艾瑞缓存			
+    	  IRVideo.getInstance(MainActivity.this).clearVideoPlayInfo();
 //        manager.onDestroy();
             super.onDestroy();
             if(null != p2pService){
@@ -380,6 +413,5 @@ public class MainActivity extends SlidingFragmentActivity implements Icloseable 
       public void close() {
             CloseableManager.getInstance().close(this);
       }
-
-
+     
 }

@@ -85,7 +85,21 @@ public class PreferencesManager {
 		sp.edit().putBoolean("sleep_remind_open", open).commit();
 
 	}
+	
+	//是否开启免推送模式
+	public boolean isPushservice() {
+		SharedPreferences sp = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
+		return sp.getBoolean("pushservice_open", true);
+	}
+	public void setPushservice(boolean open) {
 
+		SharedPreferences sp = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
+
+		sp.edit().putBoolean("pushservice_open", open).commit();
+
+	}
+	
+	
 	public String getGameId() {
 
 		SharedPreferences sp = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);

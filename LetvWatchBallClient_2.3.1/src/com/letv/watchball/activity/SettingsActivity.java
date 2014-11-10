@@ -38,6 +38,7 @@ public class SettingsActivity extends LetvBaseActivity implements OnClickListene
 	private static final int REQUEST_CODE_GAME_START_REMIND = 0x1001;
 	private static final int REQUEST_CODE_PLAY_HD = 0x1002;
     private SwitchView mSleepSwitchView;
+    private SwitchView mPushserviceSwitchView;
       private static boolean upDateIsRunning = false;
 
       public static boolean isUpDateIsRunning() {
@@ -57,7 +58,9 @@ public class SettingsActivity extends LetvBaseActivity implements OnClickListene
 		// findViewById(R.id.seting_item_game_start_ctrl);
 		mSwitchView = (SwitchView) findViewById(R.id.seting_item_game_result_switchview);
         mSleepSwitchView = (SwitchView) findViewById(R.id.seting_item_sleep_switchview);
-		findViewById(R.id.setting_item_update).setOnClickListener(this);
+        mPushserviceSwitchView = (SwitchView) findViewById(R.id.seting_item_pushservice_switchview);
+        
+        findViewById(R.id.setting_item_update).setOnClickListener(this);
 		findViewById(R.id.setting_item_about).setOnClickListener(this);
 		findViewById(R.id.setting_item_proposal).setOnClickListener(this);
 		findViewById(R.id.seting_item_game_start_ctrl).setOnClickListener(this);
@@ -110,6 +113,26 @@ public class SettingsActivity extends LetvBaseActivity implements OnClickListene
 
             }
         });
+        
+        mPushserviceSwitchView.setSelection(PreferencesManager.getInstance().isPushservice() ? 0 : 1);
+        mPushserviceSwitchView.setListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0){
+                    //开启推送
+                    PreferencesManager.getInstance().setPushservice(true);
+                } else {
+                    //关闭推送
+                    PreferencesManager.getInstance().setPushservice(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        
 		setPlayHd();
 		setGameStartRemind();
         View newVersion = findViewById(R.id.new_version);

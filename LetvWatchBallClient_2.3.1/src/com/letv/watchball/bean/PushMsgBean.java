@@ -5,10 +5,9 @@ import com.letv.http.bean.LetvBaseBean;
 public class PushMsgBean implements LetvBaseBean {
 
 	/**
-	 * 
+	 * 用于处理推送到客户端的信息
 	 */
 	private static final long serialVersionUID = 1212154587L;
-	public class Pushmsg {
 
 		private String id;
 		private String time;
@@ -109,46 +108,3 @@ public class PushMsgBean implements LetvBaseBean {
 			this.assist = assist;
 		}
 	}
-	public class Body {
-		private Pushmsg pushmsg;
-
-		public Pushmsg getPushmsg() {
-			return pushmsg;
-		}
-
-		public void setPushmsg(Pushmsg pushmsg) {
-			this.pushmsg = pushmsg;
-		}
-	};
-	public class Header {
-		private String markid;
-		private String status;
-		public String getMarkid() {
-			return markid;
-		}
-		public void setMarkid(String markid) {
-			this.markid = markid;
-		}
-		public String getStatus() {
-			return status;
-		}
-		public void setStatus(String status) {
-			this.status = status;
-		}
-	};
-	public Body body;
-	public Header header;
-	public Body getBody() {
-		return body;
-	}
-	public void setBody(Body body) {
-		this.body = body;
-	}
-	public Header getHeader() {
-		return header;
-	}
-	public void setHeader(Header header) {
-		this.header = header;
-	}
-	
-}

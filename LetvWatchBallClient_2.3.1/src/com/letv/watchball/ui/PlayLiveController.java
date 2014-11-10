@@ -13,6 +13,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
+import cn.com.iresearch.mvideotracker.IRVideo;
+
 import com.letv.adlib.model.ad.common.CommonAdItem;
 import com.letv.ads.ADPlayFragment;
 import com.letv.datastatistics.DataStatistics;
@@ -44,6 +46,7 @@ import com.letv.watchball.view.ScrollTabIndicator;
 import com.letv.watchball.view.SettingViewPager;
 import com.media.VideoView;
 import com.media.VideoView.VideoViewStateChangeListener;
+
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
@@ -317,6 +320,10 @@ public class PlayLiveController extends PlayController implements VideoViewState
   			IP ip = LetvApplication.getInstance().getIp();
   			DataStatistics.getInstance().sendEnvInfo(getActivity(), "0", "0", ip == null ? "" : ip.getClient_ip(),
   					LetvUtil.getSource(),true);
+  			/*艾瑞初始化视频信息
+  			 *直播信息不能确定视频长度，把视频长度设置成1
+  			*/
+  			IRVideo.getInstance(getActivity()).newVideoPlay(String.valueOf(vid), 1, false);
   		} catch (Exception e) {
   			e.printStackTrace();
   		}
@@ -579,7 +586,7 @@ public class PlayLiveController extends PlayController implements VideoViewState
 		tabs = (ScrollTabIndicator) getActivity().findViewById(R.id.detailplay_half_detail_indicator);
 
 		LivelPlayScrollingTabsAdapter tabsAdapter = new LivelPlayScrollingTabsAdapter(getActivity());
-		tabs.setViewPager(viewPager,2);
+		tabs.setViewPager(viewPager,1);
 		tabs.setAdapter(tabsAdapter);
 		tabs.setListener(onPageChangeListener);
 	}
@@ -589,7 +596,7 @@ public class PlayLiveController extends PlayController implements VideoViewState
 	}
 
 	protected void initTabs() {
-		tabs.setViewPager(viewPager,2);
+		tabs.setViewPager(viewPager,1);
 		tabs.setAdapter(tabsAdapter);
 		tabs.setListener(onPageChangeListener);
 	}
@@ -795,12 +802,26 @@ public class PlayLiveController extends PlayController implements VideoViewState
 				mFullController.star();
 				mFullController.setPipEnable(true);
 			}
+			
+			//艾瑞检测，视频启动
+			try {
+				IRVideo.getInstance(getActivity()).videoPlay();
+			} catch (Exception e) {
+				Log.e("gongmeng", "vvTracker Video play error");
+			}
 
 		} else if (mCurrentState == VideoView.STATE_PAUSED) {
 			{// 统计播放时长
 				long ct = System.currentTimeMillis();
 				if (startTime != 0) {
 					statisticsVideoInfo.setPlayedTime(statisticsVideoInfo.getPlayedTime() + (ct - startTime));
+				}
+				
+				// 艾瑞检测，视频暂停
+				try {
+					IRVideo.getInstance(getActivity()).videoPause();
+				} catch (Exception e) {
+					Log.e("gongmeng", "vvTracker pause error");
 				}
 			}
 			// 暂停播放，隐藏loading
@@ -826,6 +847,14 @@ public class PlayLiveController extends PlayController implements VideoViewState
 			if (mFullController != null) {
 				mFullController.setPipEnable(false);
 			}
+			// 艾瑞检测，视频停止
+			try {
+				IRVideo.getInstance(getActivity()).videoEnd();
+			} catch (Exception e) {
+				Log.e("gongmeng", "vvTracker pause error");
+			}
+	
+			
 		} else if (mCurrentState == VideoView.STATE_IDLE) {
 			if (loadLayout != null)
 				loadLayout.loading();
@@ -840,6 +869,13 @@ public class PlayLiveController extends PlayController implements VideoViewState
 		} else if (mCurrentState == VideoView.STATE_PLAYBACK_COMPLETED) {
 			getActivity().getPlayFragment().pause();
 			getActivity().getPlayFragment().stopPlayback();
+			// 艾瑞检测，视频停止
+			try {
+				IRVideo.getInstance(getActivity()).videoEnd();
+			} catch (Exception e) {
+				Log.e("gongmeng", "vvTracker end error");
+			}
+	
 		} else if (mCurrentState == VideoView.STATE_STOPBACK) {// 调起stopback时回调
 
 			if (TextUtils.isEmpty(statisticsVideoInfo.getStatus())) {// 如果没有状态，就代表正常完成
@@ -851,6 +887,14 @@ public class PlayLiveController extends PlayController implements VideoViewState
 				if (startTime != 0) {
 					statisticsVideoInfo.setPlayedTime(statisticsVideoInfo.getPlayedTime() + (ct - startTime));
 				}
+				
+				// 艾瑞检测，视频停止
+				try {
+					IRVideo.getInstance(getActivity()).videoEnd();
+				} catch (Exception e) {
+					Log.e("gongmeng", "vvTracker end error");
+				}
+		
 			}
 			statisticsVideoInfo.setFrom(DataConstant.FROM.OTHER);
 			statisticsVideoInfo.setPtype("3");
@@ -879,6 +923,13 @@ public class PlayLiveController extends PlayController implements VideoViewState
 					long ct = System.currentTimeMillis();
 					if (startTime != 0) {
 						statisticsVideoInfo.setPlayedTime(statisticsVideoInfo.getPlayedTime() + (ct - startTime));
+					}
+					
+					// 艾瑞检测，视频暂停
+					try {
+						IRVideo.getInstance(getActivity()).videoPause();
+					} catch (Exception e) {
+						Log.e("gongmeng", "vvTracker pause error");
 					}
 				}
 				// 暂停播放，隐藏loading

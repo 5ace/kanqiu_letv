@@ -13,7 +13,7 @@ public class DetailLivePlayFragmentMannager {
 	private Fragment[] fragments ;
 	
 	public DetailLivePlayFragmentMannager (){
-		fragments = new Fragment[3] ;
+		fragments = new Fragment[4] ;
 	}
 	
 	public Fragment newInstance(int pageId) {
@@ -34,12 +34,12 @@ public class DetailLivePlayFragmentMannager {
 			}
 			
 			return fragments[pageId];
-//		case 2:
-//			if(fragments[pageId] == null){
-//				fragments[pageId] = new HalfPlayShareFragment();
-//			}
-//			
-//			return fragments[pageId];
+		case 3:
+			if(fragments[pageId] == null){
+				fragments[pageId] = new HalfPlayShareFragment();
+			}
+			
+			return fragments[pageId];
 		}
 		
 		return null;

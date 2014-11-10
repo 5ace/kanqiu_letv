@@ -256,8 +256,8 @@ public class GLiveInfoFragment extends Fragment {
     					}
     				}
             		if(last==adapter.getCount()&&scrollState == this.SCROLL_STATE_FLING){
-            			
-            			Toast.makeText(getActivity(), "已滑到底部.", Toast.LENGTH_SHORT).show();
+            			loadNextPage();
+            			//Toast.makeText(getActivity(), "已滑到底部.", Toast.LENGTH_SHORT).show();
             		}
             	
 			}
@@ -303,7 +303,6 @@ public class GLiveInfoFragment extends Fragment {
 			
 			@Override
 			public void run() {
-				nextPageIndex++;
 			}
 		}).start();
 	}

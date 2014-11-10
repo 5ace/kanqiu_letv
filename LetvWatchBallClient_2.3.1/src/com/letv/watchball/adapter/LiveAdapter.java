@@ -178,8 +178,14 @@ public class LiveAdapter extends SectionedBaseAdapter {
 			mViewChildHodler.home.setText(game.level);
 			mViewChildHodler.guest.setText(game.level);
 		}else{
-			mViewChildHodler.home.setText(game.home);
-			mViewChildHodler.guest.setText(game.guest);
+			if(game.home.length()>7)
+				mViewChildHodler.home.setText(game.home.substring(0, 6) + "…");
+			else
+				mViewChildHodler.home.setText(game.home);
+			if(game.guest.length()>7)
+				mViewChildHodler.guest.setText(game.guest.substring(0, 6) + "…");
+			else
+				mViewChildHodler.guest.setText(game.guest);
 		}
 		/**
 		 * 动态设置home guest的位置
@@ -345,9 +351,15 @@ public class LiveAdapter extends SectionedBaseAdapter {
 			//TODO 播放直播
 			if(game.platform!=null&&!game.platform.contains("Mobile")){
 		
-				mViewChildHodler.watchStatus.setImageResource(R.drawable.live_no_btn_enabled);
+				if(game.pay.equalsIgnoreCase("1"))
+					mViewChildHodler.watchStatus.setImageResource(R.drawable.live_pay_no_btn_enable);
+				else
+					mViewChildHodler.watchStatus.setImageResource(R.drawable.live_no_btn_enabled);
 			}else{
-				mViewChildHodler.watchStatus.setImageResource(R.drawable.live_on_btn);
+				if(game.pay.equalsIgnoreCase("1"))
+					mViewChildHodler.watchStatus.setImageResource(R.drawable.live_pay_on_btn);
+				else
+					mViewChildHodler.watchStatus.setImageResource(R.drawable.live_on_btn);
 			}
 				mViewChildHodler.watchStatus.setClickable(true);
 				mViewChildHodler.watchStatus.setEnabled(true);

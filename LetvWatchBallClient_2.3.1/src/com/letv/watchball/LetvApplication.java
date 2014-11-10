@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.letv.ads.AdsManager;
+import com.letv.ads.util.LogInfo;
 import com.letv.android.lcm.LetvPushManager;
 import com.letv.cache.LetvCacheMannager;
 import com.letv.datastatistics.entity.DataStatusInfo;
@@ -128,13 +129,14 @@ public class LetvApplication extends Application {
             }
         */
 		regid = getRegistrationId(mApplicationContext);
+		LogInfo.log("push token:" + regid.toString());
         if (regid.isEmpty()) {
         		//开始注册推送服务
             registerInBackground();
         }else{
         		Log.i(TAG, "application already register");
         }
-        
+        this.getTokenInBackground();
 		CrashHandler mCrashHandler = CrashHandler.getInstance();
             initAds();
 		if(isAlowThrowException){
@@ -491,7 +493,7 @@ public class LetvApplication extends Application {
                     }
                     regid = mLpm.register(SENDER_ID);
                     msg = "Device registered, registration ID=" + regid;
-
+                    Log.d("gongmeng", msg);
                     // You should send the registration ID to your server over HTTP, so it
                     // can  send messages to your app.
                     sendRegistrationIdToBackend();
@@ -572,7 +574,7 @@ public class LetvApplication extends Application {
                     }
                     regid = mLpm.getDeviceToken();
                     msg = "Device registered, registration ID=" + regid;
-
+                    LogInfo.log(msg);
                     sendRegistrationIdToBackend();
 
                     // Persist the regID - no need to register again.

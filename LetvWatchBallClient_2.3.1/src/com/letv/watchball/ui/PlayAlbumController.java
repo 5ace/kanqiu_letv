@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import android.util.Log;
+import cn.com.iresearch.mvideotracker.IRVideo;
+
 import com.letv.adlib.model.ad.common.CommonAdItem;
 import com.letv.adlib.model.ad.types.SimpleAdMediaType;
 import com.letv.ads.ADPlayFragment;
@@ -16,6 +18,7 @@ import com.letv.star.bean.User;
 import com.letv.watchball.activity.LetvAccountLogin;
 import com.letv.watchball.bean.*;
 import com.letv.watchball.parser.*;
+
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -485,7 +488,18 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		isHd = PreferencesManager.getInstance().isPlayHd();
 		super.create();
 		startLoadingData();
-	
+		
+		
+		/*
+		 * 艾瑞初始化视频信息
+		 */
+		try {
+			totleTime = getActivity().getPlayFragment().getDuration();
+			IRVideo.getInstance(getActivity()).newVideoPlay(
+					String.valueOf(vid), this.totleTime, false);
+		} catch (Exception e) {
+			Log.e("gongmeng", "vvtracker playablbum init");
+		}
 	}
 
 	@Override
@@ -840,10 +854,14 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
                         playAdFragment.closePauseAd();
                   }
           
-			{// 开始播放了初始化播放记录和进度条
+			{
+				
+				// 开始播放了初始化播放记录和进度条
 				curTime = getActivity().getPlayFragment().getCurrentPosition();
 				totleTime = getActivity().getPlayFragment().getDuration();
 
+				
+				
 				if (mHalfController != null)
 					mHalfController.initProgress((int) totleTime / 1000, (int) curTime / 1000, 0);
 
@@ -853,6 +871,13 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				if (playRecord != null) {
 					playRecord.setTotalDuration(totleTime / 1000);// 根据真实播放文件初始化总时长
 				}
+				//艾瑞检测，视频启动
+				try {
+					IRVideo.getInstance(getActivity()).videoPlay();
+				} catch (Exception e) {
+					Log.e("gongmeng", "vvTracker Video play error");
+				}
+				
 			}
 			// 开始刷新进度
 			startHandlerTime();
@@ -883,6 +908,12 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				long ct = System.currentTimeMillis();
 				if (startTime != 0) {
 					statisticsVideoInfo.setPlayedTime(statisticsVideoInfo.getPlayedTime() + (ct - startTime));
+				}
+				//艾瑞检测，视频启动
+				try {
+					IRVideo.getInstance(getActivity()).videoPause();
+				} catch (Exception e) {
+					Log.e("gongmeng", "vvTracker Video pause error");
 				}
 			}
 
@@ -934,6 +965,13 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				getActivity().getPlayFragment().pause();
 				getActivity().getPlayFragment().stopPlayback();
 			}
+			
+			//艾瑞检测，视频结束
+			try {
+				IRVideo.getInstance(getActivity()).videoEnd();
+			} catch (Exception e) {
+				Log.e("gongmeng", "vvTracker Video end error");
+			}
 		} else if (mCurrentState == VideoView.STATE_IDLE) {
 
                   if (playAdFragment != null) {
@@ -972,6 +1010,11 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				if (startTime != 0) {
 					statisticsVideoInfo.setPlayedTime((statisticsVideoInfo.getPlayedTime() + (ct - startTime)) / 1000);
 				}
+				try {
+					IRVideo.getInstance(getActivity()).videoEnd();
+				} catch (Exception e) {
+					Log.e("gongmeng", "vvTracker Video end error");
+				}
 			}
 			statisticsVideoInfo.setPid(aid + "");
 			statisticsVideoInfo.setVid(vid + "");
@@ -1006,6 +1049,14 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 					if (startTime != 0) {
 						statisticsVideoInfo.setPlayedTime(statisticsVideoInfo.getPlayedTime() + (ct - startTime));
 					}
+					
+					try {
+						IRVideo.getInstance(getActivity()).videoPause();
+					} catch (Exception e) {
+						Log.e("gongmeng", "vvTracker Video pause error");
+					}
+					
+					
 				}
 				// 暂停播放，隐藏loading
 				loadLayout.finish();

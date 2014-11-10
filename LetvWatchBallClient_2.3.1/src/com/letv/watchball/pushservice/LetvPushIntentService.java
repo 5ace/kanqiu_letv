@@ -1,155 +1,214 @@
 package com.letv.watchball.pushservice;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.RemoteViews;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.letv.android.lcm.LetvPushBaseIntentService;
 import com.letv.watchball.LetvApplication;
 import com.letv.watchball.R;
 import com.letv.watchball.activity.MainActivity;
 import com.letv.watchball.activity.WelcomeActivity;
-import com.letv.watchball.bean.MatchResult;
 import com.letv.watchball.bean.PushMsgBean;
-import com.letv.watchball.bean.PushSubscribeGame;
-import com.letv.watchball.db.DBManager;
 import com.letv.watchball.db.PreferencesManager;
-import com.letv.watchball.push.LetvWbPushService;
-import com.letv.watchball.push.PushNotificationReceiver;
-import com.letv.watchball.utils.LetvLogTool;
-import com.letv.watchball.utils.LetvUtil;
-import com.umeng.analytics.MobclickAgent;
 
-public class LetvPushIntentService extends LetvPushBaseIntentService{
+public class LetvPushIntentService extends LetvPushBaseIntentService {
+
+	private Notification mNotification;
 
 	public LetvPushIntentService(String name) {
 		super(name);
 	}
 
 	private static final String TAG = "LetvPushIntentService";
+
 	public LetvPushIntentService() {
 		super(TAG);
 	}
-	private PushSubscribeGame mPushSubscribeGame;
 
 	@Override
-	protected void onMessage(Context context, String message,String code,String serdId) {
-		Log.d(TAG,"message="+message+" code="+code+" senderId="+serdId+" packagename="+context.getPackageName());
-		
-		updateContent(context, "message:"+ message+"\n"+"serdId:"+serdId +"\n"+"packageName:"+context.getPackageName());
-		/*
-		MatchResult result = null; //message序列化成result
-		if (PreferencesManager.getInstance().isGameResultRemind() && LetvUtil.sleepAlarm()) {
-            String notiTitle = getApplicationContext().getResources().getString(R.string.letvpushservice_live_title_result);
-            String notiContent = mPushSubscribeGame.home + "VS" + mPushSubscribeGame.guest + "  " + ",比分 " + result.body.homeScore + "：" + result.body.guestScore;
+	protected void onMessage(Context context, String message, String code,
+			String serdId) {
+		Log.e("gongmeng", "message=" + message + " code=" + code + " senderId="
+				+ serdId + " packagename=" + context.getPackageName());
 
-            String historyId = PreferencesManager.getInstance().getGameId();
-            String vid = mPushSubscribeGame.id;
-            long gamePushId = Long.parseLong(mPushSubscribeGame.id);
-            if (!historyId.equals(vid)) {
-
-                  MobclickAgent.onEvent(LetvPushIntentService.this, "push_success");
-
-                  Intent intent = new Intent(LetvPushIntentService.this, MainActivity.class);
-                  intent.setAction(PushNotificationReceiver.NOTIFY);
-                  PendingIntent pendingIntent = PendingIntent.getActivity(LetvPushIntentService.this, (int) gamePushId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                  NotificationManager notificationManager = (NotificationManager) LetvPushIntentService.this.getSystemService(Context.NOTIFICATION_SERVICE);
-                  Notification notification = new Notification();
-                  notification.icon = R.drawable.notify_icon;
-                  notification.tickerText = notiTitle;
-                  notification.flags = Notification.FLAG_AUTO_CANCEL;
-                  notification.defaults |= Notification.DEFAULT_SOUND;
-                  notification.setLatestEventInfo(context, notiTitle, notiContent, pendingIntent);
-                  notificationManager.notify((int) gamePushId, notification);
-
-                  PreferencesManager.getInstance().setGameId(vid);
-                  DBManager.getInstance().getSubscribeGameTrace().updatePush(mPushSubscribeGame.id, true);
-
-                  LetvLogTool.getInstance().log("\r\n\r\n\r\n" + "time:" + LetvUtil.timeFormat(System.currentTimeMillis()) + "\r\n");
-                  LetvLogTool.getInstance().log("notifycationId:" + vid + "notiTitle:" + notiTitle + "\r\n" + "notiContent:" + notiContent);
-            }
-		}*/
 		showMsgNotification(LetvApplication.getInstance(), message);
 	}
-	private void showMsgNotification(Context context, String dataString){
-		NotificationManager nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);               
-		Notification n = new Notification(R.drawable.ic_launcher, "点击查看详情", System.currentTimeMillis());      
-		n.defaults |= Notification.DEFAULT_LIGHTS; 
-		//n.defaults |= Notification.DEFAULT_VIBRATE; 
-		n.defaults |= Notification.DEFAULT_SOUND;
-		
-		n.flags |= Notification.FLAG_AUTO_CANCEL;
-		n.flags |= Notification.FLAG_SHOW_LIGHTS;
-		Intent i = new Intent(context, WelcomeActivity.class);
-		i.putExtra("notification", "true");
-		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		Bundle bundle = new Bundle();
-		i.putExtras(bundle);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		PushMsgBean response = null;
+
+	// 解析传递过来的json数据
+	private String getString(JSONObject jsonObject, String name)
+			throws JSONException {
+		String value = "";
+		if (jsonObject.has(name) == false) {
+			return value;
+		}
+		value = jsonObject.getString(name);
+		if ("null".equalsIgnoreCase(value)) {
+			value = "";
+		}
+		return value;
+	}
+
+	private PushMsgBean getPushBean(String dataString) {
 		try {
-			response = (PushMsgBean)mapper.readValue(dataString, PushMsgBean.class);
-			
-			//PendingIntent
-			PendingIntent contentIntent = PendingIntent.getActivity(context,0,i,0);
-			String msgTxt = "乐视看球";
-			String detailTxt = "点击查看详情";
-			if (response != null) {
-				detailTxt = response.getBody().getPushmsg().getMsg();
-			}
-			n.setLatestEventInfo(context, msgTxt, detailTxt, contentIntent);
-			nm.notify(12156, n);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			PushMsgBean p = new PushMsgBean();
+			JSONObject data = new JSONObject(dataString);
+			Log.e("gongmeng", "JSON object :" + data.toString());
+			p.setAt(getString(data, "at"));
+			p.setCid(getString(data, "cid"));
+			p.setId(getString(data, "id"));
+			p.setIsActivate(getString(data, "isActivate"));
+			p.setIsOnDeskTop(getString(data, "isOnDeskTop"));
+			p.setLiveEndDate(getString(data, "liveEndDate"));
+			p.setMsg(getString(data, "msg"));
+			p.setNeedJump(getString(data, "needJump"));
+			p.setPicUrl(getString(data, "picUrl"));
+			p.setResid(getString(data, "resid"));
+			p.setTime(getString(data, "time"));
+			p.setTitle(getString(data, "title"));
+			p.setType(getString(data, "type"));
+			return p;
+		} catch (JSONException e) {
+			Log.e("gongmeng", "gongmeng" + e.getStackTrace().toString());
+		} catch (Exception e) {
+			Log.e("gongmeng", "gongmeng" + e.getStackTrace().toString());
+		}
+		return null;
+
+	}
+
+	// 同步加载图片，本身是挂起的service所以不需要使用异步处理方法
+	public Bitmap returnBitMap(String url) {
+		URL myFileUrl = null;
+		Bitmap bitmap = null;
+		try {
+			myFileUrl = new URL(url);
+		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
+		try {
+			HttpURLConnection conn = (HttpURLConnection) myFileUrl
+					.openConnection();
+			conn.setDoInput(true);
+			conn.connect();
+			InputStream is = conn.getInputStream();
+			bitmap = BitmapFactory.decodeStream(is);
+			is.close();
+		} catch (IOException e) {
+			Log.e("gongmeng", "bitmap is null");
+		}
+		return bitmap;
 	}
-	
+
+	private void showMsgNotification(Context context, String dataString) {
+		if (!PreferencesManager.getInstance().isPushservice()) {
+			Log.e("gongmeng", "pushservice is false");
+			return;
+		}
+
+		PushMsgBean pushMsgBean = getPushBean(dataString);
+
+		if (pushMsgBean == null) {
+			Log.e("gongmeng", "pushmsgbean is null");
+			return;
+		}
+
+		// 自定义通知中心的样式
+
+		RemoteViews contentView = new RemoteViews(this.getPackageName(),
+				R.layout.notify_view);
+		contentView.setTextViewText(R.id.push_text, pushMsgBean.getMsg());
+		//contentView.setLong(R.id.notify_time, "setTime",
+		//		System.currentTimeMillis());
+		if (pushMsgBean.getPicUrl() != null) {
+			try {
+				contentView.setImageViewBitmap(R.id.push_icon,
+						returnBitMap(pushMsgBean.getPicUrl()));
+
+			} catch (Exception e) {
+				contentView.setImageViewResource(R.id.push_icon,
+						R.drawable.notify_icon);
+			}
+		} else {
+			contentView.setImageViewResource(R.id.push_icon,
+					R.drawable.notify_icon);
+		}
+
+		// 自定义点击事件
+
+		Intent i = new Intent(this, WelcomeActivity.class);
+		i.putExtra("notification", "true");
+		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		Bundle bundle = new Bundle();
+		i.putExtras(bundle);
+		/*
+		 * try {
+		 * 
+		 * if(pushMsgBean.getType() == null){
+		 * 
+		 * 
+		 * 
+		 * } switch(Integer.valueOf(pushMsgBean.getType())){ case 1: break; case
+		 * 2: case 3: break; case 5: break; case 6: break;
+		 * 
+		 * default: break; }
+		 * 
+		 * } catch (Exception e) { Log.e("gongmeng",
+		 * e.getStackTrace().toString()); }
+		 */
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, i, 0);
+
+		// 创建通知并发布
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		mNotification = new Notification(R.drawable.notify_icon,
+				pushMsgBean.getMsg(), System.currentTimeMillis());
+
+		mNotification.defaults |= Notification.DEFAULT_LIGHTS;
+		mNotification.defaults |= Notification.DEFAULT_SOUND;
+		mNotification.flags |= Notification.FLAG_AUTO_CANCEL;
+		mNotification.flags |= Notification.FLAG_SHOW_LIGHTS;
+
+		mNotification.contentIntent = contentIntent;
+		mNotification.contentView = contentView;
+		// TODO 这里使用了老的代码中qqzone统治的ID，应当建立文档对这个通知ID进行维护
+		notificationManager.notify(3331, mNotification);
+	}
+
 	/**
-	 * @param context		
+	 * @param context
 	 * @param deviceToken
-	 * 	device token changed, application may update the shared preference and
-	 *  send the new device token to app server.
+	 *            device token changed, application may update the shared
+	 *            preference and send the new device token to app server.
 	 */
 	@Override
 	protected void onTokenChanged(Context context, String deviceToken) {
 		Log.d(TAG, "token changed=" + deviceToken);
-		
-		updateContent(context, deviceToken);
-	}
-
-	private void updateContent(final Context context, final String responseString) {
-		Log.i("Letv push", "response:"+responseString);
-		return;
-		/*
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				Looper.prepare();
-				Toast.makeText(context.getApplicationContext(), responseString, Toast.LENGTH_LONG).show();
-				Looper.loop();
-			}
-		}).start();
-		*/
+		final SharedPreferences prefs = getSharedPreferences("device_token",
+				Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString("registration_id", deviceToken);
+		editor.commit();
 	}
 
 }

@@ -163,6 +163,7 @@
                                         android:textSize="13sp"
                                         android:layout_height="wrap_content"
                                         android:text="开始提醒、赛果提醒"/>
+                                
                             </LinearLayout>
 
                             <com.letv.watchball.view.SwitchView
@@ -173,7 +174,47 @@
                                     android:layout_centerVertical="true">
                             </com.letv.watchball.view.SwitchView>
                         </RelativeLayout>
+						<View
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:background="@color/letv_color_ffd5d5d5"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+                        <RelativeLayout
+                                style="@style/settings_item"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/settings_bottom_item"
+                                android:layout_marginBottom="5dp">
 
+                            <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    >
+
+                                <TextView
+                                        style="@style/settings_item_text1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:text="接受推送"/>
+
+                                <TextView
+                                        android:layout_width="wrap_content"
+                                        android:textSize="13sp"
+                                        android:layout_height="wrap_content"
+                                        android:text="允许看球推送信息"/>
+                            </LinearLayout>
+
+                            <com.letv.watchball.view.SwitchView
+                                    android:id="@+id/seting_item_pushservice_switchview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true">
+                            </com.letv.watchball.view.SwitchView>
+                        </RelativeLayout>
+                        
                         <View
                                 android:layout_width="wrap_content"
                                 android:layout_height="1dp"
@@ -206,7 +247,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="夜间23点-早7点停止消息提醒"/>
                             </LinearLayout>
-
+							
                             <com.letv.watchball.view.SwitchView
                                     android:id="@+id/seting_item_sleep_switchview"
                                     android:layout_width="wrap_content"

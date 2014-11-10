@@ -10,7 +10,6 @@
         android:name=".LetvApplication"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:debuggable="false"
         android:hardwareAccelerated="true"
         android:theme="@style/letv_application_theme">
         <activity
