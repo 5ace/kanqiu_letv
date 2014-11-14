@@ -54,7 +54,7 @@ public class LetvHttpApi {
 	/**
 	 * 动态请求BaseUrl http://test.sports.app.m.letv.com/ 
 	 * */
-	public static final String DYNAMIC_TEST_BASE_URL = "http://test.sports.app.m.letv.com/dynamic.php";
+	public static final String DYNAMIC_TEST_BASE_URL = "http://test.ports.app.m.letv.com/dynamic.php";
       /**
 	 * 静态请求head
 	 * */
@@ -594,7 +594,7 @@ public class LetvHttpApi {
        */
 
       private static interface DYNAMICCHECK_PARAMETERS {
-  		public String MOD_VALUE = "pay";
+  		public String MOD_VALUE = "api20";
   		public String CTL_VALUE = "livevalidate";
   		public String ACT_VALUE = "index";
 

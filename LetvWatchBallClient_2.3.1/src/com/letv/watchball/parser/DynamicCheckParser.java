@@ -1,36 +1,34 @@
 package com.letv.watchball.parser;
 
 import org.json.JSONObject;
-
-import android.text.TextUtils;
-
 import com.letv.http.parse.LetvMainParser;
 import com.letv.watchball.bean.DynamicCheck;
-import com.letv.watchball.bean.TimestampBean;
 
-public class DynamicCheckParser extends LetvMainParser<DynamicCheck,String>{
+public class DynamicCheckParser extends
+		LetvMainParser<DynamicCheck, JSONObject> {
 
 	@Override
-	public DynamicCheck parse(String data) throws Exception {
-		JSONObject jsonObject = new JSONObject(data);
-		int time = getInt(jsonObject, "time");
-		if(time > 0){
-			return DynamicCheck.getdc();
+	public DynamicCheck parse(JSONObject data) throws Exception {
+		DynamicCheck dynamicCheck = new DynamicCheck();
+		if (data != null) {
+			JSONObject result = data.getJSONObject("result");
+			JSONObject body = result.getJSONObject("body");
+			dynamicCheck.setStatus(body.getInt("status"));
+			if (has(body, "token"))
+				dynamicCheck.setToken(body.getString("token"));
+			return dynamicCheck;
 		}
-		
-		return null ;
+		dynamicCheck.setStatus(0);
+		return dynamicCheck;
 	}
 
 	@Override
 	protected boolean canParse(String data) {
-		if(TextUtils.isEmpty(data)){
-			return false ;
-		}
 		return true;
 	}
 
 	@Override
-	protected String getData(String data) throws Exception {
-		return data;
+	protected JSONObject getData(String data) throws Exception {
+		return new JSONObject(data);
 	}
 }

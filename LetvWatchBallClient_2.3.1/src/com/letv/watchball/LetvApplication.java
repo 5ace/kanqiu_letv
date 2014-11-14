@@ -36,7 +36,7 @@ public class LetvApplication extends Application {
 	private boolean isLiveUrl_350 = false;
 	private boolean isRequestIpSuccess = false;
 	private boolean isIpValid = false;
-	private boolean showVideoList=false;
+	private boolean showVideoList = false;
 	private String deviceID = null;
 
 	private boolean isUseTest = false;
@@ -48,27 +48,27 @@ public class LetvApplication extends Application {
 	private boolean isRequestApiSuccess = false;
 
 	private DataStatusInfo mDataStatusInfo = null;
-    
+
 	private FragmentManager manager;
 
 	private boolean is3GTip_forDownload = false;
 
-	private int isShowChannelRecommend ;//0 不显示 //1显示，无推荐 // 2显示，有推荐
+	private int isShowChannelRecommend;// 0 不显示 //1显示，无推荐 // 2显示，有推荐
 
-	private int isShowLiveRecommend ;
+	private int isShowLiveRecommend;
 
-	private int isShowDownloadRecommend ;
+	private int isShowDownloadRecommend;
 
-	private int isShowSettingRecommend ;
+	private int isShowSettingRecommend;
 
-	private int recommendNum ;
-	
+	private int recommendNum;
+
 	WifiLock mWifiLock;
 	/**
 	 * 异常处理关闭
 	 */
 	private boolean isAlowThrowException = false;
-	
+
 	/**
 	 * 是否强制升级
 	 */
@@ -82,92 +82,92 @@ public class LetvApplication extends Application {
 	 */
 	private long logInTime = 0;
 	public static boolean DEBUG_GET_INFO = LetvUtil.isDebug();// 打印出联网数据
-      //  世界杯开关，非测试请置为 ### false ###
-      private boolean showWorldCup = false;
-      private Game game;
-      private LeService p2pService=null;//p2p 的service每次开机后，开启即可
+	// 世界杯开关，非测试请置为 ### false ###
+	private boolean showWorldCup = false;
+	private Game game;
+	private LeService p2pService = null;// p2p 的service每次开机后，开启即可
 
-      //推送相关
-      Context mApplicationContext;
-      String regid;
-  	private static final String TAG = "Letv";
+	// 推送相关
+	Context mApplicationContext;
+	String regid;
+	private static final String TAG = "Letv";
 
-  	public static final String PROPERTY_REG_ID = "registration_id";
-    /**
-     * Substitute you own sender ID here. you got from the push server,
-     * Most applications use a single sender ID. You may use multiple senders 
-     * if different servers may send messages to the app.
-     */
-    private static final String SENDER_ID = "WpAq";
-    /**
-     * Substitute you own app ID here, you got from the push server,
-     * it identify the application like package name.
-     */
-    private static final String APP_ID = "JbMz";
-    
+	public static final String PROPERTY_REG_ID = "registration_id";
+	/**
+	 * Substitute you own sender ID here. you got from the push server, Most
+	 * applications use a single sender ID. You may use multiple senders if
+	 * different servers may send messages to the app.
+	 */
+	private static final String SENDER_ID = "WpAq";
+	/**
+	 * Substitute you own app ID here, you got from the push server, it identify
+	 * the application like package name.
+	 */
+	private static final String APP_ID = "JbMz";
+
 	private static final String SHARED_PREFERENCE_FILE = "device_token";
 	private LetvPushManager mLpm;
-	
-      @Override
+
+	@Override
 	public void onCreate() {
 		super.onCreate();
 		instance = this;
 		mApplicationContext = getApplicationContext();
 
 		setVType();
-		LetvHttpApi.initialize(LetvConstant.Global.PCODE, LetvConstant.Global.VERSION,LetvUtil.generateDeviceId(this));
+		LetvHttpApi.initialize(LetvConstant.Global.PCODE,
+				LetvConstant.Global.VERSION, LetvUtil.generateDeviceId(this));
 		/**
 		 * 启动推送
 		 * */
-		/* 将http轮询方式的推送换成socket推送
-            if ("com.letv.watchball".equalsIgnoreCase(getCurProcessName(this))) {
-                  if (PreferencesManager.getInstance().isGameResultRemind()) {
-                        LetvWbPushService.schedule(this);
-                  } else {
-                        LetvWbPushService.unschedule(this);
-                  }
-            }
-        */
+		/*
+		 * 将http轮询方式的推送换成socket推送 if
+		 * ("com.letv.watchball".equalsIgnoreCase(getCurProcessName(this))) { if
+		 * (PreferencesManager.getInstance().isGameResultRemind()) {
+		 * LetvWbPushService.schedule(this); } else {
+		 * LetvWbPushService.unschedule(this); } }
+		 */
 		regid = getRegistrationId(mApplicationContext);
 		LogInfo.log("push token:" + regid.toString());
-        if (regid.isEmpty()) {
-        		//开始注册推送服务
-            registerInBackground();
-        }else{
-        		Log.i(TAG, "application already register");
-        }
-        this.getTokenInBackground();
+		if (regid.isEmpty()) {
+			// 开始注册推送服务
+			registerInBackground();
+		} else {
+			Log.i(TAG, "application already register");
+		}
+		this.getTokenInBackground();
 		CrashHandler mCrashHandler = CrashHandler.getInstance();
-            initAds();
-		if(isAlowThrowException){
+		initAds();
+		if (isAlowThrowException) {
 			mCrashHandler.init(getApplicationContext());
 		}
 
-            LetvCacheMannager.getInstance().init(this,new LetvThumbnailImpl());
+		LetvCacheMannager.getInstance().init(this, new LetvThumbnailImpl());
 	}
 
-      private void initAds() {
-            // 初始化广告包
-            AdsManager.getInstance().initAd(getApplicationContext(), LetvConfiguration.isDebug(), LetvConfiguration.isDebug());
+	private void initAds() {
+		// 初始化广告包
+		AdsManager.getInstance().initAd(getApplicationContext(),
+				LetvConfiguration.isDebug(), LetvConfiguration.isDebug());
 
-      }
+	}
 
-      public LeService getP2pService() {
-            return p2pService;
-      }
+	public LeService getP2pService() {
+		return p2pService;
+	}
 
-      public void setP2pService(LeService p2pService) {
-            this.p2pService = p2pService;
-      }
+	public void setP2pService(LeService p2pService) {
+		this.p2pService = p2pService;
+	}
 
-      public static LetvApplication getInstance(){
+	public static LetvApplication getInstance() {
 		return instance;
 	}
-	
-	
+
 	private boolean setVType() {
 		int supportLevel = NativeInfos.getSupportLevel();
-		if (supportLevel == NativeInfos.SUPPORT_MP4_LEVEL || !NativeInfos.ifSupportVfpOrNeon()) {
+		if (supportLevel == NativeInfos.SUPPORT_MP4_LEVEL
+				|| !NativeInfos.ifSupportVfpOrNeon()) {
 			// 请求mp4资源
 			videoFormat = "no";
 			isLiveUrl_350 = true;
@@ -179,18 +179,18 @@ public class LetvApplication extends Application {
 			// 请求800k ts资源
 			videoFormat = "ios";
 			isLiveUrl_350 = false;
-		}else if (supportLevel == NativeInfos.SUPPORT_TS1000K_LEVEL) {
+		} else if (supportLevel == NativeInfos.SUPPORT_TS1000K_LEVEL) {
 			// 请求1000k ts资源
 			videoFormat = "ios";
 			isLiveUrl_350 = false;
-		}else{
+		} else {
 			Log.i("videotype", "videotype");
 			videoFormat = "ios";
 			isLiveUrl_350 = true;
 		}
 		return isLiveUrl_350;
 	}
-	
+
 	public FragmentManager getManager() {
 		return manager;
 	}
@@ -202,9 +202,7 @@ public class LetvApplication extends Application {
 	public String getVideoFormat() {
 		return videoFormat;
 	}
-	
-	
-	
+
 	public String getDeviceID() {
 		return deviceID;
 	}
@@ -232,7 +230,7 @@ public class LetvApplication extends Application {
 	public void setShowAdvertisement(boolean isShowAdvertisement) {
 		this.isShowAdvertisement = isShowAdvertisement;
 	}
-	
+
 	public boolean isPinAdvertisement() {
 		return isPinAdvertisement;
 	}
@@ -288,8 +286,7 @@ public class LetvApplication extends Application {
 	public void setIs3GTip_forDownload(boolean is3gTip_forDownload) {
 		is3GTip_forDownload = is3gTip_forDownload;
 	}
-	
-	
+
 	/**
 	 * 是否显示频道页的推荐位
 	 * */
@@ -345,21 +342,21 @@ public class LetvApplication extends Application {
 	public void setShowSettingRecommend(int isShowSettingRecommend) {
 		this.isShowSettingRecommend = isShowSettingRecommend;
 	}
-	
+
 	/**
 	 * 设置推荐位的推荐数
 	 * */
-	public void setRecommendNum(int recommendNum){
-		this.recommendNum = recommendNum ;
+	public void setRecommendNum(int recommendNum) {
+		this.recommendNum = recommendNum;
 	}
-	
+
 	/**
 	 * 得到推荐位的推荐数
 	 * */
-	public int getRecommendNum(){
-		return recommendNum ;
+	public int getRecommendNum() {
+		return recommendNum;
 	}
-	
+
 	public boolean isForceUpdating() {
 		return isForceUpdating;
 	}
@@ -367,6 +364,7 @@ public class LetvApplication extends Application {
 	public void setForceUpdating(boolean isForceUpdating) {
 		this.isForceUpdating = isForceUpdating;
 	}
+
 	public IP getIp() {
 		return ip;
 	}
@@ -374,7 +372,7 @@ public class LetvApplication extends Application {
 	public void setIp(IP ip) {
 		this.ip = ip;
 	}
-	
+
 	/**
 	 * 得到当前进程的名字
 	 * */
@@ -391,7 +389,7 @@ public class LetvApplication extends Application {
 		}
 		return null;
 	}
-	
+
 	public long getLogInTime() {
 		return logInTime;
 	}
@@ -400,21 +398,21 @@ public class LetvApplication extends Application {
 		this.logInTime = logInTime;
 	}
 
-      public void setShowWorldCup(boolean showWorldCup) {
-            this.showWorldCup = showWorldCup;
-      }
+	public void setShowWorldCup(boolean showWorldCup) {
+		this.showWorldCup = showWorldCup;
+	}
 
-      public boolean isShowWorldCup() {
-            return showWorldCup;
-      }
+	public boolean isShowWorldCup() {
+		return showWorldCup;
+	}
 
-      public void saveLiveGame(Game game) {
-            this.game = game;
-      }
+	public void saveLiveGame(Game game) {
+		this.game = game;
+	}
 
-      public Game getLiveGame(){
-            return game;
-      }
+	public Game getLiveGame() {
+		return game;
+	}
 
 	public boolean isShowVideoList() {
 		return showVideoList;
@@ -423,171 +421,185 @@ public class LetvApplication extends Application {
 	public void setShowVideoList(boolean showVideoList) {
 		this.showVideoList = showVideoList;
 	}
-      
-    /*
-     * 推送相关
-     */
+
+	/*
+	 * 推送相关
+	 */
 	/**
-     * Gets the current registration ID for application on LCM service, if there is one.
-     * <p>
-     * If result is empty, the app needs to register.
-     *
-     * @return registration ID, or empty string if there is no existing
-     *         registration ID.
-     */
-    private String getRegistrationId(Context context) {
-        final SharedPreferences prefs = getLcmPreferences(context);
-        String registrationId = prefs.getString(PROPERTY_REG_ID, "");
-        if (registrationId.isEmpty()) {
-            Log.i(TAG, "Registration not found.");
-            return "";
-        }
-        return registrationId;
-    }
-    /**
-     * Stores the registration ID  in the application's
-     * {@code SharedPreferences}.
-     *
-     * @param context application's context.
-     * @param regId registration ID
-     */
-    private void storeRegistrationId(Context context, String regId) {
-        final SharedPreferences prefs = getLcmPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PROPERTY_REG_ID, regId);
-        editor.commit();
-    }
-    
-    private void removeRegistrationId(Context context){
-    	final SharedPreferences prefs = getLcmPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PROPERTY_REG_ID, "");
-        editor.commit();
-    }
-    /**
-     * @return Application's {@code SharedPreferences}.
-     */
-    private SharedPreferences getLcmPreferences(Context context) {
-        // This sample app persists the registration ID in shared preferences, but
-        // how you store the regID in your app is up to you.
-        return getSharedPreferences(SHARED_PREFERENCE_FILE,
-                Context.MODE_PRIVATE);
-    }
-    
-    /**
-     * Registers the application with LCM servers asynchronously.
-     * <p>
-     * Stores the registration ID  in the application's shared preferences.
-     * there are two error messages will return when throw exception
-     * {@link LetvPushManager#ERROR_MAIN_THREAD}}
-     * {@link LetvPushManager#ERROR_SERVICE_NOT_AVAILABLE}}
-     */
-    private void registerInBackground() {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if (mLpm == null) {
-                        mLpm = LetvPushManager.getInstance(mApplicationContext);
-                    }
-                    regid = mLpm.register(SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
-                    Log.d("gongmeng", msg);
-                    // You should send the registration ID to your server over HTTP, so it
-                    // can  send messages to your app.
-                    sendRegistrationIdToBackend();
+	 * Gets the current registration ID for application on LCM service, if there
+	 * is one.
+	 * <p>
+	 * If result is empty, the app needs to register.
+	 * 
+	 * @return registration ID, or empty string if there is no existing
+	 *         registration ID.
+	 */
+	private String getRegistrationId(Context context) {
+		final SharedPreferences prefs = getLcmPreferences(context);
+		String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+		if (registrationId.isEmpty()) {
+			Log.i(TAG, "Registration not found.");
+			return "";
+		}
+		return registrationId;
+	}
 
-                    // Persist the regID - no need to register again.
-                    storeRegistrationId(mApplicationContext, regid);
-                } catch (Exception ex) {
-                    msg = "Error :" + ex.getMessage();
-                    // If there is an error, don't just keep trying to register.
-                    // Require the user to click a button again, or perform
-                    // exponential back-off.
-                }
-                return msg;
-            }
+	/**
+	 * Stores the registration ID in the application's {@code SharedPreferences}
+	 * .
+	 * 
+	 * @param context
+	 *            application's context.
+	 * @param regId
+	 *            registration ID
+	 */
+	private void storeRegistrationId(Context context, String regId) {
+		final SharedPreferences prefs = getLcmPreferences(context);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(PROPERTY_REG_ID, regId);
+		editor.commit();
+	}
 
-            @Override
-            protected void onPostExecute(String msg) {
-                Log.i(TAG, msg);
-            }
-        }.execute(null, null, null);
-    }
-    
-    /**
-     * Sends the registration ID(device token ) to your server over HTTP, so it can send
-     * messages to your app..
-     */
-    private void sendRegistrationIdToBackend() {
-      // Your implementation here.
-    }
-/**
- * there are two error messages will return when throw exception
- * {@link LetvPushManager#ERROR_MAIN_THREAD}}
- * {@link LetvPushManager#ERROR_SERVICE_NOT_AVAILABLE}}
- */
-    private void unregisterInBackground(){
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "UNREGISTER_SUCCESS";
-                try {
-                    if (mLpm == null) {
-                        mLpm = LetvPushManager.getInstance(mApplicationContext);
-                    }
-                    // unregister the application,will cause all sender id unregister
-                    //if you have more than one sender id,then you can unregister
-                    //one of them.call below method
-                    //mLpm.unRegister(APP_ID, SENDER_ID);
-                     mLpm.unRegister();
-                } catch (Exception ex) {
-                    msg = "Error :" + ex.getMessage();
-                    // If there is an error, don't just keep trying to unregister.
-                   
-                }
-                return msg;
-            }
+	private void removeRegistrationId(Context context) {
+		final SharedPreferences prefs = getLcmPreferences(context);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(PROPERTY_REG_ID, "");
+		editor.commit();
+	}
 
-            @Override
-            protected void onPostExecute(String msg) {
-            	 Log.d(TAG,"msg="+msg);
-                //you should delete the device token that you save in shared preference
-                //so that it will check register again when application restart.
-                if("UNREGISTER_SUCCESS".equals(msg)){
-                	removeRegistrationId(mApplicationContext);
-                }
-            }
-        }.execute(null, null, null);
-    
-    }
-    
-    private void getTokenInBackground() {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if (mLpm == null) {
-                        mLpm = LetvPushManager.getInstance(mApplicationContext);
-                    }
-                    regid = mLpm.getDeviceToken();
-                    msg = "Device registered, registration ID=" + regid;
-                    LogInfo.log(msg);
-                    sendRegistrationIdToBackend();
+	/**
+	 * @return Application's {@code SharedPreferences}.
+	 */
+	private SharedPreferences getLcmPreferences(Context context) {
+		// This sample app persists the registration ID in shared preferences,
+		// but
+		// how you store the regID in your app is up to you.
+		return getSharedPreferences(SHARED_PREFERENCE_FILE,
+				Context.MODE_PRIVATE);
+	}
 
-                    // Persist the regID - no need to register again.
-                    storeRegistrationId(mApplicationContext, regid);
-                } catch (Exception ex) {
-                    msg = "Error :" + ex.getMessage();
-                }
-                return msg;
-            }
-            @Override
-            protected void onPostExecute(String msg) {
-            	 Log.i(TAG, msg);
-            }
-        }.execute(null, null, null);
-    }
+	/**
+	 * Registers the application with LCM servers asynchronously.
+	 * <p>
+	 * Stores the registration ID in the application's shared preferences. there
+	 * are two error messages will return when throw exception
+	 * {@link LetvPushManager#ERROR_MAIN_THREAD}
+	 * {@link LetvPushManager#ERROR_SERVICE_NOT_AVAILABLE}
+	 */
+	private void registerInBackground() {
+		new AsyncTask<Void, Void, String>() {
+			@Override
+			protected String doInBackground(Void... params) {
+				String msg = "";
+				try {
+					if (mLpm == null) {
+						mLpm = LetvPushManager.getInstance(mApplicationContext);
+					}
+					regid = mLpm.register(SENDER_ID);
+					msg = "Device registered, registration ID=" + regid;
+					Log.d("gongmeng", msg);
+					// You should send the registration ID to your server over
+					// HTTP, so it
+					// can send messages to your app.
+					sendRegistrationIdToBackend();
+
+					// Persist the regID - no need to register again.
+					storeRegistrationId(mApplicationContext, regid);
+				} catch (Exception ex) {
+					msg = "Error :" + ex.getMessage();
+					// If there is an error, don't just keep trying to register.
+					// Require the user to click a button again, or perform
+					// exponential back-off.
+				}
+				return msg;
+			}
+
+			@Override
+			protected void onPostExecute(String msg) {
+				Log.i(TAG, msg);
+			}
+		}.execute(null, null, null);
+	}
+
+	/**
+	 * Sends the registration ID(device token ) to your server over HTTP, so it
+	 * can send messages to your app..
+	 */
+	private void sendRegistrationIdToBackend() {
+		// Your implementation here.
+	}
+
+	/**
+	 * there are two error messages will return when throw exception
+	 * {@link LetvPushManager#ERROR_MAIN_THREAD}
+	 * {@link LetvPushManager#ERROR_SERVICE_NOT_AVAILABLE}
+	 */
+	private void unregisterInBackground() {
+		new AsyncTask<Void, Void, String>() {
+			@Override
+			protected String doInBackground(Void... params) {
+				String msg = "UNREGISTER_SUCCESS";
+				try {
+					if (mLpm == null) {
+						mLpm = LetvPushManager.getInstance(mApplicationContext);
+					}
+					// unregister the application,will cause all sender id
+					// unregister
+					// if you have more than one sender id,then you can
+					// unregister
+					// one of them.call below method
+					// mLpm.unRegister(APP_ID, SENDER_ID);
+					mLpm.unRegister();
+				} catch (Exception ex) {
+					msg = "Error :" + ex.getMessage();
+					// If there is an error, don't just keep trying to
+					// unregister.
+
+				}
+				return msg;
+			}
+
+			@Override
+			protected void onPostExecute(String msg) {
+				Log.d(TAG, "msg=" + msg);
+				// you should delete the device token that you save in shared
+				// preference
+				// so that it will check register again when application
+				// restart.
+				if ("UNREGISTER_SUCCESS".equals(msg)) {
+					removeRegistrationId(mApplicationContext);
+				}
+			}
+		}.execute(null, null, null);
+
+	}
+
+	private void getTokenInBackground() {
+		new AsyncTask<Void, Void, String>() {
+			@Override
+			protected String doInBackground(Void... params) {
+				String msg = "";
+				try {
+					if (mLpm == null) {
+						mLpm = LetvPushManager.getInstance(mApplicationContext);
+					}
+					regid = mLpm.getDeviceToken();
+					msg = "Device registered, registration ID=" + regid;
+					LogInfo.log(msg);
+					sendRegistrationIdToBackend();
+
+					// Persist the regID - no need to register again.
+					storeRegistrationId(mApplicationContext, regid);
+				} catch (Exception ex) {
+					msg = "Error :" + ex.getMessage();
+				}
+				return msg;
+			}
+
+			@Override
+			protected void onPostExecute(String msg) {
+				Log.i(TAG, msg);
+			}
+		}.execute(null, null, null);
+	}
 }

@@ -9,6 +9,7 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,10 +25,11 @@ import android.widget.RemoteViews;
 import com.letv.android.lcm.LetvPushBaseIntentService;
 import com.letv.watchball.LetvApplication;
 import com.letv.watchball.R;
-import com.letv.watchball.activity.MainActivity;
+import com.letv.watchball.activity.LetvWebViewActivity;
 import com.letv.watchball.activity.WelcomeActivity;
 import com.letv.watchball.bean.PushMsgBean;
 import com.letv.watchball.db.PreferencesManager;
+import com.letv.watchball.ui.impl.BasePlayActivity;
 
 public class LetvPushIntentService extends LetvPushBaseIntentService {
 
@@ -152,14 +154,68 @@ public class LetvPushIntentService extends LetvPushBaseIntentService {
 		}
 
 		// 自定义点击事件
+		Intent intent;
+		if (pushMsgBean.getType() != null) {
+			switch(Integer.valueOf(pushMsgBean.getType())){
+				case 1:
 
-		Intent i = new Intent(this, WelcomeActivity.class);
-		i.putExtra("notification", "true");
-		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-				| Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		Bundle bundle = new Bundle();
-		i.putExtras(bundle);
+				case 2:
+				case 3:
+					//播放单个视频或者专辑
+					intent = new Intent(context, BasePlayActivity.class);
+					//LAUNCH_MODE_VIDEO = 3 
+					intent.putExtra("launchMode", 3);					
+					intent.putExtra("vid", Integer.valueOf(pushMsgBean.getResid()));
+					intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					if (!(context instanceof Activity)) {
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					}
+					break;
+				case 5:
+					//打开一个直播页
+					intent = new Intent(context, BasePlayActivity.class);
+					//LAUNCH_MODE_LIVE_FULL = 5 
+					intent.putExtra("launchMode", 5);
+					intent.putExtra("vid", Integer.valueOf(pushMsgBean.getResid()));
+					
+					intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					if (!(context instanceof Activity)) {
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					}
+					break;
+				case 6:
+					//打开一个url
+					intent = new Intent(context, LetvWebViewActivity.class);
+					intent.putExtra("url", pushMsgBean.getResid());
+					intent.putExtra("loadType", pushMsgBean.getTitle());
+					intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					if (!(context instanceof Activity)) {
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					}
+					break;
+				default:
+					intent = new Intent(context, BasePlayActivity.class);
+					//LAUNCH_MODE_VIDEO = 3 
+					intent.putExtra("launchMode", 3);
+					intent.putExtra("aid", Integer.valueOf(pushMsgBean.getCid()));
+					intent.putExtra("vid", Integer.valueOf(pushMsgBean.getResid()));
+//					intent.putExtra("from", from);
+					intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					if (!(context instanceof Activity)) {
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					}
+					break;
+
+			}
+		} else {
+			intent = new Intent(this, WelcomeActivity.class);
+			intent.putExtra("notification", "true");
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+					| Intent.FLAG_ACTIVITY_NEW_TASK
+					| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			Bundle bundle = new Bundle();
+			intent.putExtras(bundle);
+		}
 		/*
 		 * try {
 		 * 
@@ -175,7 +231,7 @@ public class LetvPushIntentService extends LetvPushBaseIntentService {
 		 * } catch (Exception e) { Log.e("gongmeng",
 		 * e.getStackTrace().toString()); }
 		 */
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, i, 0);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
 		// 创建通知并发布
 		NotificationManager notificationManager = (NotificationManager) context

@@ -444,65 +444,6 @@ public class BasePlayActivity extends LetvBaseActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_play);
-
-		//鉴权流程--------------
-		Game game = LetvApplication.getInstance().getLiveGame();
-		if (game != null) {
-			String pid = game.pid;
-			String liveid = game.id;
-			String from = "mobile";
-			String streamId = PlayLiveController.LIVE_STREAMID;
-			String splatId = "1013";
-			String userId = PreferencesManager.getInstance().getUserId();
-
-			String lsstart = String.valueOf(game.status);
-			// (pid,liveid,from,streamId,splatId,userId,version,pcode)
-
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("pid", pid);
-			map.put("liveid", liveid);
-			map.put("from", from);
-			map.put("streamId", streamId);
-			map.put("splatId", splatId);
-			map.put("userId", userId);
-			map.put("version", LetvConstant.Global.VERSION);
-			map.put("pcode", LetvConstant.Global.PCODE);
-			Collection<String> keyset = map.keySet();
-			List<String> list = new ArrayList<String>(keyset);
-
-			// 对key键值按字典升序排序
-			Collections.sort(list);
-
-			StringBuilder stringBuilder = new StringBuilder("");
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println("key键---值: " + list.get(i) + ","
-						+ map.get(list.get(i)));
-				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i)));
-			}
-			String key = "";
-			stringBuilder.append(key);
-
-			String apisign = MD5.toMd5(stringBuilder.toString());
-			// String pid, String liveid,
-			// String from, String streamId, String splatId, String userId,
-			// String lsstart, String apisign,
-
-			LetvDataHull<DynamicCheck> dh = LetvHttpApi.dynamiccheck(0, pid,
-					liveid, from, streamId, splatId, userId, lsstart, apisign,
-					new DynamicCheckParser());
-			if (dh != null
-					&& dh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-				DynamicCheck dc = DynamicCheck.getdc();
-				if (dc.getStatus().equals("1")) { // 鉴权成功
-					Log.i("gongmeng", "鉴权成功");
-				} else {
-					Toast.makeText(getApplicationContext(), "请到网页端完成支付后再收看",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		}
-		
-		//----鉴权完成
 		findView();
 
 		// 自定义旋转

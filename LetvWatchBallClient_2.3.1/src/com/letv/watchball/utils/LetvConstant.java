@@ -137,6 +137,8 @@ public class LetvConstant {
 		public static final String PCODE = LetvTools.getPcode();
 
 		public static final String VERSION = LetvTools.getClientVersionName();
+		
+		public static final String ASIGN_KEY = "Tl34Ees0S9tsKY213";
 
 		public static final int VERSION_CODE = LetvTools.getClientVersionCode();
 
