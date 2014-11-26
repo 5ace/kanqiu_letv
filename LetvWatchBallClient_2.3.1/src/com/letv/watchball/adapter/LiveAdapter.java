@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.letv.utils.MD5;
 import com.letv.watchball.LetvApplication;
 
@@ -287,7 +290,13 @@ public class LiveAdapter extends SectionedBaseAdapter {
 				mViewChildHodler.watchStatus.setClickable(true);
 				game.isGameSubscribed = DBManager.getInstance()
 						.getSubscribeGameTrace().hasSubscribeGameTrace(game.id);
-				if (!game.isGameSubscribed) {
+				// 付费比赛单独判断
+				if (game.pay.equalsIgnoreCase("1")) {
+					RequestCheck requestCheck = new RequestCheck(context,
+							mViewChildHodler.watchStatus, game,
+							PreferencesManager.getInstance().getUserId());
+					requestCheck.start();
+				} else if (!game.isGameSubscribed) {
 					// 未预约
 					if (game.platform != null
 							&& !game.platform.contains("Mobile")) {
@@ -319,20 +328,23 @@ public class LiveAdapter extends SectionedBaseAdapter {
 												Toast.LENGTH_SHORT).show();
 										return;
 									}
-									//付费视频应当打开在线支付页面
-									if(Integer.valueOf(game.pay) == 1) {
-										Uri uri = Uri.parse("http://yuanxian.letv.com/zt2014/yingchaofufeizhuanti/index.shtml");  
-										Intent payWebView = new Intent(Intent.ACTION_VIEW, uri);  
+									// 付费视频应当打开在线支付页面
+									if (Integer.valueOf(game.pay) == 1) {
+										// TODO 把url放在单独的读取位置
+										Uri uri = Uri
+												.parse("http://yuanxian.letv.com/zt2014/yingchaofufeizhuanti/index.shtml");
+										Intent payWebView = new Intent(
+												Intent.ACTION_VIEW, uri);
 										context.startActivity(payWebView);
 										return;
 									}
-									
+
 									// 直播预约
 									new RequestSubscribe(getContext(), game,
 											date, new Runnable() {
 												@Override
 												public void run() {
-													
+
 													mTViewChildHodler.watchStatus
 															.setImageResource(R.drawable.live_unsubcribe_btn);
 													// viewHodler.watchStatus.setText("已预约");
@@ -428,19 +440,12 @@ public class LiveAdapter extends SectionedBaseAdapter {
 			// TODO 播放直播
 			if (game.platform != null && !game.platform.contains("Mobile")) {
 
-				if (Integer.valueOf(game.pay) == 1)
-					mViewChildHodler.watchStatus
-							.setImageResource(R.drawable.live_pay_no_btn_enable);
-				else
-					mViewChildHodler.watchStatus
-							.setImageResource(R.drawable.live_no_btn_enabled);
+				mViewChildHodler.watchStatus
+						.setImageResource(R.drawable.live_no_btn_enabled);
 			} else {
-				if (Integer.valueOf(game.pay) == 1)
-					mViewChildHodler.watchStatus
-							.setImageResource(R.drawable.live_pay_on_btn);
-				else
-					mViewChildHodler.watchStatus
-							.setImageResource(R.drawable.live_on_btn);
+
+				mViewChildHodler.watchStatus
+						.setImageResource(R.drawable.live_on_btn);
 			}
 			mViewChildHodler.watchStatus.setClickable(true);
 			mViewChildHodler.watchStatus.setEnabled(true);
@@ -671,17 +676,18 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 		ImageView watchStatus;
 		private Game game;
+
 		public RequestCheck(Context context, ImageView watchstatus, Game game,
 				String userId) {
 			super(context);
 			this.game = game;
 			this.watchStatus = watchstatus;
-			pid = game.pid;
-			userId = this.userId;
+			pid = game.id;
+			this.userId = userId;
 			from = "mobile";
 			streamId = game.live_350.streamId;
 			splatId = "1013";
-			liveid = game.id;
+			liveid = game.liveid;
 			lsstart = String.valueOf(game.status);
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("pid", pid);
@@ -708,6 +714,7 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 			apisign = MD5.toMd5(stringBuilder.toString());
+
 			// String pid, String liveid,
 			// String from, String streamId, String splatId, String userId,
 			// String lsstart, String apisign,
@@ -715,7 +722,6 @@ public class LiveAdapter extends SectionedBaseAdapter {
 			LetvDataHull<DynamicCheck> dh = LetvHttpApi.dynamiccheck(0, pid,
 					liveid, from, streamId, splatId, userId, lsstart, apisign,
 					new DynamicCheckParser());
-
 		}
 
 		@Override
@@ -723,36 +729,70 @@ public class LiveAdapter extends SectionedBaseAdapter {
 			LetvDataHull<DynamicCheck> dh = LetvHttpApi.dynamiccheck(0, pid,
 					liveid, from, streamId, splatId, userId, lsstart, apisign,
 					new DynamicCheckParser());
+			String source = dh.getSourceData();
+			Log.e("gongmeng", "source:" + source);
+			JSONObject data;
+			DynamicCheck bean = new DynamicCheck();
+			try {
+				data = new JSONObject(dh.getSourceData());
+				data = data.getJSONObject("body");
+				data = data.getJSONObject("result");
+				String status = data.getString("status");
+				data = data.getJSONObject("info");
+				String code = data.getString("code");
+				bean.code = code;
+				bean.setStatus(status);
+				dh.setDataEntity(bean);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			return dh;
 		}
 
 		@Override
 		public void onPostExecute(int updateId, DynamicCheck result) {
-			if (result.getStatus() == 1) {
+			if (result.code != null && !result.code.equalsIgnoreCase("1004")) {
 				if (watchStatus != null)
 					watchStatus.setImageResource(R.drawable.live_ordered);
 				// 直播预约
-				new RequestSubscribe(getContext(), game,
-						game.playDate, new Runnable() {
+				new RequestSubscribe(getContext(), game, game.playDate,
+						new Runnable() {
 							@Override
 							public void run() {
 								notifyDataSetChanged();
 
 								if (null != mHomeFragmentLsn) {
-									mHomeFragmentLsn
-											.addSubscribe(
-													game,
-													game.playDate);
+									mHomeFragmentLsn.addSubscribe(game,
+											game.playDate);
 								}
 								if (null != mRightFragmentLsn) {
-									mRightFragmentLsn
-											.updateSuscribeStatus();
+									mRightFragmentLsn.updateSuscribeStatus();
 								}
-								//TODO 确定date的格式，清理订阅列表
+								// TODO 确定date的格式，清理订阅列表
 							}
 						}).start();
 			} else {
 				watchStatus.setImageResource(R.drawable.live_order);
+				watchStatus.setClickable(true);
+				watchStatus.setEnabled(true);
+				watchStatus.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+						// 付费视频应当打开在线支付页面
+						if (Integer.valueOf(game.pay) == 1) {
+							// TODO 把url放在单独的读取位置
+							Uri uri = Uri
+									.parse("http://yuanxian.letv.com/zt2014/yingchaofufeizhuanti/index.shtml");
+							Intent payWebView = new Intent(Intent.ACTION_VIEW,
+									uri);
+							context.startActivity(payWebView);
+							return;
+						}
+					}
+				});
 			}
 
 		}

@@ -113,7 +113,7 @@ public class BasePlayActivity extends LetvBaseActivity {
 	 * 播放地址，或者本地视频路径 全屏播放
 	 * */
 	public static void launch(Context context, String uriString, int playMode) {
-		if(!LetvUtil.CheckNetworkState()){
+		if (!LetvUtil.CheckNetworkState()) {
 			UIs.showToast("没有网络");
 			return;
 		}
@@ -133,8 +133,9 @@ public class BasePlayActivity extends LetvBaseActivity {
 	 * 
 	 * 播放地址，或者本地视频路径 全屏播放
 	 * */
-	public static void launch(Context context, String uriString, int playMode, long seek) {
-		if(!LetvUtil.CheckNetworkState()){
+	public static void launch(Context context, String uriString, int playMode,
+			long seek) {
+		if (!LetvUtil.CheckNetworkState()) {
 			UIs.showToast("没有网络");
 			return;
 		}
@@ -149,14 +150,15 @@ public class BasePlayActivity extends LetvBaseActivity {
 		}
 		context.startActivity(intent);
 	}
+
 	/**
 	 * 直播中半屏跳点播
 	 * 
 	 * 播放专辑或者视频
 	 * */
-	public static void launch(Context context, long aid, long vid,int curPage) {
-	
-		if(!LetvUtil.CheckNetworkState()){
+	public static void launch(Context context, long aid, long vid, int curPage) {
+
+		if (!LetvUtil.CheckNetworkState()) {
 			UIs.showToast("没有网络");
 			return;
 		}
@@ -171,7 +173,7 @@ public class BasePlayActivity extends LetvBaseActivity {
 		intent.putExtra("aid", (int) aid);
 		intent.putExtra("vid", (int) vid);
 		intent.putExtra("curPage", (int) curPage);
-//		intent.putExtra("from", from);
+		// intent.putExtra("from", from);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		if (!(context instanceof Activity)) {
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -183,14 +185,15 @@ public class BasePlayActivity extends LetvBaseActivity {
 			context.startActivity(intent);
 		}
 	}
+
 	/**
 	 * 打开播放页
 	 * 
 	 * 播放专辑或者视频
 	 * */
 	public static void launch(Context context, long aid, long vid) {
-	
-		if(!LetvUtil.CheckNetworkState()){
+
+		if (!LetvUtil.CheckNetworkState()) {
 			UIs.showToast("没有网络");
 			return;
 		}
@@ -204,7 +207,7 @@ public class BasePlayActivity extends LetvBaseActivity {
 		intent.putExtra("launchMode", launchMode);
 		intent.putExtra("aid", (int) aid);
 		intent.putExtra("vid", (int) vid);
-//		intent.putExtra("from", from);
+		// intent.putExtra("from", from);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		if (!(context instanceof Activity)) {
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -216,14 +219,16 @@ public class BasePlayActivity extends LetvBaseActivity {
 			context.startActivity(intent);
 		}
 	}
+
 	/**
 	 * 打开播放页
-	 *
+	 * 
 	 * 播放专辑或者视频
 	 * */
-	public static void launch(Context context, long aid, long vid,boolean isPlayAd) {
+	public static void launch(Context context, long aid, long vid,
+			boolean isPlayAd) {
 
-		if(!LetvUtil.CheckNetworkState()){
+		if (!LetvUtil.CheckNetworkState()) {
 			UIs.showToast("没有网络");
 			return;
 		}
@@ -237,8 +242,8 @@ public class BasePlayActivity extends LetvBaseActivity {
 		intent.putExtra("launchMode", launchMode);
 		intent.putExtra("aid", (int) aid);
 		intent.putExtra("vid", (int) vid);
-            intent.putExtra("fromPip",isPlayAd);
-//		intent.putExtra("from", from);
+		intent.putExtra("fromPip", isPlayAd);
+		// intent.putExtra("from", from);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		if (!(context instanceof Activity)) {
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -257,12 +262,12 @@ public class BasePlayActivity extends LetvBaseActivity {
 	 * 播放专辑或者视频
 	 * */
 	public static void launch(Context context, long aid, long vid, long seek) {
-		
-		if(!LetvUtil.CheckNetworkState()){
+
+		if (!LetvUtil.CheckNetworkState()) {
 			UIs.showToast("没有网络");
 			return;
 		}
-		
+
 		int launchMode = 0;
 		if (aid > 0) {
 			launchMode = LAUNCH_MODE_ALBUM;
@@ -273,7 +278,7 @@ public class BasePlayActivity extends LetvBaseActivity {
 		intent.putExtra("launchMode", launchMode);
 		intent.putExtra("aid", (int) aid);
 		intent.putExtra("vid", (int) vid);
-//		intent.putExtra("from", from);
+		// intent.putExtra("from", from);
 		intent.putExtra("seek", seek);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		if (!(context instanceof Activity)) {
@@ -282,6 +287,51 @@ public class BasePlayActivity extends LetvBaseActivity {
 		context.startActivity(intent);
 	}
 
+	/**
+	 * 
+	 * @param context
+	 * @param code
+	 * @param streamId
+	 * @param url
+	 * @param aid
+	 */
+	public static void launchLives(Context context, String code,
+			String streamId, String url, long aid, long vid, Game game) {
+
+		if (!LetvUtil.CheckNetworkState()) {
+			UIs.showToast("没有网络");
+			return;
+		}
+		Intent intent = new Intent(context, BasePlayActivity.class);
+		int launchMode = 0;
+		Log.e("gongmeng", "vid:" + vid);
+		if (aid > 0 && vid > 0) {
+			launchMode = LAUNCH_MODE_LIVE;
+		} else {
+			launchMode = LAUNCH_MODE_LIVE_FULL;
+		}
+		if (null != game) {
+			LetvApplication.getInstance().saveLiveGame(game);
+		} else {
+			game = LetvApplication.getInstance().getLiveGame();
+		}
+		intent.putExtra("launchMode", launchMode);
+		intent.putExtra(PlayLiveController.LIVE_CODE, code);
+		intent.putExtra(PlayLiveController.LIVE_STREAMID, streamId);
+		intent.putExtra(PlayLiveController.LIVE_URL, url);
+		intent.putExtra(PlayLiveController.GAME, game);
+		intent.putExtra("aid", aid);
+		intent.putExtra("vid", vid);
+		if (game != null)
+			intent.putExtra("id", game.id);
+		intent.putExtra(PlayLiveController.LIVE_URL, url);
+		intent.putExtra(PlayLiveController.LIVE_CODE, code);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		if (!(context instanceof Activity)) {
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		}
+		context.startActivity(intent);
+	}
 
 	/**
 	 * 
@@ -289,69 +339,28 @@ public class BasePlayActivity extends LetvBaseActivity {
 	 * @param code
 	 * @param streamId
 	 * @param url
-	 * @param aid 
-	 */
-	public static void launchLives(Context context, String code, String streamId, String url, long aid,long vid,Game game) {
-		
-		if(!LetvUtil.CheckNetworkState()){
-			UIs.showToast("没有网络");
-			return;
-		}
-		Intent intent = new Intent(context, BasePlayActivity.class);
-		int launchMode = 0;
-		if (aid > 0 && vid >0) {
-			launchMode = LAUNCH_MODE_LIVE;
-		} else {
-			launchMode = LAUNCH_MODE_LIVE_FULL;
-		}
-        if (null!=game){
-              LetvApplication.getInstance().saveLiveGame(game);
-        } else {
-              game = LetvApplication.getInstance().getLiveGame();
-        }
-		intent.putExtra("launchMode", launchMode);
-		intent.putExtra(PlayLiveController.LIVE_CODE, code);
-		intent.putExtra(PlayLiveController.LIVE_STREAMID, streamId);
-		intent.putExtra(PlayLiveController.LIVE_URL, url);
-		intent.putExtra(PlayLiveController.GAME, game);
-		intent.putExtra("aid", aid);
-		intent.putExtra("vid", vid);
-            if (game != null)
-		intent.putExtra("id", game.id);
-		intent.putExtra(PlayLiveController.LIVE_URL, url);
-		intent.putExtra(PlayLiveController.LIVE_CODE, code);
-		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		if (!(context instanceof Activity)) {
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		}
-		context.startActivity(intent);
-	}
-	/**
-	 *
-	 * @param context
-	 * @param code
-	 * @param streamId
-	 * @param url
 	 * @param aid
 	 */
-	public static void launchLives(Context context, String code, String streamId, String url, long aid,long vid,Game game,boolean isPlayAd) {
+	public static void launchLives(Context context, String code,
+			String streamId, String url, long aid, long vid, Game game,
+			boolean isPlayAd) {
 
-		if(!LetvUtil.CheckNetworkState()){
+		if (!LetvUtil.CheckNetworkState()) {
 			UIs.showToast("没有网络");
 			return;
 		}
 		Intent intent = new Intent(context, BasePlayActivity.class);
 		int launchMode = 0;
-		if (aid > 0 && vid >0) {
+		if (aid > 0 && vid > 0) {
 			launchMode = LAUNCH_MODE_LIVE;
 		} else {
 			launchMode = LAUNCH_MODE_LIVE_FULL;
 		}
-        if (null!=game){
-              LetvApplication.getInstance().saveLiveGame(game);
-        } else {
-              game = LetvApplication.getInstance().getLiveGame();
-        }
+		if (null != game) {
+			LetvApplication.getInstance().saveLiveGame(game);
+		} else {
+			game = LetvApplication.getInstance().getLiveGame();
+		}
 		intent.putExtra("launchMode", launchMode);
 		intent.putExtra(PlayLiveController.LIVE_CODE, code);
 		intent.putExtra(PlayLiveController.LIVE_STREAMID, streamId);
@@ -359,9 +368,9 @@ public class BasePlayActivity extends LetvBaseActivity {
 		intent.putExtra(PlayLiveController.GAME, game);
 		intent.putExtra("aid", aid);
 		intent.putExtra("vid", vid);
-            intent.putExtra("fromPip",isPlayAd);
-            if (game != null)
-		intent.putExtra("id", game.id);
+		intent.putExtra("fromPip", isPlayAd);
+		if (game != null)
+			intent.putExtra("id", game.id);
 		intent.putExtra(PlayLiveController.LIVE_URL, url);
 		intent.putExtra(PlayLiveController.LIVE_CODE, code);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -371,21 +380,21 @@ public class BasePlayActivity extends LetvBaseActivity {
 		context.startActivity(intent);
 	}
 
-      /**
-       *
-       * @param context
-       * @param game
-       */
+	/**
+	 * 
+	 * @param context
+	 * @param game
+	 */
 
 	public static void launchLives(Context context, Game game) {
 
-		if(!LetvUtil.CheckNetworkState()){
+		if (!LetvUtil.CheckNetworkState()) {
 			UIs.showToast("没有网络");
 			return;
 		}
 		Intent intent = new Intent(context, BasePlayActivity.class);
 		int launchMode = 0;
-		if (game.getPid() > 0 && game.getVid() >0) {
+		if (game.getPid() > 0 && game.getVid() > 0) {
 			launchMode = LAUNCH_MODE_LIVE;
 		} else {
 			launchMode = LAUNCH_MODE_LIVE_FULL;
@@ -429,15 +438,15 @@ public class BasePlayActivity extends LetvBaseActivity {
 	private int launchMode;
 
 	@Override
-      protected void onNewIntent(Intent intent) {
-            super.onNewIntent(intent);
-            setIntent(intent);
-            playFragment.pause();
-            playFragment.stopPlayback();
-            mPlayController.format();
-            readLaunchMode();
-            initView();
-            initWindow();
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		playFragment.pause();
+		playFragment.stopPlayback();
+		mPlayController.format();
+		readLaunchMode();
+		initView();
+		initWindow();
 	}
 
 	@Override
@@ -450,13 +459,14 @@ public class BasePlayActivity extends LetvBaseActivity {
 		handler = new ChangeOrientationHandler(this);
 		sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		sensor = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		mOrientationSensorListener = new OrientationSensorListener(handler, this);
+		mOrientationSensorListener = new OrientationSensorListener(handler,
+				this);
 
 		// 关闭小窗播放
 		if (LetvPipPlayFunction.PipServiceIsStart(this)) {
 			LetvPipPlayFunction.closePipView(this);
 		}
-            rect = new Rect();
+		rect = new Rect();
 		readLaunchMode();
 		initView();
 		initWindow();
@@ -466,11 +476,12 @@ public class BasePlayActivity extends LetvBaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		if (!LetvShareControl.getInstance().isShare()) {
 			new RequestShareLinkTask(this).start();
 		}
-		sm.registerListener(mOrientationSensorListener, sensor, SensorManager.SENSOR_DELAY_UI);
+		sm.registerListener(mOrientationSensorListener, sensor,
+				SensorManager.SENSOR_DELAY_UI);
 		registerReceiver();
 		// boolean isLogin = PreferencesManager.getInstance().isLogin();
 		// if (isLogin) {
@@ -508,16 +519,19 @@ public class BasePlayActivity extends LetvBaseActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-//		if (requestCode == LoginMainActivity.LOGIN && resultCode == LoginMainActivity.LOGIN_SUCCESS) {
-//			mPlayController.onActivityResultLoginSuccess();
-//		}
-//
-//		if (requestCode == VipProductsActivity.PAY && resultCode == VipProductsActivity.PAY_SUCCESS) {
-//			mPlayController.onActivityResultPaySuccess();
-//		}
-//
+		// if (requestCode == LoginMainActivity.LOGIN && resultCode ==
+		// LoginMainActivity.LOGIN_SUCCESS) {
+		// mPlayController.onActivityResultLoginSuccess();
+		// }
+		//
+		// if (requestCode == VipProductsActivity.PAY && resultCode ==
+		// VipProductsActivity.PAY_SUCCESS) {
+		// mPlayController.onActivityResultPaySuccess();
+		// }
+		//
 		if (HalfPlayShareFragment.onFragmentResult != null) {// 解决分享不会有onactiviResult
-			HalfPlayShareFragment.onFragmentResult.onFragmentResult_back(requestCode, resultCode, data);
+			HalfPlayShareFragment.onFragmentResult.onFragmentResult_back(
+					requestCode, resultCode, data);
 		}
 	}
 
@@ -525,7 +539,7 @@ public class BasePlayActivity extends LetvBaseActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (mPlayController.onKeyDown(keyCode, event)) {
 			return true;
-		}      // 获取手机当前音量值
+		} // 获取手机当前音量值
 		boolean ss = super.onKeyDown(keyCode, event);
 		if (mPlayController != null) {
 			int volNum = mPlayController.getCurSoundVolume();
@@ -537,7 +551,8 @@ public class BasePlayActivity extends LetvBaseActivity {
 				volNum -= 1;
 				isUp = false;
 			}
-			mPlayController.curVolume(mPlayController.getMaxSoundVolume(), volNum, isUp);
+			mPlayController.curVolume(mPlayController.getMaxSoundVolume(),
+					volNum, isUp);
 		}
 
 		return ss;
@@ -550,9 +565,10 @@ public class BasePlayActivity extends LetvBaseActivity {
 		playUpperLayout = (FrameLayout) findViewById(R.id.play_upper_layout);
 		playUpper = (FrameLayout) findViewById(R.id.play_upper);
 		playLower = (RelativeLayout) findViewById(R.id.play_lower);
-		playFragment = (BasePlayFragment) getSupportFragmentManager().findFragmentById(R.id.play_fragment);
+		playFragment = (BasePlayFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.play_fragment);
 		playGestrue = (LetvPlayGestureLayout) findViewById(R.id.play_gestrue);
-            adLayout = (PlayAdLayout) findViewById(R.id.play_ad_layout);
+		adLayout = (PlayAdLayout) findViewById(R.id.play_ad_layout);
 	}
 
 	/**
@@ -616,13 +632,12 @@ public class BasePlayActivity extends LetvBaseActivity {
 			mOrientationSensorListener.setJustLandscape(true);
 			setOnRelevantStateChangeListener(mPlayController);
 			playFragment.setNotResumeSeek(false);
-		}else if (launchMode == LAUNCH_MODE_LIVE) {
+		} else if (launchMode == LAUNCH_MODE_LIVE) {
 			PlayLiveController controller = null;
 			mPlayController = controller = new PlayLiveController(this);
 			playFragment.setStateChangeListener(controller);
 			mPlayController.setLaunchMode(PlayController.PLAY_LIVE);
 
-			
 			setOnRelevantStateChangeListener(mPlayController);
 			playFragment.setNotResumeSeek(true);
 			mPlayController.create();
@@ -632,11 +647,10 @@ public class BasePlayActivity extends LetvBaseActivity {
 			playFragment.setStateChangeListener(controller);
 			mPlayController.setLaunchMode(PlayController.PLAY_LIVE_FULL);
 
-			
 			setOnRelevantStateChangeListener(mPlayController);
 			playFragment.setNotResumeSeek(true);
 			mPlayController.create();
-		} 
+		}
 
 	}
 
@@ -695,7 +709,8 @@ public class BasePlayActivity extends LetvBaseActivity {
 		return onRelevantStateChangeListener;
 	}
 
-	public void setOnRelevantStateChangeListener(OnRelevantStateChangeListener onRelevantStateChangeListener) {
+	public void setOnRelevantStateChangeListener(
+			OnRelevantStateChangeListener onRelevantStateChangeListener) {
 		this.onRelevantStateChangeListener = onRelevantStateChangeListener;
 	}
 
@@ -703,7 +718,8 @@ public class BasePlayActivity extends LetvBaseActivity {
 		return mOrientationSensorListener;
 	}
 
-	public void setmOrientationSensorListener(OrientationSensorListener mOrientationSensorListener) {
+	public void setmOrientationSensorListener(
+			OrientationSensorListener mOrientationSensorListener) {
 		this.mOrientationSensorListener = mOrientationSensorListener;
 	}
 
@@ -716,8 +732,8 @@ public class BasePlayActivity extends LetvBaseActivity {
 			filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 			filter.addAction(Intent.ACTION_TIME_TICK);
 			filter.addAction(Intent.ACTION_BATTERY_CHANGED);
-			filter.addAction(Intent.ACTION_HEADSET_PLUG); 
-//			filter.addAction("android.intent.action.HEADSET_PLUG"); 
+			filter.addAction(Intent.ACTION_HEADSET_PLUG);
+			// filter.addAction("android.intent.action.HEADSET_PLUG");
 			registerReceiver(mBroadcastReceiver, filter);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -745,20 +761,23 @@ public class BasePlayActivity extends LetvBaseActivity {
 				if (onRelevantStateChangeListener != null) {
 					onRelevantStateChangeListener.onTimeChange();
 				}
-			} else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {// 监听网络连接状态变化
+			} else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent
+					.getAction())) {// 监听网络连接状态变化
 				if (onRelevantStateChangeListener != null) {
 					onRelevantStateChangeListener.onNetChange();
 				}
 			} else if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {// 监听电量变化
-				int status = intent.getIntExtra("status", BatteryManager.BATTERY_STATUS_UNKNOWN);// 获得电池状态
+				int status = intent.getIntExtra("status",
+						BatteryManager.BATTERY_STATUS_UNKNOWN);// 获得电池状态
 				int level = intent.getExtras().getInt("level", 0);// 获得当前电量
 				int scale = intent.getExtras().getInt("scale", 100);// 获得总电量
 				int curPower = level * 100 / scale;
 
 				if (onRelevantStateChangeListener != null) {
-					onRelevantStateChangeListener.onBatteryChange(status, curPower);
+					onRelevantStateChangeListener.onBatteryChange(status,
+							curPower);
 				}
-			} else if(Intent.ACTION_HEADSET_PLUG.equals(intent.getAction())){
+			} else if (Intent.ACTION_HEADSET_PLUG.equals(intent.getAction())) {
 				if (onRelevantStateChangeListener != null) {
 					onRelevantStateChangeListener.onHeadsetPlug();
 				}
@@ -796,74 +815,75 @@ public class BasePlayActivity extends LetvBaseActivity {
 		playLower = null;
 		playUpperLayout = null;
 	}
+
 	/**
 	 * 收起软键盘
 	 */
-	public void collapseSoftInputMethod(){
-		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE); 
-		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS); 
+	public void collapseSoftInputMethod() {
+		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+	}
+
+	private final int ON_VIDEORE_SIZE = 6;// 当播放区域发生改变
+
+	private final int ON_ACTIVITY_PAUSE = 7;// 当 Activity 暂停
+
+	private final int ON_ACTIVITY_RESUME = 8;// 当 Activity 继续
+
+	private final int ON_ACTIVITY_EXIT = 9;// 当 Activity 退出
+
+	/**
+	 * 播放显示区域
+	 */
+	public Rect rect;
+
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (playUpperLayout != null) {
+				playUpperLayout.getGlobalVisibleRect(rect);
+				// LogInfo.log("ads", "rect.top ="+rect.top +"  rect.bottom= "+
+				// rect.bottom+" rect.left="+ rect.left+" rect.right="+
+				// rect.right);
+				callAdsPlayInterface(ON_VIDEORE_SIZE);
+			}
 		}
+	};
 
-      private final int ON_VIDEORE_SIZE = 6;// 当播放区域发生改变
+	/**
+	 * 广告接口回调播放各种状态
+	 * 
+	 * @param whichStatus
+	 */
+	private void callAdsPlayInterface(int whichStatus) {
+		try {
+			if (mPlayController != null
+					&& mPlayController.mIVideoStatusInformer != null) {
+				switch (whichStatus) {
+				case ON_VIDEORE_SIZE:
+					mPlayController.mIVideoStatusInformer.OnVideoResize(rect);
+					break;
+				case ON_ACTIVITY_PAUSE:
+					mPlayController.mIVideoStatusInformer.OnActivityPause();
+					break;
+				case ON_ACTIVITY_RESUME:
+					mPlayController.mIVideoStatusInformer.OnActivityResume();
+					break;
+				case ON_ACTIVITY_EXIT:
+					mPlayController.mIVideoStatusInformer.OnActivityExit();
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-      private final int ON_ACTIVITY_PAUSE = 7;// 当 Activity 暂停
+	protected PlayAdLayout adLayout;
 
-      private final int ON_ACTIVITY_RESUME = 8;// 当 Activity 继续
-
-      private final int ON_ACTIVITY_EXIT = 9;// 当 Activity 退出
-
-      /**
-       * 播放显示区域
-       */
-      public Rect rect;
-
-      private Handler mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                  if (playUpperLayout != null) {
-                        playUpperLayout.getGlobalVisibleRect(rect);
-                        // LogInfo.log("ads", "rect.top ="+rect.top +"  rect.bottom= "+
-                        // rect.bottom+" rect.left="+ rect.left+" rect.right="+
-                        // rect.right);
-                        callAdsPlayInterface(ON_VIDEORE_SIZE);
-                  }
-            }
-      };
-
-
-      /**
-       * 广告接口回调播放各种状态
-       *
-       * @param whichStatus
-       */
-      private void callAdsPlayInterface(int whichStatus) {
-            try {
-                  if (mPlayController != null && mPlayController.mIVideoStatusInformer != null) {
-                        switch (whichStatus) {
-                              case ON_VIDEORE_SIZE:
-                                    mPlayController.mIVideoStatusInformer.OnVideoResize(rect);
-                                    break;
-                              case ON_ACTIVITY_PAUSE:
-                                    mPlayController.mIVideoStatusInformer.OnActivityPause();
-                                    break;
-                              case ON_ACTIVITY_RESUME:
-                                    mPlayController.mIVideoStatusInformer.OnActivityResume();
-                                    break;
-                              case ON_ACTIVITY_EXIT:
-                                    mPlayController.mIVideoStatusInformer.OnActivityExit();
-                                    break;
-                        }
-                  }
-            } catch (Exception e) {
-                  e.printStackTrace();
-            }
-      }
-
-      protected PlayAdLayout adLayout;
-
-      public PlayAdLayout getAdLayout() {
-            return adLayout;
-      }
+	public PlayAdLayout getAdLayout() {
+		return adLayout;
+	}
 
 	// public static void launch(Context context, Bundle bundle) {
 	// Intent intent = new Intent(context, BasePlayActivity.class);

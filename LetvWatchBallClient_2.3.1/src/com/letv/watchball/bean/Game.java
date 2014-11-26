@@ -100,6 +100,11 @@ public class Game implements Serializable{
        */
       public String pay;
       
+      /*
+       * 针对付费场次的liveid
+       */
+      public String liveid;
+      
       public class LiveTs implements Serializable{
 				public String code;
 				public long tm;

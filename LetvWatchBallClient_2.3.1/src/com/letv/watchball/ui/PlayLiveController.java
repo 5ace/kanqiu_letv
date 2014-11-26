@@ -38,6 +38,8 @@ import com.letv.watchball.parser.AlbumNewParse;
 import com.letv.watchball.parser.DynamicCheckParser;
 import com.letv.watchball.parser.ExpireTimeParser;
 import com.letv.watchball.parser.LiveRealParser;
+import com.letv.watchball.parser.TicketCountParser;
+import com.letv.watchball.parser.UseTicketParser;
 import com.letv.watchball.parser.VideoListParser;
 import com.letv.watchball.service.PipService;
 import com.letv.watchball.ui.PlayAlbumController.PlayAlbumControllerCallBack;
@@ -116,6 +118,7 @@ public class PlayLiveController extends PlayController implements
 	 * 加密用
 	 */
 	public String mStreamId = null;
+	public String mToken = null;
 	/**
 	 * 真实的播放地址，仅用于统计使用
 	 */
@@ -399,8 +402,22 @@ public class PlayLiveController extends PlayController implements
 					// (pid,liveid,from,streamId,splatId,userId,version,pcode)
 					payToken_live500 = requestDynamicCheck(pid, liveid, from,
 							streamId, splatId, userId, lsstart);
+					// 取得token失败后停止播放并尝试获取直播券数量
+					if (payToken_live500 == null
+							|| payToken_live500.equalsIgnoreCase("")) {
+						loadUI();
+						RequestTicketCount requestTicketCount = new RequestTicketCount(
+								this.getActivity(), game.liveid,
+								PreferencesManager.getInstance().getUserId());
+						requestTicketCount.start();
+						return;
+					}
+					Log.e("gogmeng", "live500_token" + payToken_live500);
+					playUrl(game.live_350.streamId, game.live_350.liveUrl,
+							payToken_live500);
+				} else {
+					playUrl(game.live_350.streamId, game.live_350.liveUrl);
 				}
-				playUrl(game.live_350.streamId, game.live_350.liveUrl);
 			} else {
 				if (game.live_800 != null
 						&& !TextUtils.isEmpty(game.live_800.streamId)
@@ -411,8 +428,8 @@ public class PlayLiveController extends PlayController implements
 					if (Integer.valueOf(game.pay) == 1) {
 						String userId = PreferencesManager.getInstance()
 								.getUserId();
-						String pid = game.pid;
-						String liveid = game.id;
+						String pid = game.id;
+						String liveid = game.liveid;
 						String from = "mobile";
 						String streamId = game.live_350.streamId;
 						String splatId = "1013";
@@ -420,8 +437,23 @@ public class PlayLiveController extends PlayController implements
 						// (pid,liveid,from,streamId,splatId,userId,version,pcode)
 						payToken_live800 = requestDynamicCheck(pid, liveid,
 								from, streamId, splatId, userId, lsstart);
+						// 取得token失败后停止播放并尝试获取直播券数量
+						if (payToken_live800 == null
+								|| payToken_live800.equalsIgnoreCase("")) {
+							loadUI();
+							RequestTicketCount requestTicketCount = new RequestTicketCount(
+									this.getActivity(), game.liveid,
+									PreferencesManager.getInstance()
+											.getUserId());
+							requestTicketCount.start();
+							return;
+						}
+						Log.e("gogmeng", "live800_token" + payToken_live800);
+						playUrl(game.live_800.streamId, game.live_800.liveUrl,
+								payToken_live800);
+					} else {
+						playUrl(game.live_800.streamId, game.live_800.liveUrl);
 					}
-					playUrl(game.live_800.streamId, game.live_800.liveUrl);
 				} else {
 					loadLayout.requestError();
 					return;
@@ -436,13 +468,19 @@ public class PlayLiveController extends PlayController implements
 		mFullController.initHighOrLow();
 	}
 
+	private void loadUI() {
+		// 停止播放，加载新的UI
+
+	}
+
 	public String requestDynamicCheck(String pid, String liveid, String from,
 			String streamId, String splatId, String userId, String lsstart) {
-		if (userId == null) {
+		if (userId.equalsIgnoreCase("")) {
 			Toast.makeText(this.getActivity(), "请登录后收看付费视频", Toast.LENGTH_LONG)
 					.show();
 			return "";
 		}
+
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("pid", pid);
 		map.put("liveid", liveid);
@@ -465,9 +503,11 @@ public class PlayLiveController extends PlayController implements
 			stringBuilder
 					.append(list.get(i) + "=" + map.get(list.get(i)) + "&");
 		}
-
+		Log.e("gongmeng", "builder:" + stringBuilder.toString());
 		stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 		String apisign = MD5.toMd5(stringBuilder.toString());
+		Log.e("gongmeng", "apisign:" + apisign);
+
 		// String pid, String liveid,
 		// String from, String streamId, String splatId, String userId,
 		// String lsstart, String apisign,
@@ -475,16 +515,15 @@ public class PlayLiveController extends PlayController implements
 			LetvDataHull<DynamicCheck> dh = LetvHttpApi.dynamiccheck(0, pid,
 					liveid, from, streamId, splatId, userId, lsstart, apisign,
 					new DynamicCheckParser());
-
+			Log.e("gongmeng", "sourceData:" + dh.getSourceData());
+			Log.e("gongmeng", "bean:" + dh.getDataEntity().toString());
 			if (dh != null
-					&& dh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY);
-			{
-				Log.e("gongmeng", dh.getSourceData());
+					&& dh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
 				JSONObject data = new JSONObject(dh.getSourceData());
 				data = data.getJSONObject("body");
 				data = data.getJSONObject("result");
 				String status = data.getString("status");
-				
+
 				if (Integer.valueOf(status) == 1) { // 鉴权成功
 					Log.e("gongmeng", "鉴权成功");
 					return data.getString("token");
@@ -532,7 +571,42 @@ public class PlayLiveController extends PlayController implements
 			play(url);
 		} else {
 			mStreamId = streamId;
+
 			requestRealLink(streamId, url);
+		}
+
+	}
+
+	public void playUrl(String streamId, final String url, String token) {
+
+		mLiveUrl = url;
+
+		// 播放广告
+		LogInfo.log("ads", "isPlayedAd=" + isPlayedAd + "playAdFragment="
+				+ playAdFragment);
+		if (!isPlayedAd && playAdFragment != null) {
+			timeRequestAd = System.currentTimeMillis();
+			LogInfo.log("ads", "request ads");
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					getFrontAdNormal(url, "1");
+					isPlayedAd = true;
+				}
+			}, 500);
+
+		}
+
+		if (TextUtils.isEmpty(streamId)) {
+			play(url);
+		} else {
+			mStreamId = streamId;
+			mToken = token;
+
+			requestRealLink(streamId, url, token, PreferencesManager
+					.getInstance().getUserId());
+
 		}
 
 	}
@@ -596,7 +670,7 @@ public class PlayLiveController extends PlayController implements
 					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			getActivity().getPlayUpper().addView(loadLayout);
 			loadLayout.loading();
-
+			
 			UIs.inflate(getActivity(), R.layout.live_full_play_controller,
 					getActivity().getPlayUpper(), true);
 			UIs.inflate(getActivity(), R.layout.play_live_lower, getActivity()
@@ -863,7 +937,7 @@ public class PlayLiveController extends PlayController implements
 	@Override
 	public void onRequestErr() {
 		if (mLiveUrl != null) {
-			playUrl(mStreamId, mLiveUrl);
+			playUrl(mStreamId, mLiveUrl, mToken);
 		} else {
 			startLoadingData();
 		}
@@ -1402,6 +1476,134 @@ public class PlayLiveController extends PlayController implements
 	}
 
 	/**
+	 * 使用直播券
+	 */
+	protected class RequestUseTicket extends LetvHttpAsyncTask<UseTicket> {
+
+		String liveid;
+		String uid;
+
+		public RequestUseTicket(Context context, String liveid, String uid) {
+			super(context);
+			this.liveid = liveid;
+			this.uid = uid;
+			if (uid == null || uid.equalsIgnoreCase("")) {
+				Toast.makeText(context, "请登录后收看付费视频", Toast.LENGTH_LONG).show();
+				this.cancel();
+			}
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public LetvDataHull<UseTicket> doInBackground() {
+			if (liveid == null || liveid.length() < 16)
+				return null;
+			String channel = liveid.substring(0, 1);
+			String category = liveid.substring(2, 4);
+			String season = liveid.substring(5, 8);
+			String turn = liveid.substring(9, 11);
+			String gameid = liveid.substring(12, 15);
+			LetvDataHull<UseTicket> hull = null;
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("userid", uid);
+			map.put("channel", channel);
+			map.put("season", season);
+			map.put("category", category);
+			map.put("version", LetvConstant.Global.VERSION);
+			map.put("pcode", LetvConstant.Global.PCODE);
+			Collection<String> keyset = map.keySet();
+			List<String> list = new ArrayList<String>(keyset);
+
+			// 对key键值按字典升序排序
+			Collections.sort(list);
+
+			StringBuilder stringBuilder = new StringBuilder("");
+			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
+			String apisign = MD5.toMd5(stringBuilder.toString());
+
+			if (!hasInitExpireTime) {// 更新过期时间
+				hull = LetvHttpApi.useTicket(0, uid, channel, category, season,
+						turn, gameid, "1", apisign, new UseTicketParser());
+				if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
+					return hull;
+			}
+			return null;
+		}
+
+		@Override
+		public void onPostExecute(int updateId, UseTicket result) {
+			Log.e("gongmeng", "ticket:" + result.status);
+			//TODO
+
+		}
+
+	}
+
+	/**
+	 * 请求直播券数量
+	 * 
+	 */
+	protected class RequestTicketCount extends LetvHttpAsyncTask<TicketCount> {
+
+		String liveid;
+		String uid;
+
+		public RequestTicketCount(Context context, String liveid, String uid) {
+			super(context);
+			this.liveid = liveid;
+			this.uid = uid;
+			if (uid == null || uid.equalsIgnoreCase("")) {
+				Toast.makeText(context, "请登录后收看付费视频", Toast.LENGTH_LONG).show();
+				this.cancel();
+			}
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public LetvDataHull<TicketCount> doInBackground() {
+			if (liveid == null || liveid.length() < 16)
+				return null;
+			String channel = liveid.substring(0, 1);
+			String category = liveid.substring(2, 4);
+			String season = liveid.substring(5, 8);
+			String turn = liveid.substring(9, 11);
+			String gameid = liveid.substring(12, 15);
+			LetvDataHull<TicketCount> hull = null;
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("userid", uid);
+			map.put("channel", channel);
+			map.put("season", season);
+			map.put("category", category);
+			map.put("version", LetvConstant.Global.VERSION);
+			map.put("pcode", LetvConstant.Global.PCODE);
+			Collection<String> keyset = map.keySet();
+			List<String> list = new ArrayList<String>(keyset);
+
+			// 对key键值按字典升序排序
+			Collections.sort(list);
+
+			StringBuilder stringBuilder = new StringBuilder("");
+			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
+			String apisign = MD5.toMd5(stringBuilder.toString());
+
+			if (!hasInitExpireTime) {// 更新过期时间
+				hull = LetvHttpApi.getTicketCount(0, uid, channel, category,
+						season, turn, gameid, apisign, new TicketCountParser());
+				if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
+					;
+			}
+			return hull;
+		}
+
+		@Override
+		public void onPostExecute(int updateId, TicketCount result) {
+			Log.e("gongmeng", "ticket:" + result.count);
+
+		}
+
+	}
+
+	/**
 	 * 请求真实的播放地址
 	 * 
 	 * @author zhanglibin
@@ -1410,6 +1612,18 @@ public class PlayLiveController extends PlayController implements
 	protected class RequestRealLink extends LetvHttpAsyncTask<RealLink> {
 		String url = null;
 		String streamId = null;
+		String token = null;
+		String uid = null;
+
+		public RequestRealLink(Context context, String streamId, String url,
+				String token, String uid) {
+			super(context);
+			this.token = token;
+			this.uid = uid;
+			this.url = url;
+			this.streamId = streamId;
+			tasks.add(this);
+		}
 
 		public RequestRealLink(Context context, String streamId, String url) {
 			super(context);
@@ -1454,6 +1668,10 @@ public class PlayLiveController extends PlayController implements
 			builder.append("expect");
 			builder.append("=");
 			builder.append("1");
+			if (!(token == null) && !token.equalsIgnoreCase("")) {
+				builder.append("&token=" + token);
+				builder.append("&uid=" + uid);
+			}
 			// Log.i("oyys", builder.toString());
 			LeService p2pService = LetvApplication.getInstance()
 					.getP2pService();
@@ -1611,10 +1829,21 @@ public class PlayLiveController extends PlayController implements
 		 */
 	}
 
-	
 	/**
 	 * 请求直播地址
 	 */
+	public void requestRealLink(String streamId, String url, String token,
+			String uid) {
+		if (mRequestRealLink != null && !mRequestRealLink.isCancelled()) {
+			mRequestRealLink.cancel();
+			mRequestRealLink = null;
+		}
+		// requestStartTime = System.currentTimeMillis();// 请求开始时间
+		mRequestRealLink = new RequestRealLink(getActivity(), streamId, url,
+				token, uid);
+		mRequestRealLink.start();
+	}
+
 	public void requestRealLink(String streamId, String url) {
 		if (mRequestRealLink != null && !mRequestRealLink.isCancelled()) {
 			mRequestRealLink.cancel();
@@ -1776,7 +2005,7 @@ public class PlayLiveController extends PlayController implements
 	@Override
 	public void onPlayFailed() {
 		if (mLiveUrl != null) {
-			playUrl(mStreamId, mLiveUrl);
+			playUrl(mStreamId, mLiveUrl, mToken);
 		} else {
 			startLoadingData();
 		}

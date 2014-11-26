@@ -10,6 +10,7 @@ public class DynamicCheckParser extends
 	@Override
 	public DynamicCheck parse(JSONObject data) throws Exception {
 		DynamicCheck dynamicCheck = new DynamicCheck();
+		/*
 		if (data != null) {
 			JSONObject result = data.getJSONObject("result");
 			JSONObject body = result.getJSONObject("body");
@@ -18,7 +19,7 @@ public class DynamicCheckParser extends
 				dynamicCheck.setToken(body.getString("token"));
 			return dynamicCheck;
 		}
-		dynamicCheck.setStatus(0);
+		dynamicCheck.setStatus(0);*/
 		return dynamicCheck;
 	}
 

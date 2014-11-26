@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -61,8 +62,8 @@ public class LetvWebViewActivity extends LetvBaseActivity implements OnClickList
 		setContentView(R.layout.letv_webview);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 		loadType = getIntent().getStringExtra("loadType");
-		baseUrl = getIntent().getStringExtra("url");
-
+		baseUrl = getIntent().getStringExtra("url");		
+		Log.e("gongmeng", "URL:" + baseUrl.toString());
 		findView();
 	}
 	
