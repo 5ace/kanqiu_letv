@@ -2,6 +2,7 @@ package com.letv.watchball.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.com.iresearch.mvideotracker.IRVideo;
@@ -45,6 +47,8 @@ import com.letv.watchball.service.PipService;
 import com.letv.watchball.ui.PlayAlbumController.PlayAlbumControllerCallBack;
 import com.letv.watchball.ui.impl.BasePlayActivity;
 import com.letv.watchball.utils.*;
+import com.letv.watchball.view.PlayHalfPay;
+import com.letv.watchball.view.PlayHalfPay.PlayHalfPayCallBack;
 import com.letv.watchball.view.PlayLoadLayout;
 import com.letv.watchball.view.PlayLoadLayout.PlayLoadLayoutCallBack;
 import com.letv.watchball.view.ScrollTabIndicator;
@@ -69,7 +73,8 @@ import java.util.Map;
  */
 public class PlayLiveController extends PlayController implements
 		VideoViewStateChangeListener, PlayLiveControllerCallBack,
-		PlayLoadLayoutCallBack, ADPlayFragment.PlayAdListener {
+		PlayLoadLayoutCallBack, PlayHalfPayCallBack,
+		ADPlayFragment.PlayAdListener {
 
 	/** Bundle中的key **/
 	public static String LIVE_CODE = "code";
@@ -142,6 +147,10 @@ public class PlayLiveController extends PlayController implements
 	 * */
 	protected PlayLoadLayout loadLayout;
 
+	/**
+	 * 直播券查询 使用
+	 */
+	protected PlayHalfPay ticketFrame;
 	/**
 	 * 半屏内容展示tabs
 	 * */
@@ -382,7 +391,6 @@ public class PlayLiveController extends PlayController implements
 		if (game.live_800 != null && !TextUtils.isEmpty(game.live_800.liveUrl)) {
 			mLiveUrl = game.live_800.liveUrl;
 		}
-
 		if (!TextUtils.isEmpty(mLiveUrl)) {
 			boolean playHd = PreferencesManager.getInstance().isPlayHd();
 			if (!playHd && game.live_350 != null
@@ -393,8 +401,8 @@ public class PlayLiveController extends PlayController implements
 				if (Integer.valueOf(game.pay) == 1) {
 					String userId = PreferencesManager.getInstance()
 							.getUserId();
-					String pid = game.pid;
-					String liveid = game.id;
+					String pid = game.id;
+					String liveid = game.liveid;
 					String from = "mobile";
 					String streamId = game.live_350.streamId;
 					String splatId = "1013";
@@ -405,10 +413,12 @@ public class PlayLiveController extends PlayController implements
 					// 取得token失败后停止播放并尝试获取直播券数量
 					if (payToken_live500 == null
 							|| payToken_live500.equalsIgnoreCase("")) {
-						loadUI();
+						// TODO
+						loadPayUI();
 						RequestTicketCount requestTicketCount = new RequestTicketCount(
 								this.getActivity(), game.liveid,
-								PreferencesManager.getInstance().getUserId());
+								PreferencesManager.getInstance().getUserId(),
+								ticketFrame);
 						requestTicketCount.start();
 						return;
 					}
@@ -440,13 +450,14 @@ public class PlayLiveController extends PlayController implements
 						// 取得token失败后停止播放并尝试获取直播券数量
 						if (payToken_live800 == null
 								|| payToken_live800.equalsIgnoreCase("")) {
-							loadUI();
+							// TODO
+							loadPayUI();
 							RequestTicketCount requestTicketCount = new RequestTicketCount(
 									this.getActivity(), game.liveid,
 									PreferencesManager.getInstance()
-											.getUserId());
+											.getUserId(), ticketFrame);
 							requestTicketCount.start();
-							return;
+
 						}
 						Log.e("gogmeng", "live800_token" + payToken_live800);
 						playUrl(game.live_800.streamId, game.live_800.liveUrl,
@@ -468,8 +479,19 @@ public class PlayLiveController extends PlayController implements
 		mFullController.initHighOrLow();
 	}
 
-	private void loadUI() {
-		// 停止播放，加载新的UI
+	/**
+	 * 停止播放，加载直播券的UI
+	 */
+	private void loadPayUI() {
+		this.mHalfController.pause();
+		// getActivity().getPlayUpper().removeAllViews();
+
+		this.ticketFrame = new PlayHalfPay(this.getActivity(), game.homeImg,
+				game.guestImg);
+		this.ticketFrame.setLayoutParams(new LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		ticketFrame.setCallBack(this);
+		getActivity().getPlayUpper().addView(ticketFrame);
 
 	}
 
@@ -529,8 +551,6 @@ public class PlayLiveController extends PlayController implements
 					return data.getString("token");
 
 				} else {
-					Toast.makeText(this.getActivity(), "请到网页端完成支付后再收看",
-							Toast.LENGTH_LONG).show();
 					return "";
 				}
 			}
@@ -571,10 +591,8 @@ public class PlayLiveController extends PlayController implements
 			play(url);
 		} else {
 			mStreamId = streamId;
-
 			requestRealLink(streamId, url);
 		}
-
 	}
 
 	public void playUrl(String streamId, final String url, String token) {
@@ -670,7 +688,7 @@ public class PlayLiveController extends PlayController implements
 					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			getActivity().getPlayUpper().addView(loadLayout);
 			loadLayout.loading();
-			
+
 			UIs.inflate(getActivity(), R.layout.live_full_play_controller,
 					getActivity().getPlayUpper(), true);
 			UIs.inflate(getActivity(), R.layout.play_live_lower, getActivity()
@@ -1477,14 +1495,22 @@ public class PlayLiveController extends PlayController implements
 
 	/**
 	 * 使用直播券
+	 * 
 	 */
 	protected class RequestUseTicket extends LetvHttpAsyncTask<UseTicket> {
 
 		String liveid;
 		String uid;
+		Context handler;
 
+		/**
+		 * @param context
+		 * @param liveid
+		 * @param uid
+		 */
 		public RequestUseTicket(Context context, String liveid, String uid) {
 			super(context);
+			handler = context;
 			this.liveid = liveid;
 			this.uid = uid;
 			if (uid == null || uid.equalsIgnoreCase("")) {
@@ -1498,17 +1524,20 @@ public class PlayLiveController extends PlayController implements
 		public LetvDataHull<UseTicket> doInBackground() {
 			if (liveid == null || liveid.length() < 16)
 				return null;
-			String channel = liveid.substring(0, 1);
-			String category = liveid.substring(2, 4);
-			String season = liveid.substring(5, 8);
-			String turn = liveid.substring(9, 11);
-			String gameid = liveid.substring(12, 15);
+			String channel = liveid.substring(0, 2);
+			String category = liveid.substring(2, 5);
+			String season = liveid.substring(5, 9);
+			String turn = liveid.substring(9, 12);
+			String gameid = liveid.substring(12, 16);
 			LetvDataHull<UseTicket> hull = null;
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("userid", uid);
+			map.put("tickettype", "1");
 			map.put("channel", channel);
 			map.put("season", season);
 			map.put("category", category);
+			map.put("game", gameid);
+			map.put("turn", turn);
 			map.put("version", LetvConstant.Global.VERSION);
 			map.put("pcode", LetvConstant.Global.PCODE);
 			Collection<String> keyset = map.keySet();
@@ -1518,25 +1547,32 @@ public class PlayLiveController extends PlayController implements
 			Collections.sort(list);
 
 			StringBuilder stringBuilder = new StringBuilder("");
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println("key键---值: " + list.get(i) + ","
+						+ map.get(list.get(i)));
+				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i))
+						+ "&");
+			}
 			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 			String apisign = MD5.toMd5(stringBuilder.toString());
 
-			if (!hasInitExpireTime) {// 更新过期时间
-				hull = LetvHttpApi.useTicket(0, uid, channel, category, season,
-						turn, gameid, "1", apisign, new UseTicketParser());
-				if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
-					return hull;
-			}
+			hull = LetvHttpApi.useTicket(0, uid, channel, category, season,
+					turn, gameid, "1", apisign, new UseTicketParser());
+			if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
+				return hull;
+
 			return null;
 		}
 
 		@Override
 		public void onPostExecute(int updateId, UseTicket result) {
-			Log.e("gongmeng", "ticket:" + result.status);
-			//TODO
-
+			if (result.status.equalsIgnoreCase("1")) {
+				Log.e("gongmeng", "reload activity");
+				getActivity().recreate();
+			} else {
+				Toast.makeText(context, "购买失败", Toast.LENGTH_LONG).show();
+			}
 		}
-
 	}
 
 	/**
@@ -1547,8 +1583,10 @@ public class PlayLiveController extends PlayController implements
 
 		String liveid;
 		String uid;
+		PlayHalfPay handler;
 
-		public RequestTicketCount(Context context, String liveid, String uid) {
+		public RequestTicketCount(Context context, String liveid, String uid,
+				PlayHalfPay ticketFrame) {
 			super(context);
 			this.liveid = liveid;
 			this.uid = uid;
@@ -1556,25 +1594,27 @@ public class PlayLiveController extends PlayController implements
 				Toast.makeText(context, "请登录后收看付费视频", Toast.LENGTH_LONG).show();
 				this.cancel();
 			}
+			handler = ticketFrame;
 			// TODO Auto-generated constructor stub
 		}
 
 		@Override
 		public LetvDataHull<TicketCount> doInBackground() {
+			Log.e("gongmeng", "begin to get ticket count");
 			if (liveid == null || liveid.length() < 16)
 				return null;
-			String channel = liveid.substring(0, 1);
-			String category = liveid.substring(2, 4);
-			String season = liveid.substring(5, 8);
-			String turn = liveid.substring(9, 11);
-			String gameid = liveid.substring(12, 15);
+			String channel = liveid.substring(0, 2);
+			String category = liveid.substring(2, 5);
+			String season = liveid.substring(5, 9);
+			String turn = liveid.substring(9, 12);
+			String gameid = liveid.substring(12, 16);
 			LetvDataHull<TicketCount> hull = null;
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("userid", uid);
 			map.put("channel", channel);
-			map.put("season", season);
 			map.put("category", category);
 			map.put("version", LetvConstant.Global.VERSION);
+			map.put("season", season);
 			map.put("pcode", LetvConstant.Global.PCODE);
 			Collection<String> keyset = map.keySet();
 			List<String> list = new ArrayList<String>(keyset);
@@ -1583,22 +1623,31 @@ public class PlayLiveController extends PlayController implements
 			Collections.sort(list);
 
 			StringBuilder stringBuilder = new StringBuilder("");
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println("key键---值: " + list.get(i) + ","
+						+ map.get(list.get(i)));
+				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i))
+						+ "&");
+			}
 			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 			String apisign = MD5.toMd5(stringBuilder.toString());
 
-			if (!hasInitExpireTime) {// 更新过期时间
-				hull = LetvHttpApi.getTicketCount(0, uid, channel, category,
-						season, turn, gameid, apisign, new TicketCountParser());
-				if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
-					;
-			}
+			hull = LetvHttpApi.getTicketCount(0, uid, channel, category,
+					season, turn, gameid, apisign, new TicketCountParser());
+			if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
+				;
+
 			return hull;
 		}
 
 		@Override
 		public void onPostExecute(int updateId, TicketCount result) {
 			Log.e("gongmeng", "ticket:" + result.count);
-
+			if (result.count.equalsIgnoreCase("0")) {
+				handler.setZeroTicket();
+			} else {
+				handler.setTicketCount(result.count);
+			}
 		}
 
 	}
@@ -1670,7 +1719,6 @@ public class PlayLiveController extends PlayController implements
 			builder.append("1");
 			if (!(token == null) && !token.equalsIgnoreCase("")) {
 				builder.append("&token=" + token);
-				builder.append("&uid=" + uid);
 			}
 			// Log.i("oyys", builder.toString());
 			LeService p2pService = LetvApplication.getInstance()
@@ -2394,6 +2442,21 @@ public class PlayLiveController extends PlayController implements
 		public void noUpdate() {
 			tasks.remove(this);
 			super.noUpdate();
+		}
+	}
+
+	@Override
+	public void onUseTicket(int status) {
+		if (status == 1) {
+			Uri uri = Uri
+					.parse("http://yuanxian.letv.com/zt2014/yingchaofufeizhuanti/index.shtml");
+			Intent payWebView = new Intent(Intent.ACTION_VIEW, uri);
+			getActivity().startActivity(payWebView);
+		} else {
+			RequestUseTicket requestUseTicket = new RequestUseTicket(
+					this.getActivity(), game.liveid, PreferencesManager
+							.getInstance().getUserId());
+			requestUseTicket.start();
 		}
 	}
 

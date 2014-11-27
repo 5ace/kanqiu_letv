@@ -12,6 +12,7 @@ public class UseTicketParser extends LetvMainParser<UseTicket, JSONObject> {
 		UseTicket bean = new UseTicket();
 		if(data==null)
 			return null;
+		JSONObject body = data.getJSONObject("body");
 		JSONObject result = data.getJSONObject("result");
 		bean.status = result.getString("status");
 		return bean;

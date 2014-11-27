@@ -291,10 +291,12 @@ public class LiveAdapter extends SectionedBaseAdapter {
 				game.isGameSubscribed = DBManager.getInstance()
 						.getSubscribeGameTrace().hasSubscribeGameTrace(game.id);
 				// 付费比赛单独判断
-				if (game.pay.equalsIgnoreCase("1")) {
+				if (!game.checkPay && !game.isGameSubscribed
+						&& game.pay.equalsIgnoreCase("1")) {
 					RequestCheck requestCheck = new RequestCheck(context,
 							mViewChildHodler.watchStatus, game,
-							PreferencesManager.getInstance().getUserId());
+							PreferencesManager.getInstance().getUserId(),
+							section, position, date);
 					requestCheck.start();
 				} else if (!game.isGameSubscribed) {
 					// 未预约
@@ -379,55 +381,65 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 					// -----------------------------------------------------------------------
 					// 已预约
-					mViewChildHodler.watchStatus
-							.setImageResource(R.drawable.live_unsubcribe_btn);
-					final ViewChildHolder mTViewChildHodler = mViewChildHodler;
-					mViewChildHodler.watchStatus.setClickable(true);
-					mViewChildHodler.watchStatus.setEnabled(true);
-					mViewChildHodler.watchStatus
-							.setOnClickListener(new OnClickListener() {
+					if (game.pay.equalsIgnoreCase("1")) {
+						mViewChildHodler.watchStatus
+								.setImageResource(R.drawable.live_ordered);
+						mViewChildHodler.watchStatus.setClickable(false);
+						mViewChildHodler.watchStatus.setEnabled(false);
+					} else {
+						mViewChildHodler.watchStatus
+								.setImageResource(R.drawable.live_unsubcribe_btn);
+						final ViewChildHolder mTViewChildHodler = mViewChildHodler;
+						mViewChildHodler.watchStatus.setClickable(true);
+						mViewChildHodler.watchStatus.setEnabled(true);
+						mViewChildHodler.watchStatus
+								.setOnClickListener(new OnClickListener() {
 
-								@Override
-								public void onClick(View v) {
-									// 取消预约
-									new RequestUnsubscribe(getContext(), game,
-											new Runnable() {
+									@Override
+									public void onClick(View v) {
+										// 取消预约
+										new RequestUnsubscribe(getContext(),
+												game, new Runnable() {
 
-												@Override
-												public void run() {
-													mTViewChildHodler.watchStatus
-															.setImageResource(R.drawable.live_subcribe_btn);
-													// viewHodler.watchStatus.setText("未预约");
-													// game.isGameSubscribed =
-													// false;
-													// if (canDelete){
-													// ArrayList<Game> games =
-													// listChild.get(section);
-													// games.remove(position);
-													// if(games.isEmpty()) {
-													// listChild.remove(section);
-													// listParent.remove(section);
-													// }
-													//
-													// }
-													notifyDataSetChanged();
+													@Override
+													public void run() {
+														mTViewChildHodler.watchStatus
+																.setImageResource(R.drawable.live_subcribe_btn);
+														// viewHodler.watchStatus.setText("未预约");
+														// game.isGameSubscribed
+														// =
+														// false;
+														// if (canDelete){
+														// ArrayList<Game> games
+														// =
+														// listChild.get(section);
+														// games.remove(position);
+														// if(games.isEmpty()) {
+														// listChild.remove(section);
+														// listParent.remove(section);
+														// }
+														//
+														// }
+														notifyDataSetChanged();
 
-													if (null != mHomeFragmentLsn) {
-														mHomeFragmentLsn
-																.removeSubscribe(game.id);
+														if (null != mHomeFragmentLsn) {
+															mHomeFragmentLsn
+																	.removeSubscribe(game.id);
+														}
+														if (null != mRightFragmentLsn) {
+															mRightFragmentLsn
+																	.updateSuscribeStatus();
+														}
+														ExpandlableItem eItem = new ExpandlableItem();
+														eItem.groupPosition = section;
+														eItem.childPosition = position;
+														unsubscribeList
+																.add(eItem);
 													}
-													if (null != mRightFragmentLsn) {
-														mRightFragmentLsn
-																.updateSuscribeStatus();
-													}
-													ExpandlableItem eItem = new ExpandlableItem();
-													eItem.groupPosition = section;
-													eItem.childPosition = position;
-													unsubscribeList.add(eItem);
-												}
-											}).start();
-								}
-							});
+												}).start();
+									}
+								});
+					}
 				}
 
 			}
@@ -672,14 +684,28 @@ public class LiveAdapter extends SectionedBaseAdapter {
 	private class RequestCheck extends LetvHttpAsyncTask<DynamicCheck> {
 
 		private String pid, from, streamId, splatId, liveid, lsstart, userId,
-				apisign;
-
+				apisign, date;
+		private int section;
+		private int position;
 		ImageView watchStatus;
 		private Game game;
 
+		/**
+		 * 
+		 * @param context
+		 * @param watchstatus
+		 * @param game
+		 * @param userId
+		 * @param section
+		 * @param position
+		 * @param date
+		 */
 		public RequestCheck(Context context, ImageView watchstatus, Game game,
-				String userId) {
+				String userId, int section, int position, String date) {
 			super(context);
+			this.date = date;
+			this.section = section;
+			this.position = position;
 			this.game = game;
 			this.watchStatus = watchstatus;
 			pid = game.id;
@@ -753,26 +779,31 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 		@Override
 		public void onPostExecute(int updateId, DynamicCheck result) {
+			game.checkPay = true;
 			if (result.code != null && !result.code.equalsIgnoreCase("1004")) {
+				// 直播预约
+				new RequestSubscribe(getContext(), game, date, new Runnable() {
+					@Override
+					public void run() {
+						notifyDataSetChanged();
+						if (null != mHomeFragmentLsn) {
+							mHomeFragmentLsn.addSubscribe(game, date);
+						}
+						if (null != mRightFragmentLsn) {
+							mRightFragmentLsn.updateSuscribeStatus();
+						}
+						for (ExpandlableItem uExpandlableItem : unsubscribeList) {
+							if (uExpandlableItem.groupPosition == section
+									&& uExpandlableItem.childPosition == position) {
+								unsubscribeList.remove(uExpandlableItem);
+								break;
+							}
+						}
+					}
+				}).start();
 				if (watchStatus != null)
 					watchStatus.setImageResource(R.drawable.live_ordered);
-				// 直播预约
-				new RequestSubscribe(getContext(), game, game.playDate,
-						new Runnable() {
-							@Override
-							public void run() {
-								notifyDataSetChanged();
 
-								if (null != mHomeFragmentLsn) {
-									mHomeFragmentLsn.addSubscribe(game,
-											game.playDate);
-								}
-								if (null != mRightFragmentLsn) {
-									mRightFragmentLsn.updateSuscribeStatus();
-								}
-								// TODO 确定date的格式，清理订阅列表
-							}
-						}).start();
 			} else {
 				watchStatus.setImageResource(R.drawable.live_order);
 				watchStatus.setClickable(true);
