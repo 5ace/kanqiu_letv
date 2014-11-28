@@ -3338,7 +3338,6 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			e.printStackTrace();
 		}
 	}
-
 	@Override
 	public void onPlayFailed() {
 

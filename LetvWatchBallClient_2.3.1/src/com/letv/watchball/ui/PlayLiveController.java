@@ -29,6 +29,7 @@ import com.letv.pp.url.PlayUrl;
 import com.letv.utils.MD5;
 import com.letv.watchball.LetvApplication;
 import com.letv.watchball.R;
+import com.letv.watchball.activity.LoginMainActivity;
 import com.letv.watchball.adapter.DetailLivePlayPagerAdapter;
 import com.letv.watchball.adapter.LivelPlayScrollingTabsAdapter;
 import com.letv.watchball.async.LetvBaseTaskImpl;
@@ -247,6 +248,7 @@ public class PlayLiveController extends PlayController implements
 	// 用于鉴权的token
 	private String payToken_live500 = "";
 	private String payToken_live800 = "";
+	private boolean nologin = false;
 	/**
 	 * 播放页广告fragment
 	 * */
@@ -271,7 +273,12 @@ public class PlayLiveController extends PlayController implements
 	public PlayLiveController(BasePlayActivity activity) {
 		super(activity);
 	}
-
+	@Override
+	public void onActivityRestart(){
+		Log.e("gongmeng", "recreate it");
+		if(game.pay.equalsIgnoreCase("1")&&nologin)
+			getActivity().recreate();
+	}
 	/**
 	 * 刷新handler
 	 * */
@@ -401,6 +408,12 @@ public class PlayLiveController extends PlayController implements
 				if (Integer.valueOf(game.pay) == 1) {
 					String userId = PreferencesManager.getInstance()
 							.getUserId();
+					if (userId == null || userId.equalsIgnoreCase("")) {
+						nologin=true;
+						loadLoginUI();
+						return;
+					}
+
 					String pid = game.id;
 					String liveid = game.liveid;
 					String from = "mobile";
@@ -414,10 +427,10 @@ public class PlayLiveController extends PlayController implements
 					if (payToken_live500 == null
 							|| payToken_live500.equalsIgnoreCase("")) {
 						// TODO
+						startLoadingData();
 						loadPayUI();
 						RequestTicketCount requestTicketCount = new RequestTicketCount(
-								this.getActivity(), game.liveid,
-								PreferencesManager.getInstance().getUserId(),
+								this.getActivity(), game.liveid, userId,
 								ticketFrame);
 						requestTicketCount.start();
 						return;
@@ -438,6 +451,12 @@ public class PlayLiveController extends PlayController implements
 					if (Integer.valueOf(game.pay) == 1) {
 						String userId = PreferencesManager.getInstance()
 								.getUserId();
+						if (userId == null || userId.equalsIgnoreCase("")) {
+							nologin=true;
+							loadLoginUI();
+							return;
+						}
+
 						String pid = game.id;
 						String liveid = game.liveid;
 						String from = "mobile";
@@ -453,9 +472,8 @@ public class PlayLiveController extends PlayController implements
 							// TODO
 							loadPayUI();
 							RequestTicketCount requestTicketCount = new RequestTicketCount(
-									this.getActivity(), game.liveid,
-									PreferencesManager.getInstance()
-											.getUserId(), ticketFrame);
+									this.getActivity(), game.liveid, userId,
+									ticketFrame);
 							requestTicketCount.start();
 
 						}
@@ -479,20 +497,34 @@ public class PlayLiveController extends PlayController implements
 		mFullController.initHighOrLow();
 	}
 
-	/**
-	 * 停止播放，加载直播券的UI
-	 */
-	private void loadPayUI() {
+	private void loadLoginUI() {
+		this.startLoadingData();
 		this.mHalfController.pause();
-		// getActivity().getPlayUpper().removeAllViews();
+		getActivity().getPlayUpper().removeAllViews();
 
 		this.ticketFrame = new PlayHalfPay(this.getActivity(), game.homeImg,
 				game.guestImg);
 		this.ticketFrame.setLayoutParams(new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		ticketFrame.setCallBack(this);
+		ticketFrame.noLogin();
 		getActivity().getPlayUpper().addView(ticketFrame);
+	}
 
+	/**
+	 * 停止播放，加载直播券的UI
+	 */
+	private void loadPayUI() {
+		this.mHalfController.pause();
+		getActivity().getPlayUpper().removeAllViews();
+		View live_half_controller = getActivity().findViewById(R.id.live_half_controller);
+		live_half_controller.setVisibility(8);
+		this.ticketFrame = new PlayHalfPay(this.getActivity(), game.homeImg,
+				game.guestImg);
+		this.ticketFrame.setLayoutParams(new LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		ticketFrame.setCallBack(this);
+		getActivity().getPlayUpper().addView(ticketFrame);
 	}
 
 	public String requestDynamicCheck(String pid, String liveid, String from,
@@ -1237,7 +1269,7 @@ public class PlayLiveController extends PlayController implements
 		aid = intent.getLongExtra(PlayLiveController.AID, 0);
 		vid = intent.getLongExtra(PlayLiveController.VID, 0);
 		id = intent.getLongExtra(PlayLiveController.ID,
-				Long.parseLong(TextUtils.isEmpty(game.id) ? "0" : game.id));
+				Long.valueOf(TextUtils.isEmpty(game.id) ? "0" : game.id));
 		mCode = intent.getStringExtra(PlayLiveController.LIVE_CODE);
 		// mStreamId = intent.getStringExtra(LIVE_STREAMID);
 		isPlayedAd = intent.getBooleanExtra("fromPip", false);
@@ -1514,6 +1546,7 @@ public class PlayLiveController extends PlayController implements
 			this.liveid = liveid;
 			this.uid = uid;
 			if (uid == null || uid.equalsIgnoreCase("")) {
+
 				Toast.makeText(context, "请登录后收看付费视频", Toast.LENGTH_LONG).show();
 				this.cancel();
 			}
@@ -1570,6 +1603,7 @@ public class PlayLiveController extends PlayController implements
 				Log.e("gongmeng", "reload activity");
 				getActivity().recreate();
 			} else {
+				Log.e("gongmeng", "reload activity");
 				Toast.makeText(context, "购买失败", Toast.LENGTH_LONG).show();
 			}
 		}
@@ -2040,7 +2074,7 @@ public class PlayLiveController extends PlayController implements
 			DataStatistics.getInstance().sendPlayInfo(getActivity(), "0", "0",
 					actionCode, "0", (pt > 0 ? pt : 0) + "", "-",
 					LetvUtil.getUID(), LetvUtil.getUUID(getActivity()), "4",
-					URLEncoder.encode(pid), URLEncoder.encode(vid),
+					URLEncoder.encode(""), URLEncoder.encode(vid),
 					video == null ? "-" : video.getDuration() + "", "-", type,
 					vt, realUrl, "-", py, null, "-", LetvUtil.getPcode(),
 					PreferencesManager.getInstance().isLogin() ? 0 : 1, ch,
@@ -2447,7 +2481,7 @@ public class PlayLiveController extends PlayController implements
 
 	@Override
 	public void onUseTicket(int status) {
-		if (status == 1) {
+		if (status == 0) {
 			Uri uri = Uri
 					.parse("http://yuanxian.letv.com/zt2014/yingchaofufeizhuanti/index.shtml");
 			Intent payWebView = new Intent(Intent.ACTION_VIEW, uri);
@@ -2458,6 +2492,19 @@ public class PlayLiveController extends PlayController implements
 							.getInstance().getUserId());
 			requestUseTicket.start();
 		}
+	}
+
+	@Override
+	public void onLogin() {
+		LoginMainActivity.launch(this.getActivity().getPlayFragment());
+	}
+	
+	@Override
+	public void onBuyTicket() {
+		Uri uri = Uri
+				.parse("http://yuanxian.letv.com/zt2014/yingchaofufeizhuanti/index.shtml");
+		Intent payWebView = new Intent(Intent.ACTION_VIEW, uri);
+		getActivity().startActivity(payWebView);
 	}
 
 }

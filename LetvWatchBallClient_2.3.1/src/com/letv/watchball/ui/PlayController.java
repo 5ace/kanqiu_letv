@@ -211,7 +211,10 @@ public abstract class PlayController implements OnRelevantStateChangeListener, L
 			}
 		}
 	}
-
+	public void onActivityRestart(){
+		
+	}
+	
 	public void create() {
 		findGestrueView();
 		readArguments();

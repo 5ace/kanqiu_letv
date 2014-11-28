@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/live_pay_layout_container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/live_pay_bg"
+    android:focusable="true"
+    android:visibility="visible" >
+
+    <RelativeLayout
+        android:id="@+id/live_pay_no_login_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="21.0dip"
+        android:paddingRight="21.0dip"
+        android:paddingTop="30.0dip"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:id="@+id/live_pay_icon_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" >
+
+            <ImageView
+                android:id="@+id/live_pay_home_icon"
+                android:layout_width="58.0dip"
+                android:layout_height="58.0dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/live_pay_live_vs"
+                android:layout_width="wrap_content"
+                android:layout_height="19.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12.0dip"
+                android:layout_toRightOf="@id/live_pay_home_icon"
+                android:contentDescription="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/live_pay_vs" />
+
+            <ImageView
+                android:id="@+id/live_pay_guest_icon"
+                android:layout_width="58.0dip"
+                android:layout_height="58.0dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12.0dip"
+                android:layout_toRightOf="@id/live_pay_live_vs"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/live_pay_login_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="21.0dip"
+        android:paddingRight="21.0dip"
+        android:paddingTop="90.0dip"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/live_pay_login_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20.0dip"
+            android:gravity="center_horizontal"
+            android:text="本场比赛为付费直播"
+            android:textColor="@color/letv_color_ff39fffd"
+            android:textSize="@dimen/letv_dimens_text_15" />
+
+        <TextView
+            android:id="@+id/live_pay_login_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/live_pay_login_text1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10.0dip"
+            android:gravity="center_horizontal"
+            android:textColor="@color/letv_color_ffffffff"
+            android:textSize="@dimen/letv_dimens_text_15" />
+
+        <TextView
+            android:id="@+id/live_pay_login"
+            android:layout_width="wrap_content"
+            android:layout_height="42.0dip"
+            android:layout_below="@id/live_pay_login_text2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7.0dip"
+            android:background="@drawable/live_pay_button_selector"
+            android:gravity="center"
+            android:paddingLeft="30.0dip"
+            android:paddingRight="30.0dip"
+            android:textColor="@drawable/live_pay_link_selector"
+            android:textSize="@dimen/letv_dimens_text_18" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/live_nologin_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="21.0dip"
+        android:paddingRight="21.0dip"
+        android:paddingTop="90.0dip"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/live_pay_nologin_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20.0dip"
+            android:gravity="center_horizontal"
+            android:text="本场比赛为付费直播"
+            android:textColor="@color/letv_color_ff39fffd"
+            android:textSize="@dimen/letv_dimens_text_15" />
+
+        <TextView
+            android:id="@+id/live_pay_nologin_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/live_pay_nologin_text1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10.0dip"
+            android:gravity="center_horizontal"
+            android:textColor="@color/letv_color_ffffffff"
+            android:textSize="@dimen/letv_dimens_text_15" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/live_pay_nologin_text2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7.0dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/button1"
+                android:layout_width="130.0dip"
+                android:layout_height="42.0dip"
+                android:layout_gravity="left"
+                android:background="@drawable/live_pay_button_selector"
+                android:gravity="center"
+                android:text="已订票请登录"
+                android:textColor="@drawable/live_pay_link_selector"
+                android:textSize="@dimen/letv_dimens_text_18" />
+
+            <TextView
+                android:id="@+id/space"
+                android:layout_width="20.0dip"
+                android:layout_height="42.0dip"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/button2"
+                android:layout_width="130.0dip"
+                android:layout_height="42.0dip"
+                android:layout_gravity="right"
+                android:background="@drawable/live_pay_button_selector"
+                android:gravity="center"
+                android:onClick="buy_ticket"
+                android:text="立即订票"
+                android:textColor="@drawable/live_pay_link_selector"
+                android:textSize="@dimen/letv_dimens_text_18" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

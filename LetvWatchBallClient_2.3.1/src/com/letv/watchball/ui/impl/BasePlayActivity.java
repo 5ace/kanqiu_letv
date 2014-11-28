@@ -304,7 +304,6 @@ public class BasePlayActivity extends LetvBaseActivity {
 		}
 		Intent intent = new Intent(context, BasePlayActivity.class);
 		int launchMode = 0;
-		Log.e("gongmeng", "vid:" + vid);
 		if (aid > 0 && vid > 0) {
 			launchMode = LAUNCH_MODE_LIVE;
 		} else {
@@ -472,17 +471,22 @@ public class BasePlayActivity extends LetvBaseActivity {
 		initWindow();
 
 	}
-
+	@Override
+	protected void onRestart(){
+		super.onRestart();
+		this.mPlayController.onActivityRestart();
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		
 		if (!LetvShareControl.getInstance().isShare()) {
 			new RequestShareLinkTask(this).start();
 		}
 		sm.registerListener(mOrientationSensorListener, sensor,
 				SensorManager.SENSOR_DELAY_UI);
 		registerReceiver();
+		//this.mPlayController.onActivityResume();
 		// boolean isLogin = PreferencesManager.getInstance().isLogin();
 		// if (isLogin) {
 		//

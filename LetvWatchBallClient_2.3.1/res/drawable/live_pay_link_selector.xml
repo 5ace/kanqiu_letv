@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@color/letv_color_ff00a0e9" android:color="@color/letv_color_ff00a0e9" />
+    <item android:drawable="@color/letv_color_ffffffff" android:color="@color/letv_color_ffffffff" />
+</selector>
