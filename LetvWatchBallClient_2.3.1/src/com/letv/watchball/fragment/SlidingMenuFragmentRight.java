@@ -70,7 +70,7 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+		
 		if (view != null) {
 	        ViewGroup parent = (ViewGroup) view.getParent();
 	        if (parent != null)
@@ -203,10 +203,14 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 			String tk = PreferencesManager.getInstance().getSso_tk();
 			String userName = PreferencesManager.getInstance().getUserName();
 			new RequestLoginTask(getActivity(), tk, userName).start();
+			this.mRightFragmentLsn.resetMainFragment();
 		} else {
 			// 用户注销登录
 			getView().findViewById(R.id.textv_nickname_hint).setVisibility(View.VISIBLE);
 			getView().findViewById(R.id.btn_head_loginout).setVisibility(View.GONE);
+			//刷新直播
+			
+			this.mRightFragmentLsn.resetMainFragment();
 		}
 	}
 	

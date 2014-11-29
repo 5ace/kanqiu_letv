@@ -41,8 +41,6 @@ public class LetvWbPushService extends Service {
 	WakeLock mWakeLock;
 
       Handler mPushHandler = new Handler(){
-
-
             @Override
             public void handleMessage(Message msg) {
                   switch (msg.what){

@@ -9,6 +9,7 @@ import java.io.Writer;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.Properties;
 import java.util.TreeSet;
 
@@ -41,7 +42,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	private static final String VERSION_CODE = "versionCode";
 	private static final String STACK_TRACE = "STACK_TRACE";
 	/** 错误报告文件的扩展名 */
-	private static final String CRASH_REPORTER_EXTENSION = ".cr";
+	private static final String CRASH_REPORTER_EXTENSION = ".txt";
 
 	/** 保证只有一个CrashHandler实例 */
 	private CrashHandler() {
@@ -70,27 +71,30 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	 * 当UncaughtException发生时会转入该函数来处理
 	 */
 	@Override
-	public void uncaughtException(Thread thread, Throwable ex) {
-		if (!handleException(ex) && mDefaultHandler != null) {
-			// 如果用户没有处理则让系统默认的异常处理器来处理
-                  Log.d("error","1111111111111");
-			mDefaultHandler.uncaughtException(thread, ex);
-            } else {
-                  Log.d("error", "2222222222222");
-                  // Sleep一会后结束程序
-			// 来让线程停止一会是为了显示Toast信息给用户，然后Kill程序
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				Log.e(TAG, "Error : ", e);
-			}finally {
-                        Log.d("error", "33333333333333");
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(0);
-
-                  }
-		}
+	public void uncaughtException(Thread thread, Throwable throwable) {
+		
+		StringBuilder crashInfoStringBuilder=new StringBuilder(); 
+        Context context = this.mContext;
+        this.handleException(throwable);
+     
+        //获取导致Crash的时间  
+        String uncaughtException=getUncaughtException(throwable); 
+        crashInfoStringBuilder.append(uncaughtException+"/n"); 
+        crashInfoStringBuilder.append("------------------"+"/n"); 
+         
+        System.out.println("crashInfo如下:"+"/n"+crashInfoStringBuilder.toString()); 
+         
+    
 	}
+    public static String getUncaughtException(Throwable throwable){ 
+        StringWriter stringWriter = new StringWriter(); 
+        PrintWriter printWriter = new PrintWriter(stringWriter); 
+        throwable.printStackTrace(printWriter); 
+        printWriter.close(); 
+        String uncaughtException=stringWriter.toString(); 
+        return uncaughtException; 
+ 
+    } 
 
 	/**
 	 * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成. 开发者可以根据自己的情况来自定义异常处理逻辑
@@ -118,9 +122,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			Log.e(TAG,ex.getLocalizedMessage());
 		}
 		// 收集设备信息
-//		collectCrashDeviceInfo(mContext);
+		collectCrashDeviceInfo(mContext);
 		// 保存错误报告文件
-		//saveCrashInfoToFile(ex);
+		Log.e("gongmeng", "crash");
+		saveCrashInfoToFile(ex);
 		// 发送错误报告到服务器
 		//sendCrashReportsToServer(mContext);
 		return true;
@@ -197,7 +202,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			long timestamp = System.currentTimeMillis();
 			String fileName = "crash-" + timestamp + CRASH_REPORTER_EXTENSION;
 			FileOutputStream trace = mContext.openFileOutput(fileName,
-					Context.MODE_PRIVATE);
+					Context.MODE_WORLD_READABLE);
 			mDeviceCrashInfo.store(trace, "");
 			trace.flush();
 			trace.close();

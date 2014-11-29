@@ -136,6 +136,8 @@ public class LetvApplication extends Application {
 			Log.i(TAG, "application already register");
 		}
 		this.getTokenInBackground();
+		
+		
 		CrashHandler mCrashHandler = CrashHandler.getInstance();
 		initAds();
 		if (isAlowThrowException) {

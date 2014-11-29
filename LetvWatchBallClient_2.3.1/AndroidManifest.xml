@@ -420,7 +420,7 @@
             <intent-filter>
                 <action android:name="letv_push_start_service_action" />
             </intent-filter>
-        </receiver> 
+        </receiver>
         <!-- 推送服务需要注册的End -->
     </application>
 

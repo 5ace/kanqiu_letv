@@ -108,7 +108,7 @@ public class FragmentManager implements  LeftFragmentLsn, HomeFragmentLsn, Right
 				mContext.getSlidingMenu().setShadowWidth(500);
 				mContext.getSupportFragmentManager().beginTransaction().addToBackStack(null);
 				mContext.getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame_two, rightFragment).commitAllowingStateLoss();
-		
+				
 				// customize the SlidingMenu
 				SlidingMenu sm = mContext.getSlidingMenu();
 				sm.setShadowWidthRes(R.dimen.shadow_width);
@@ -294,7 +294,14 @@ public class FragmentManager implements  LeftFragmentLsn, HomeFragmentLsn, Right
 	public void updateSuscribeStatus() {
 		mainFragment.updateSuscribeStatus();
 	}
-
+	@Override
+	public void resetMainFragment(){
+		mainFragment.reloadFragment();
+	}
+	@Override
+    public void toggleHome() {
+    	mainFragment.refreshMain();
+    }
 	@Override
 	public void reloadAllDatas() {
 		leftFragment.reloadMatchList();

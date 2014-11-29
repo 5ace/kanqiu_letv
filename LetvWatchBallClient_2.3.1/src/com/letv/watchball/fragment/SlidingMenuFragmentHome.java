@@ -150,7 +150,9 @@ public class SlidingMenuFragmentHome extends Fragment implements OnClickListener
 //			mHomeFragmentLsn.toggleRight();
 //		}
 	}
-
+	public void setGLiveInfoFragment(GLiveInfoFragment fragment){
+		
+	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// Log.d("lhz", "SlidingMenuFragmentHome:"+"onActivityCreated");
@@ -355,8 +357,18 @@ public class SlidingMenuFragmentHome extends Fragment implements OnClickListener
 		mHomeFragmentLsn=null;
 
 	}
-
+	public void reloadFragment(){
+		mLiveFragment.refreshData();
+	}
+	
+	public void refreshMain(){
+		Log.e("gongmeng", "refresh the main fragment");
+		if(isLiveFragment) {
+			mLiveFragment.refreshData();
+		}
+	}
 	public void toggleHome() {
+		
 		if (isLiveFragment) {
 			mLiveFragment.requestLiveData();
 		} else {

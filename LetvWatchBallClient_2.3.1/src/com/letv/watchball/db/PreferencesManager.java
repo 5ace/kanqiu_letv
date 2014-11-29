@@ -345,6 +345,21 @@ public class PreferencesManager {
 	}
 
 	/**
+	 * 设置直播券标志位
+	 */
+	public void setTicketCount(String count) {
+		SharedPreferences sp = context.getSharedPreferences(PERSONAL_CENTER_SP_NAME, Context.MODE_PRIVATE);
+		sp.edit().putString("ticketCount", count).commit();
+	}
+	/**
+	 * 得到直播券标志位
+	 * */
+	public String getTicketCount() {
+		SharedPreferences sp = context.getSharedPreferences(PERSONAL_CENTER_SP_NAME, Context.MODE_PRIVATE);
+		return sp.getString("ticketCount", "");
+	}
+
+	/**
 	 * 设置UserID
 	 * */
 	public void setUserId(String userId) {

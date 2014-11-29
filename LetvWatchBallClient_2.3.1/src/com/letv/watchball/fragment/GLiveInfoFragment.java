@@ -232,7 +232,6 @@ public class GLiveInfoFragment extends Fragment {
 	private void init() {
 		adapter = new LiveAdapter(getActivity(), false);
 		adapter.setMode(MODE.HOME);
-
 		mPullToRefreshListViewHeader.getRefreshableView().setAdapter(adapter);
 		mPullToRefreshListViewHeader
 				.setOnRefreshListener(new OnRefreshListener2<PinnedHeaderListView>() {
@@ -299,6 +298,10 @@ public class GLiveInfoFragment extends Fragment {
 
 	}
 
+	public void refreshData(){
+		prePageIndex=0;
+		loadFirstPage(false,false);
+	}
 	/**
 	 * 获取/刷新 首页数据
 	 * 
@@ -329,6 +332,7 @@ public class GLiveInfoFragment extends Fragment {
 	 * 加载下一页数据
 	 */
 	private void loadNextPage() {
+		
 		nextPageIndex++;
 		new RequestMatchList(getActivity(), nextPageIndex, false, false,
 				new Runnable() {

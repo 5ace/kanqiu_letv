@@ -114,7 +114,7 @@ public class Game implements Serializable{
 			
 //    public boolean isFirstGameToday;//是否是今天的第一场比赛
       public boolean isGameSubscribed;//当前比赛是否被预定了
-      public boolean checkPay; //当前比赛是否判断过付费
+      
       /**
        * 比赛轮次
        */
