@@ -598,23 +598,7 @@ public class PlayLiveController extends PlayController implements
 
 		mLiveUrl = url;
 
-		// 播放广告
-		LogInfo.log("ads", "isPlayedAd=" + isPlayedAd + "playAdFragment="
-				+ playAdFragment);
-		if (!isPlayedAd && playAdFragment != null) {
-			timeRequestAd = System.currentTimeMillis();
-			LogInfo.log("ads", "request ads");
-
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					getFrontAdNormal(url, "1");
-					isPlayedAd = true;
-				}
-			}, 500);
-
-		}
-
+		
 		if (TextUtils.isEmpty(streamId)) {
 			play(url);
 		} else {
@@ -1708,8 +1692,21 @@ public class PlayLiveController extends PlayController implements
 
 		@Override
 		public boolean onPreExecute() {
-			// getFrontAd(url , getLaunchMode() == PLAY_LIVE_LUNBO ? "2" : "1"
-			// );
+			// 播放广告
+			LogInfo.log("ads", "isPlayedAd=" + isPlayedAd + "playAdFragment="
+					+ playAdFragment);
+			if (!isPlayedAd && playAdFragment != null) {
+				timeRequestAd = System.currentTimeMillis();
+				LogInfo.log("ads", "request ads");
+
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getFrontAdNormal(url, "1");
+						isPlayedAd = true;
+					}
+				}, 500);
+			}
 			return true;
 		}
 

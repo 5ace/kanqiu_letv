@@ -376,7 +376,7 @@
             android:name="UMENG_APPKEY"
             android:value="51f884fe56240ba2d7040413" >
         </meta-data>
-        <meta-data android:name="UMENG_CHANNEL" android:value="appnt5" />
+        <meta-data android:name="UMENG_CHANNEL" android:value="letvm" />
         <!-- 推送服务需要注册的 Start-->
         <receiver
             android:name="com.letv.watchball.pushservice.LePushMessageReceiver"
