@@ -246,7 +246,7 @@ public class PlayLiveController extends PlayController implements
 	private boolean isP2PMode = PreferencesManager.getInstance().getUtp();
 
 	// 用于鉴权的token
-	private String payToken_live500 = "";
+	private String payToken_live350 = "";
 	private String payToken_live800 = "";
 	private boolean nologin = false;
 	/**
@@ -273,12 +273,13 @@ public class PlayLiveController extends PlayController implements
 	public PlayLiveController(BasePlayActivity activity) {
 		super(activity);
 	}
+
 	@Override
-	public void onActivityRestart(){
-		Log.e("gongmeng", "recreate it");
-		if(game.pay.equalsIgnoreCase("1")&&nologin)
+	public void onActivityRestart() {
+		if (game.pay.equalsIgnoreCase("1") && nologin)
 			getActivity().recreate();
 	}
+
 	/**
 	 * 刷新handler
 	 * */
@@ -409,7 +410,7 @@ public class PlayLiveController extends PlayController implements
 					String userId = PreferencesManager.getInstance()
 							.getUserId();
 					if (userId == null || userId.equalsIgnoreCase("")) {
-						nologin=true;
+						nologin = true;
 						loadLoginUI();
 						return;
 					}
@@ -421,11 +422,11 @@ public class PlayLiveController extends PlayController implements
 					String splatId = "1013";
 					String lsstart = String.valueOf(game.status);
 					// (pid,liveid,from,streamId,splatId,userId,version,pcode)
-					payToken_live500 = requestDynamicCheck(pid, liveid, from,
+					payToken_live350 = requestDynamicCheck(pid, liveid, from,
 							streamId, splatId, userId, lsstart);
 					// 取得token失败后停止播放并尝试获取直播券数量
-					if (payToken_live500 == null
-							|| payToken_live500.equalsIgnoreCase("")) {
+					if (payToken_live350 == null
+							|| payToken_live350.equalsIgnoreCase("")) {
 						// TODO
 						startLoadingData();
 						loadPayUI();
@@ -435,9 +436,9 @@ public class PlayLiveController extends PlayController implements
 						requestTicketCount.start();
 						return;
 					}
-					Log.e("gogmeng", "live500_token" + payToken_live500);
+					// Log.e("gogmeng", "live500_token" + payToken_live500);
 					playUrl(game.live_350.streamId, game.live_350.liveUrl,
-							payToken_live500);
+							payToken_live350);
 				} else {
 					playUrl(game.live_350.streamId, game.live_350.liveUrl);
 				}
@@ -452,7 +453,7 @@ public class PlayLiveController extends PlayController implements
 						String userId = PreferencesManager.getInstance()
 								.getUserId();
 						if (userId == null || userId.equalsIgnoreCase("")) {
-							nologin=true;
+							nologin = true;
 							loadLoginUI();
 							return;
 						}
@@ -477,7 +478,7 @@ public class PlayLiveController extends PlayController implements
 							requestTicketCount.start();
 
 						}
-						Log.e("gogmeng", "live800_token" + payToken_live800);
+						// Log.e("gogmeng", "live800_token" + payToken_live800);
 						playUrl(game.live_800.streamId, game.live_800.liveUrl,
 								payToken_live800);
 					} else {
@@ -517,7 +518,8 @@ public class PlayLiveController extends PlayController implements
 	private void loadPayUI() {
 		this.mHalfController.pause();
 		getActivity().getPlayUpper().removeAllViews();
-		View live_half_controller = getActivity().findViewById(R.id.live_half_controller);
+		View live_half_controller = getActivity().findViewById(
+				R.id.live_half_controller);
 		live_half_controller.setVisibility(8);
 		this.ticketFrame = new PlayHalfPay(this.getActivity(), game.homeImg,
 				game.guestImg);
@@ -530,8 +532,6 @@ public class PlayLiveController extends PlayController implements
 	public String requestDynamicCheck(String pid, String liveid, String from,
 			String streamId, String splatId, String userId, String lsstart) {
 		if (userId.equalsIgnoreCase("")) {
-			Toast.makeText(this.getActivity(), "请登录后收看付费视频", Toast.LENGTH_LONG)
-					.show();
 			return "";
 		}
 
@@ -557,10 +557,8 @@ public class PlayLiveController extends PlayController implements
 			stringBuilder
 					.append(list.get(i) + "=" + map.get(list.get(i)) + "&");
 		}
-		Log.e("gongmeng", "builder:" + stringBuilder.toString());
 		stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 		String apisign = MD5.toMd5(stringBuilder.toString());
-		Log.e("gongmeng", "apisign:" + apisign);
 
 		// String pid, String liveid,
 		// String from, String streamId, String splatId, String userId,
@@ -569,8 +567,6 @@ public class PlayLiveController extends PlayController implements
 			LetvDataHull<DynamicCheck> dh = LetvHttpApi.dynamiccheck(0, pid,
 					liveid, from, streamId, splatId, userId, lsstart, apisign,
 					new DynamicCheckParser());
-			Log.e("gongmeng", "sourceData:" + dh.getSourceData());
-			Log.e("gongmeng", "bean:" + dh.getDataEntity().toString());
 			if (dh != null
 					&& dh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
 				JSONObject data = new JSONObject(dh.getSourceData());
@@ -1092,7 +1088,7 @@ public class PlayLiveController extends PlayController implements
 			try {
 				IRVideo.getInstance(getActivity()).videoPlay();
 			} catch (Exception e) {
-				Log.e("gongmeng", "vvTracker Video play error");
+				// Log.e("gongmeng", "vvTracker Video play error");
 			}
 
 		} else if (mCurrentState == VideoView.STATE_PAUSED) {
@@ -1107,7 +1103,7 @@ public class PlayLiveController extends PlayController implements
 				try {
 					IRVideo.getInstance(getActivity()).videoPause();
 				} catch (Exception e) {
-					Log.e("gongmeng", "vvTracker pause error");
+					// Log.e("gongmeng", "vvTracker pause error");
 				}
 			}
 			// 暂停播放，隐藏loading
@@ -1137,7 +1133,7 @@ public class PlayLiveController extends PlayController implements
 			try {
 				IRVideo.getInstance(getActivity()).videoEnd();
 			} catch (Exception e) {
-				Log.e("gongmeng", "vvTracker pause error");
+				// Log.e("gongmeng", "vvTracker pause error");
 			}
 
 		} else if (mCurrentState == VideoView.STATE_IDLE) {
@@ -1158,7 +1154,7 @@ public class PlayLiveController extends PlayController implements
 			try {
 				IRVideo.getInstance(getActivity()).videoEnd();
 			} catch (Exception e) {
-				Log.e("gongmeng", "vvTracker end error");
+				// Log.e("gongmeng", "vvTracker end error");
 			}
 
 		} else if (mCurrentState == VideoView.STATE_STOPBACK) {// 调起stopback时回调
@@ -1178,7 +1174,7 @@ public class PlayLiveController extends PlayController implements
 				try {
 					IRVideo.getInstance(getActivity()).videoEnd();
 				} catch (Exception e) {
-					Log.e("gongmeng", "vvTracker end error");
+					// Log.e("gongmeng", "vvTracker end error");
 				}
 
 			}
@@ -1221,7 +1217,7 @@ public class PlayLiveController extends PlayController implements
 					try {
 						IRVideo.getInstance(getActivity()).videoPause();
 					} catch (Exception e) {
-						Log.e("gongmeng", "vvTracker pause error");
+						// Log.e("gongmeng", "vvTracker pause error");
 					}
 				}
 				// 暂停播放，隐藏loading
@@ -1273,6 +1269,8 @@ public class PlayLiveController extends PlayController implements
 		mCode = intent.getStringExtra(PlayLiveController.LIVE_CODE);
 		// mStreamId = intent.getStringExtra(LIVE_STREAMID);
 		isPlayedAd = intent.getBooleanExtra("fromPip", false);
+		if (!PreferencesManager.getInstance().getUserId().equalsIgnoreCase(""))
+			isPlayedAd = true;
 		// mLiveUrl = intent.getStringExtra(LIVE_URL);// anti leech , not read
 		// url,
 		// only use code
@@ -1546,11 +1544,8 @@ public class PlayLiveController extends PlayController implements
 			this.liveid = liveid;
 			this.uid = uid;
 			if (uid == null || uid.equalsIgnoreCase("")) {
-
-				Toast.makeText(context, "请登录后收看付费视频", Toast.LENGTH_LONG).show();
 				this.cancel();
 			}
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
@@ -1600,10 +1595,8 @@ public class PlayLiveController extends PlayController implements
 		@Override
 		public void onPostExecute(int updateId, UseTicket result) {
 			if (result.status.equalsIgnoreCase("1")) {
-				Log.e("gongmeng", "reload activity");
 				getActivity().recreate();
 			} else {
-				Log.e("gongmeng", "reload activity");
 				Toast.makeText(context, "购买失败", Toast.LENGTH_LONG).show();
 			}
 		}
@@ -1634,7 +1627,6 @@ public class PlayLiveController extends PlayController implements
 
 		@Override
 		public LetvDataHull<TicketCount> doInBackground() {
-			Log.e("gongmeng", "begin to get ticket count");
 			if (liveid == null || liveid.length() < 16)
 				return null;
 			String channel = liveid.substring(0, 2);
@@ -1676,7 +1668,6 @@ public class PlayLiveController extends PlayController implements
 
 		@Override
 		public void onPostExecute(int updateId, TicketCount result) {
-			Log.e("gongmeng", "ticket:" + result.count);
 			if (result.count.equalsIgnoreCase("0")) {
 				handler.setZeroTicket();
 			} else {
@@ -2498,7 +2489,7 @@ public class PlayLiveController extends PlayController implements
 	public void onLogin() {
 		LoginMainActivity.launch(this.getActivity().getPlayFragment());
 	}
-	
+
 	@Override
 	public void onBuyTicket() {
 		Uri uri = Uri
@@ -2507,4 +2498,36 @@ public class PlayLiveController extends PlayController implements
 		getActivity().startActivity(payWebView);
 	}
 
+	/**
+	 * 全屏播放器下播放付费视频
+	 * 
+	 * @param streamId
+	 *            视频流
+	 * @param liveUrl
+	 *            地址
+	 * @param steam_code
+	 *            视频码率
+	 */
+	public void playLivePayUrl(String streamId, String liveUrl, int stream_code) {
+		String pid = game.id;
+		String liveid = game.liveid;
+		String from = "mobile";
+		String userId = PreferencesManager.getInstance().getUserId();
+		String splatId = "1013";
+		String lsstart = String.valueOf(game.status);
+		String token;
+		if (stream_code == 350) {
+			if (payToken_live350.equalsIgnoreCase(""))
+				payToken_live350 = requestDynamicCheck(pid, liveid, from,
+						streamId, splatId, userId, lsstart);
+
+			token = payToken_live350;
+		} else {
+			if (payToken_live800.equalsIgnoreCase(""))
+				payToken_live800 = requestDynamicCheck(pid, liveid, from,
+						streamId, splatId, userId, lsstart);
+			token = payToken_live800;
+		}
+		playUrl(streamId, liveUrl, token);
+	}
 }

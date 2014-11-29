@@ -21,10 +21,10 @@ import com.letv.watchball.utils.LetvUtil;
 import com.letv.watchball.utils.NetWorkTypeUtils;
 import com.letv.watchball.utils.UIs;
 
-public class PlayLiveFullController extends BaseLivePlayController{
+public class PlayLiveFullController extends BaseLivePlayController {
 
 	private PlayLiveController mController;
-	
+
 	/**
 	 * 全屏控制器
 	 * */
@@ -53,7 +53,7 @@ public class PlayLiveFullController extends BaseLivePlayController{
 	 * 全屏时间
 	 * */
 	private TextView fullPlayControllerTime;
-	
+
 	/**
 	 * 全屏播放
 	 * */
@@ -68,200 +68,238 @@ public class PlayLiveFullController extends BaseLivePlayController{
 	 * 全屏声音进度条
 	 * */
 	private SeekBar fullPlayControllerSoundSeekbar;
-	
+
 	/**
 	 * 全屏声音布局
 	 * */
 	private View fullPlayControllerSoundLayout;
 
-//	/**
-//	 * 全屏直播节目引导按钮
-//	 */
-//	private ImageView fullLiveProgramIntroBar;
-	
+	// /**
+	// * 全屏直播节目引导按钮
+	// */
+	// private ImageView fullLiveProgramIntroBar;
+
 	private View toPip;
-	
+
 	/**
 	 * 傻逼半屏按钮
 	 * */
 	private View halfView;
-      private View fullLayout;
-      private View fullPlayControllerLowOrHigh;
-      private TextView fullPlayControllerLowText;
-      private TextView fullPlayControllerHighText;
-      private TextView fullPlayControllerHd;
+	private View fullLayout;
+	private View fullPlayControllerLowOrHigh;
+	private TextView fullPlayControllerLowText;
+	private TextView fullPlayControllerHighText;
+	private TextView fullPlayControllerHd;
 
-      public PlayLiveFullController(PlayLiveController mController, View root) {
+	public PlayLiveFullController(PlayLiveController mController, View root) {
 		this.mController = mController;
-		
+
 		findFullView(root);
 	}
-	
+
 	private void findFullView(View root) {
-		
-		fullPlayControllerLayoutt = root.findViewById(R.id.live_full_controller);
+
+		fullPlayControllerLayoutt = root
+				.findViewById(R.id.live_full_controller);
 		fullPlayControllerBack = root.findViewById(R.id.full_back);
 		fullPlayControllerBack.setOnClickListener(fullClick);
 		fullPlayControllerTitle = (TextView) root.findViewById(R.id.full_title);
 		fullPlayControllerNet = (ImageView) root.findViewById(R.id.full_net);
-		fullPlayControllerBattery = (ImageView) root.findViewById(R.id.full_battery);
+		fullPlayControllerBattery = (ImageView) root
+				.findViewById(R.id.full_battery);
 		fullPlayControllerTime = (TextView) root.findViewById(R.id.full_time);
 
-            fullLayout = root.findViewById(R.id.full_layout);
-            fullPlayControllerLowOrHigh = root.findViewById(R.id.full_loworhigh);
-            fullPlayControllerLowText = (TextView) root.findViewById(R.id.full_low_text);
-            fullPlayControllerHighText = (TextView) root.findViewById(R.id.full_high_text);
-            fullPlayControllerHd = (TextView) root.findViewById(R.id.full_hd);
-
+		fullLayout = root.findViewById(R.id.full_layout);
+		fullPlayControllerLowOrHigh = root.findViewById(R.id.full_loworhigh);
+		fullPlayControllerLowText = (TextView) root
+				.findViewById(R.id.full_low_text);
+		fullPlayControllerHighText = (TextView) root
+				.findViewById(R.id.full_high_text);
+		fullPlayControllerHd = (TextView) root.findViewById(R.id.full_hd);
 
 		fullPlayControllerPlay = (ImageView) root.findViewById(R.id.full_play);
-		fullPlayControllerSoundIcon = (ImageView) root.findViewById(R.id.full_sound_icon);
-		fullPlayControllerSoundSeekbar = (SeekBar) root.findViewById(R.id.full_sound_seekbar);
-		fullPlayControllerSoundSeekbar.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
-		fullPlayControllerSoundLayout = root.findViewById(R.id.full_sound_layout);
-		
-//		fullLiveProgramIntroBar = (ImageView) root.findViewById(R.id.full_liveprogram_bar);
-//		fullLiveProgramIntroBar.setOnClickListener(videoBarClick);
+		fullPlayControllerSoundIcon = (ImageView) root
+				.findViewById(R.id.full_sound_icon);
+		fullPlayControllerSoundSeekbar = (SeekBar) root
+				.findViewById(R.id.full_sound_seekbar);
+		fullPlayControllerSoundSeekbar
+				.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
+		fullPlayControllerSoundLayout = root
+				.findViewById(R.id.full_sound_layout);
+
+		// fullLiveProgramIntroBar = (ImageView)
+		// root.findViewById(R.id.full_liveprogram_bar);
+		// fullLiveProgramIntroBar.setOnClickListener(videoBarClick);
 		toPip = root.findViewById(R.id.play_pip);
 		toPip.setOnClickListener(pipClick);
 		halfView = root.findViewById(R.id.full_half_icon);
 		initState();
 	}
-	
+
 	private void initState() {
 		halfView.setVisibility(View.VISIBLE);
 		halfView.setOnClickListener(halfIconClick);
 		fullPlayControllerSoundLayout.measure(0, 0);
 		fullPlayControllerSoundIcon.setOnClickListener(vloumeIconClick);
 
-            fullLayout.setOnTouchListener(shieldTouchListener);
-            fullPlayControllerLowOrHigh.measure(0, 0);
-            fullLayout.measure(0, 0);
-            fullPlayControllerSoundLayout.measure(0, 0);
+		fullLayout.setOnTouchListener(shieldTouchListener);
+		fullPlayControllerLowOrHigh.measure(0, 0);
+		fullLayout.measure(0, 0);
+		fullPlayControllerSoundLayout.measure(0, 0);
 
-            fullPlayControllerHd.setText(mController.isHd ? PreferencesManager.getInstance().getPlayNormal_zh() : PreferencesManager.getInstance()
-                    .getPlayLow_zh());
-            fullPlayControllerHd.setVisibility(View.VISIBLE);
-
+		fullPlayControllerHd.setText(mController.isHd ? PreferencesManager
+				.getInstance().getPlayNormal_zh() : PreferencesManager
+				.getInstance().getPlayLow_zh());
+		fullPlayControllerHd.setVisibility(View.VISIBLE);
 
 	}
 
-      /**
-       * 屏蔽事件不向下传
-       * */
-      private View.OnTouchListener shieldTouchListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                  return true;
-            }
-      };
+	/**
+	 * 屏蔽事件不向下传
+	 * */
+	private View.OnTouchListener shieldTouchListener = new View.OnTouchListener() {
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			return true;
+		}
+	};
 
-      /**
-       * 初始化高清标清选项功能
-       * */
-      void initHighOrLow() {
-            boolean hasHigh = mController.hasHd;
-            boolean hasStandard = mController.hasStandard;
-            boolean isHd = PreferencesManager.getInstance().isPlayHd();
-            String hdName = PreferencesManager.getInstance().getPlayNormal_zh();
-            String lowName = PreferencesManager.getInstance().getPlayLow_zh();
-            fullPlayControllerHd.setText(isHd ? hdName : lowName);
+	/**
+	 * 初始化高清标清选项功能
+	 * */
+	void initHighOrLow() {
+		boolean hasHigh = mController.hasHd;
+		boolean hasStandard = mController.hasStandard;
+		boolean isHd = PreferencesManager.getInstance().isPlayHd();
+		String hdName = PreferencesManager.getInstance().getPlayNormal_zh();
+		String lowName = PreferencesManager.getInstance().getPlayLow_zh();
+		fullPlayControllerHd.setText(isHd ? hdName : lowName);
 
-            if (hasHigh && hasStandard) {
-                  fullPlayControllerHd.setEnabled(true);
+		if (hasHigh && hasStandard) {
+			fullPlayControllerHd.setEnabled(true);
 
-                  fullPlayControllerHd.setOnClickListener(lowOrHighClick);
-                  fullPlayControllerHighText.setText(hdName);
-                  fullPlayControllerLowText.setText(lowName);
-                  if (isHd) {
-                        // fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
-                        fullPlayControllerHighText.setTextColor(mController.getActivity().getResources().getColor(R.color.letv_color_ff00a0e9));
-                        fullPlayControllerLowText.setTextColor(mController.getActivity().getResources().getColor(R.color.letv_color_ffadadad));
-                  } else {
-                        // fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_low_bg);
-                        fullPlayControllerLowText.setTextColor(mController.getActivity().getResources().getColor(R.color.letv_color_ff00a0e9));
-                        fullPlayControllerHighText.setTextColor(mController.getActivity().getResources().getColor(R.color.letv_color_ffadadad));
-                  }
-                  fullPlayControllerLowText.setOnClickListener(play_low_listener);
-                  fullPlayControllerHighText.setOnClickListener(play_high_listener);
-            } else {
-                  fullPlayControllerHd.setEnabled(false);
-            }
+			fullPlayControllerHd.setOnClickListener(lowOrHighClick);
+			fullPlayControllerHighText.setText(hdName);
+			fullPlayControllerLowText.setText(lowName);
+			if (isHd) {
+				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
+				fullPlayControllerHighText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerLowText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+			} else {
+				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_low_bg);
+				fullPlayControllerLowText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerHighText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+			}
+			fullPlayControllerLowText.setOnClickListener(play_low_listener);
+			fullPlayControllerHighText.setOnClickListener(play_high_listener);
+		} else {
+			fullPlayControllerHd.setEnabled(false);
+		}
 
-            if (mController.getLaunchMode() != PlayController.PLAY_DEFAULT) {
-                  fullPlayControllerHd.setVisibility(View.VISIBLE);
-            }
-      }
+		if (mController.getLaunchMode() != PlayController.PLAY_DEFAULT) {
+			fullPlayControllerHd.setVisibility(View.VISIBLE);
+		}
+	}
 
+	/**
+	 * 标清按钮点击
+	 * */
+	private View.OnClickListener play_low_listener = new View.OnClickListener() {
+		public void onClick(View v) {
+			if (null != fullLayout) {
+				fullLayout.setVisibility(View.GONE);
+			}
+			if (mController.isHd) {
+				mController.isHd = false;
+				PreferencesManager.getInstance().setIsPlayHd(false);
+				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_low_bg);
+				fullPlayControllerLowText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerHighText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayControllerHd.setText(fullPlayControllerLowText
+						.getText());
+				if (!mController.game.pay.equalsIgnoreCase("1"))
+					mController.playUrl(mController.game.live_350.streamId,
+							mController.game.live_350.liveUrl);
+				else
+					mController.playLivePayUrl(
+							mController.game.live_350.streamId,
+							mController.game.live_350.liveUrl, 350);
 
-      /**
-       * 标清按钮点击
-       * */
-      private View.OnClickListener play_low_listener = new View.OnClickListener() {
-            public void onClick(View v) {
-                  if (null != fullLayout) {
-                        fullLayout.setVisibility(View.GONE);
-                  }
-                  if (mController.isHd) {
-                        mController.isHd = false;
-                        PreferencesManager.getInstance().setIsPlayHd(false);
-                        // fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_low_bg);
-                        fullPlayControllerLowText.setTextColor(mController.getActivity().getResources().getColor(R.color.letv_color_ff00a0e9));
-                        fullPlayControllerHighText.setTextColor(mController.getActivity().getResources().getColor(R.color.letv_color_ffadadad));
-                        fullPlayControllerHd.setText(fullPlayControllerLowText.getText());
-                        mController.playUrl(mController.game.live_350.streamId,mController.game.live_350.liveUrl);
+			}
+		}
+	};
 
-                  }
-            }
-      };
+	/**
+	 * 高清按钮点击
+	 * */
+	private View.OnClickListener play_high_listener = new View.OnClickListener() {
+		public void onClick(View v) {
+			if (null != fullLayout) {
+				fullLayout.setVisibility(View.GONE);
+			}
+			if (!mController.isHd) {
+				mController.isHd = true;
+				PreferencesManager.getInstance().setIsPlayHd(true);
+				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
+				fullPlayControllerHighText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerLowText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayControllerHd.setText(fullPlayControllerHighText
+						.getText());
+				if (!mController.game.pay.equalsIgnoreCase("1"))
+					mController.playUrl(mController.game.live_800.streamId,
+							mController.game.live_800.liveUrl);
+				else
+					mController.playLivePayUrl(
+							mController.game.live_800.streamId,
+							mController.game.live_800.liveUrl, 800);
 
-      /**
-       * 高清按钮点击
-       * */
-      private View.OnClickListener play_high_listener = new View.OnClickListener() {
-            public void onClick(View v) {
-                  if (null != fullLayout) {
-                        fullLayout.setVisibility(View.GONE);
-                  }
-                  if (!mController.isHd) {
-                        mController.isHd = true;
-                        PreferencesManager.getInstance().setIsPlayHd(true);
-                        // fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
-                        fullPlayControllerHighText.setTextColor(mController.getActivity().getResources().getColor(R.color.letv_color_ff00a0e9));
-                        fullPlayControllerLowText.setTextColor(mController.getActivity().getResources().getColor(R.color.letv_color_ffadadad));
-                        fullPlayControllerHd.setText(fullPlayControllerHighText.getText());
-                        
-                        mController.playUrl(mController.game.live_800.streamId,mController.game.live_800.liveUrl);
-                  }
-            }
-      };
+			}
+		}
+	};
 
+	/**
+	 * 清晰度选择按钮监听
+	 * */
+	private OnClickListener lowOrHighClick = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			startHandlerHide();
+			if (fullLayout.getVisibility() == View.VISIBLE) {
+				fullLayout.setVisibility(View.GONE);
+			} else {
+				int[] locations = new int[2];
+				fullPlayControllerHd.getLocationOnScreen(locations);
+				int x = locations[0];// 获取组件当前位置的横坐标
+				int y = locations[1];// 获取组件当前位置的纵坐标
+				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullLayout
+						.getLayoutParams();
+				params.leftMargin = x;
+				params.topMargin = y - fullLayout.getMeasuredHeight()
+						- UIs.dipToPx(5);
 
-      /**
-       * 清晰度选择按钮监听
-       * */
-      private OnClickListener lowOrHighClick = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                  startHandlerHide();
-                  if (fullLayout.getVisibility() == View.VISIBLE) {
-                        fullLayout.setVisibility(View.GONE);
-                  } else {
-                        int[] locations = new int[2];
-                        fullPlayControllerHd.getLocationOnScreen(locations);
-                        int x = locations[0];// 获取组件当前位置的横坐标
-                        int y = locations[1];// 获取组件当前位置的纵坐标
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullLayout.getLayoutParams();
-                        params.leftMargin = x;
-                        params.topMargin = y - fullLayout.getMeasuredHeight() - UIs.dipToPx(5);
+				fullLayout.setLayoutParams(params);
+				fullLayout.requestLayout();
+				fullLayout.setVisibility(View.VISIBLE);
 
-                        fullLayout.setLayoutParams(params);
-                        fullLayout.requestLayout();
-                        fullLayout.setVisibility(View.VISIBLE);
-
-                  }
-            }
-      };
+			}
+		}
+	};
 
 	/**
 	 * 点击半屏的监听
@@ -273,22 +311,23 @@ public class PlayLiveFullController extends BaseLivePlayController{
 				callBack.half();
 		}
 	};
-	
-	public void hideFullLiveBar(){
-//		if(fullLiveProgramIntroBar != null){
-//			fullLiveProgramIntroBar.setVisibility(View.GONE);
-//		}
+
+	public void hideFullLiveBar() {
+		// if(fullLiveProgramIntroBar != null){
+		// fullLiveProgramIntroBar.setVisibility(View.GONE);
+		// }
 	}
-	
-	public void onProgramChanged(){}
+
+	public void onProgramChanged() {
+	}
 
 	@Override
 	public void show() {
 		setShow(true);
-//		if(!mController.isLock()){
-			fullPlayControllerLayoutt.setVisibility(View.VISIBLE);
-			startHandlerHide();
-//		}
+		// if(!mController.isLock()){
+		fullPlayControllerLayoutt.setVisibility(View.VISIBLE);
+		startHandlerHide();
+		// }
 	}
 
 	@Override
@@ -297,7 +336,7 @@ public class PlayLiveFullController extends BaseLivePlayController{
 		fullPlayControllerLayoutt.setVisibility(View.GONE);
 		stopHandlerHide();
 	}
-	
+
 	public void hideNoState() {
 		fullPlayControllerLayoutt.setVisibility(View.GONE);
 		stopHandlerHide();
@@ -305,28 +344,27 @@ public class PlayLiveFullController extends BaseLivePlayController{
 			fullPlayControllerSoundLayout.setVisibility(View.GONE);
 		}
 	}
-	
+
 	@Override
 	public boolean clickShowAndHide() {
-		if(isShow()){
-			if(fullPlayControllerLayoutt.getVisibility() == View.VISIBLE){
+		if (isShow()) {
+			if (fullPlayControllerLayoutt.getVisibility() == View.VISIBLE) {
 				fullPlayControllerLayoutt.setVisibility(View.GONE);
 				stopHandlerHide();
 			} else {
 				fullPlayControllerLayoutt.setVisibility(View.VISIBLE);
 				startHandlerHide();
-				return true ;
+				return true;
 			}
 		}
-		
-		return false ;
+
+		return false;
 	}
-	
 
 	@Override
 	public void clickShowAndHide(boolean isShow) {
-		if(isShow()){
-			if(isShow){
+		if (isShow()) {
+			if (isShow) {
 				fullPlayControllerLayoutt.setVisibility(View.VISIBLE);
 				startHandlerHide();
 			} else {
@@ -338,13 +376,15 @@ public class PlayLiveFullController extends BaseLivePlayController{
 
 	@Override
 	public void star() {
-		fullPlayControllerPlay.setImageResource(R.drawable.play_controller_pause_btn);
+		fullPlayControllerPlay
+				.setImageResource(R.drawable.play_controller_pause_btn);
 		fullPlayControllerPlay.setOnClickListener(pauseClick);
 	}
 
 	@Override
 	public void pause() {
-		fullPlayControllerPlay.setImageResource(R.drawable.play_controller_play_btn);
+		fullPlayControllerPlay
+				.setImageResource(R.drawable.play_controller_play_btn);
 		fullPlayControllerPlay.setOnClickListener(playClick);
 	}
 
@@ -354,7 +394,8 @@ public class PlayLiveFullController extends BaseLivePlayController{
 	@Override
 	public void Inoperable() {
 		fullPlayControllerPlay.setOnClickListener(null);
-		fullPlayControllerPlay.setImageResource(R.drawable.play_controller_play_btn_selected);
+		fullPlayControllerPlay
+				.setImageResource(R.drawable.play_controller_play_btn_selected);
 	}
 
 	@Override
@@ -373,7 +414,10 @@ public class PlayLiveFullController extends BaseLivePlayController{
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
 		int minite = mCalendar.get(Calendar.MINUTE);
-		fullPlayControllerTime.setText(LetvUtil.getStringTwo(String.valueOf(hour)) + ":" + LetvUtil.getStringTwo(String.valueOf(minite)));
+		fullPlayControllerTime.setText(LetvUtil.getStringTwo(String
+				.valueOf(hour))
+				+ ":"
+				+ LetvUtil.getStringTwo(String.valueOf(minite)));
 	}
 
 	@Override
@@ -423,7 +467,8 @@ public class PlayLiveFullController extends BaseLivePlayController{
 		}
 
 		if (isCharging) {
-			fullPlayControllerBattery.setImageResource(R.drawable.battery_charge);
+			fullPlayControllerBattery
+					.setImageResource(R.drawable.battery_charge);
 		} else {
 			if (curPower >= 80) {
 				fullPlayControllerBattery.setImageResource(R.drawable.battery5);
@@ -443,34 +488,36 @@ public class PlayLiveFullController extends BaseLivePlayController{
 	public void onVolumeChange(int max, int progress) {
 		fullPlayControllerSoundSeekbar.setMax(max);
 		fullPlayControllerSoundSeekbar.setProgress(progress);
-		changeSoundState(progress , max);
-		
+		changeSoundState(progress, max);
+
 	}
+
 	@Override
 	public void onVolumeChange(int max, int progress, boolean isUp) {
 		fullPlayControllerSoundSeekbar.setMax(max);
 		int pTmp = fullPlayControllerSoundSeekbar.getProgress();
 		if (isUp) {
-			if(pTmp == progress){
+			if (pTmp == progress) {
 				progress += 1;
-			} else if(pTmp > progress){
-				progress = pTmp +1;
+			} else if (pTmp > progress) {
+				progress = pTmp + 1;
 			}
 		} else {
-			if(pTmp == progress){
+			if (pTmp == progress) {
 				progress -= 1;
-			} else if(pTmp < progress){
-				progress = pTmp +1;
-			} 
+			} else if (pTmp < progress) {
+				progress = pTmp + 1;
+			}
 		}
 		fullPlayControllerSoundSeekbar.setProgress(progress);
 		changeSoundState(progress, max);
 	}
+
 	@Override
 	public void setTitle(String title) {
 		fullPlayControllerTitle.setText(title);
 	}
-	
+
 	/**
 	 * 点击暂停的监听
 	 * */
@@ -506,7 +553,7 @@ public class PlayLiveFullController extends BaseLivePlayController{
 				callBack.half();
 		}
 	};
-	
+
 	/**
 	 * 点击全屏的监听
 	 * */
@@ -521,48 +568,53 @@ public class PlayLiveFullController extends BaseLivePlayController{
 	private Handler handler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
-			hideNoState() ;
+			hideNoState();
 			return false;
 		}
 	});
-	private void startHandlerHide(){
-		if(isShow()){
+
+	private void startHandlerHide() {
+		if (isShow()) {
 			handler.removeMessages(1);
 			handler.sendEmptyMessageDelayed(1, 3000);
 		}
 	}
-	
+
 	/**
 	 * 移除自动隐藏
 	 * */
-	private void stopHandlerHide(){
+	private void stopHandlerHide() {
 		handler.removeMessages(1);
 	}
-	
+
 	/**
 	 * 清除视频列表数据
 	 * */
 	public void clearVideos() {
-		
+
 	}
-	
+
 	/**
 	 * 改变声音按钮状态
 	 * */
 	public void changeSoundState(int value, int maxValue) {
 		if (fullPlayControllerSoundIcon != null) {
 			if (value >= maxValue / 3 * 2) {
-				fullPlayControllerSoundIcon.setImageResource(R.drawable.sound_three);
+				fullPlayControllerSoundIcon
+						.setImageResource(R.drawable.sound_three);
 			} else if (value >= maxValue / 3) {
-				fullPlayControllerSoundIcon.setImageResource(R.drawable.sound_two);
+				fullPlayControllerSoundIcon
+						.setImageResource(R.drawable.sound_two);
 			} else if (value > 0) {
-				fullPlayControllerSoundIcon.setImageResource(R.drawable.sound_one);
+				fullPlayControllerSoundIcon
+						.setImageResource(R.drawable.sound_one);
 			} else {
-				fullPlayControllerSoundIcon.setImageResource(R.drawable.sound_zero);
+				fullPlayControllerSoundIcon
+						.setImageResource(R.drawable.sound_zero);
 			}
 		}
 	}
-	
+
 	/**
 	 * 声音进度条变化的监听
 	 * */
@@ -579,10 +631,11 @@ public class PlayLiveFullController extends BaseLivePlayController{
 		}
 
 		@Override
-		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
 			startHandlerHide();
 			int max = seekBar.getMax();
-			int volumeMax = mController.setSoundVolume(progress , false);
+			int volumeMax = mController.setSoundVolume(progress, false);
 			changeSoundState(progress, max);
 			if (max != volumeMax) {
 				if (progress <= max) {
@@ -610,8 +663,10 @@ public class PlayLiveFullController extends BaseLivePlayController{
 				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullPlayControllerSoundLayout
 						.getLayoutParams();
 				params.leftMargin = x;
-				params.topMargin = y - fullPlayControllerSoundLayout.getMeasuredHeight();
-//				params.addRule(RelativeLayout.ALIGN_LEFT, R.id.full_sound_icon);
+				params.topMargin = y
+						- fullPlayControllerSoundLayout.getMeasuredHeight();
+				// params.addRule(RelativeLayout.ALIGN_LEFT,
+				// R.id.full_sound_icon);
 				fullPlayControllerSoundLayout.setLayoutParams(params);
 				fullPlayControllerSoundLayout.requestLayout();
 				fullPlayControllerSoundLayout.setVisibility(View.VISIBLE);
@@ -620,9 +675,9 @@ public class PlayLiveFullController extends BaseLivePlayController{
 			}
 		}
 	};
-	
+
 	public void setPipEnable(boolean enable) {
-		if(toPip != null) {
+		if (toPip != null) {
 			toPip.setEnabled(enable);
 		}
 	}

@@ -70,9 +70,6 @@ public class LetvPushIntentService extends LetvPushBaseIntentService {
 	@Override
 	protected void onMessage(Context context, String message, String code,
 			String serdId) {
-		Log.e("gongmeng", "message=" + message + " code=" + code + " senderId="
-				+ serdId + " packagename=" + context.getPackageName());
-
 		showMsgNotification(LetvApplication.getInstance(), message);
 	}
 
@@ -94,7 +91,7 @@ public class LetvPushIntentService extends LetvPushBaseIntentService {
 		try {
 			PushMsgBean p = new PushMsgBean();
 			JSONObject data = new JSONObject(dataString);
-			Log.e("gongmeng", "JSON object :" + data.toString());
+			//Log.e("gongmeng", "JSON object :" + data.toString());
 			p.setAt(getString(data, "at"));
 			p.setCid(getString(data, "cid"));
 			p.setId(getString(data, "id"));
@@ -110,9 +107,9 @@ public class LetvPushIntentService extends LetvPushBaseIntentService {
 			p.setType(getString(data, "type"));
 			return p;
 		} catch (JSONException e) {
-			Log.e("gongmeng", "gongmeng" + e.getStackTrace().toString());
+			//Log.e("gongmeng", "gongmeng" + e.getStackTrace().toString());
 		} catch (Exception e) {
-			Log.e("gongmeng", "gongmeng" + e.getStackTrace().toString());
+			//Log.e("gongmeng", "gongmeng" + e.getStackTrace().toString());
 		}
 		return null;
 
@@ -136,21 +133,21 @@ public class LetvPushIntentService extends LetvPushBaseIntentService {
 			bitmap = BitmapFactory.decodeStream(is);
 			is.close();
 		} catch (IOException e) {
-			Log.e("gongmeng", "bitmap is null");
+			//Log.e("gongmeng", "bitmap is null");
 		}
 		return bitmap;
 	}
 
 	private void showMsgNotification(Context context, String dataString) {
 		if (!PreferencesManager.getInstance().isPushservice()) {
-			Log.e("gongmeng", "pushservice is false");
+			//Log.e("gongmeng", "pushservice is false");
 			return;
 		}
 
 		PushMsgBean pushMsgBean = getPushBean(dataString);
 
 		if (pushMsgBean == null) {
-			Log.e("gongmeng", "pushmsgbean is null");
+			//Log.e("gongmeng", "pushmsgbean is null");
 			return;
 		}
 
@@ -245,7 +242,7 @@ public class LetvPushIntentService extends LetvPushBaseIntentService {
 			case 6:
 				if (Integer.valueOf(pushMsgBean.getNeedJump()) == 0) {
 					intent = new Intent(context, LetvWebViewActivity.class);
-					Log.e("gongmeng", "resid:" + pushMsgBean.getResid());
+				//	Log.e("gongmeng", "resid:" + pushMsgBean.getResid());
 					intent.putExtra("url", pushMsgBean.getResid());
 					intent.putExtra("loadType", pushMsgBean.getTitle());
 					break;

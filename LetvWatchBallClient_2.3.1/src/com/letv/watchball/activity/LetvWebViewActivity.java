@@ -63,7 +63,7 @@ public class LetvWebViewActivity extends LetvBaseActivity implements OnClickList
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 		loadType = getIntent().getStringExtra("loadType");
 		baseUrl = getIntent().getStringExtra("url");		
-		Log.e("gongmeng", "URL:" + baseUrl.toString());
+		//Log.e("gongmeng", "URL:" + baseUrl.toString());
 		findView();
 	}
 	

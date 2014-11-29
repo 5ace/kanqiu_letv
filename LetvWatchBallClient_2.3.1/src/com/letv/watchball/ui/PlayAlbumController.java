@@ -69,7 +69,9 @@ import com.letv.watchball.view.SettingViewPager;
 import com.media.VideoView;
 import com.media.VideoView.VideoViewStateChangeListener;
 
-public class PlayAlbumController extends PlayController implements VideoViewStateChangeListener, PlayControllerCallBack, PlayLoadLayoutCallBack ,ADPlayFragment.PlayAdListener {
+public class PlayAlbumController extends PlayController implements
+		VideoViewStateChangeListener, PlayControllerCallBack,
+		PlayLoadLayoutCallBack, ADPlayFragment.PlayAdListener {
 	/**
 	 * 刷新进度
 	 * */
@@ -87,8 +89,6 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * 一秒
 	 * */
 	private final int HANDLER_TIME_DELAYED = 1000;
-
-
 
 	/**
 	 * 记录到播放流程，哪一个环节失败了；0 无失败 ，1
@@ -130,22 +130,22 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * 加载 错误 提示布局
 	 * */
 	private PlayLoadLayout loadLayout;
-	
+
 	/**
 	 * 加载视频错误码
 	 */
-	private int  errorCodeJoint=0;
-	
-//	/**
-//	 * 专辑 ID
-//	 * */
-//	public long aid;
-//
-//	/**
-//	 * 视频ID
-//	 * */
-//	public long vid;
-    private boolean isPlayedAdFinish=false;
+	private int errorCodeJoint = 0;
+
+	// /**
+	// * 专辑 ID
+	// * */
+	// public long aid;
+	//
+	// /**
+	// * 视频ID
+	// * */
+	// public long vid;
+	private boolean isPlayedAdFinish = false;
 	/**
 	 * 真实地址
 	 * */
@@ -185,7 +185,6 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * 播放视频的播放记录
 	 * */
 	public PlayRecord playRecord;
-
 
 	/**
 	 * 是否是本地文件
@@ -255,7 +254,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * 播放时间统计
 	 */
 	private long timeElapsed = 0;
-	
+
 	private long finaltime = 0;
 	/**
 	 * 上一次播放时间
@@ -273,60 +272,57 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	/**
 	 * 当前播放视频的码流
 	 */
-	private String streamLevel = PreferencesManager.getInstance().isPlayHd() ? "13" : "21";
+	private String streamLevel = PreferencesManager.getInstance().isPlayHd() ? "13"
+			: "21";
 
-      /**
-       * ***************************广告，播放时长相关参数***********************
-       */
+	/**
+	 * ***************************广告，播放时长相关参数***********************
+	 */
 
-      private long adConsumeTime = 0;// 广告时长
-      private long adJoinConsumeTime = 0;// 广告拼接时长
-      private long albumPayConsumeTime = 0;// 专辑付费信息时长
-      private long videoDetailsConsumeTime = 0;// 视频详情时长
-      private long getRealUrlConsumeTime = 0;// 正式播放地址时长
-      private long albumVListConsumeTime = 0;// 专辑视频列表时长
-      private long videoFileConsumeTime = 0;// videoFile时长
-      private long canPlayConsumeTime = 0;// 专辑是否可播放时长
-      private long totalConsumeTime = 0;// 总时长
-      private long loadingConsumeTime = 0;// 视频加载时长
-      private long beginPlayedTime;// 初始播放位置
+	private long adConsumeTime = 0;// 广告时长
+	private long adJoinConsumeTime = 0;// 广告拼接时长
+	private long albumPayConsumeTime = 0;// 专辑付费信息时长
+	private long videoDetailsConsumeTime = 0;// 视频详情时长
+	private long getRealUrlConsumeTime = 0;// 正式播放地址时长
+	private long albumVListConsumeTime = 0;// 专辑视频列表时长
+	private long videoFileConsumeTime = 0;// videoFile时长
+	private long canPlayConsumeTime = 0;// 专辑是否可播放时长
+	private long totalConsumeTime = 0;// 总时长
+	private long loadingConsumeTime = 0;// 视频加载时长
+	private long beginPlayedTime;// 初始播放位置
 
-      private boolean isgslb = false;// 视频调度成功、失败
-      private boolean iscload = false;// 视频下载成功、失败
-      private boolean ispush = false;// 视频下载成功、失败
-      private long bufferTime = 0;// 视频卡顿总时长
-      private int bufferNum = 0;// 视频卡顿总次数
-      private String videoSend = "vsend=CDN";// 视频内容分发系统
-      private String vformat = "vformat=m3u8";// 视频格式
+	private boolean isgslb = false;// 视频调度成功、失败
+	private boolean iscload = false;// 视频下载成功、失败
+	private boolean ispush = false;// 视频下载成功、失败
+	private long bufferTime = 0;// 视频卡顿总时长
+	private int bufferNum = 0;// 视频卡顿总次数
+	private String videoSend = "vsend=CDN";// 视频内容分发系统
+	private String vformat = "vformat=m3u8";// 视频格式
 
-      private boolean isbuffered = false;// 视频缓冲标志
-      private boolean isFirstPlay = true;// 视频第一次播放
-      private boolean needPlayAd = true;
-      public boolean isPlayedAd = false;
-      private boolean isSingle = false;
+	private boolean isbuffered = false;// 视频缓冲标志
+	private boolean isFirstPlay = true;// 视频第一次播放
+	private boolean needPlayAd = true;
+	public boolean isPlayedAd = false;
+	private boolean isSingle = false;
 
-      //***************************广告，播放时长相关参数 end***********************
+	// ***************************广告，播放时长相关参数 end***********************
 
+	private enum PLAY_MODE {
+		/**
+		 * m3u8广告拼接
+		 */
+		M3U8,
+		/**
+		 * 普通播放
+		 */
+		NORMAL,
+		/**
+		 * 初始状态
+		 */
+		NONE;
+	}
 
-      private enum PLAY_MODE {
-            /**
-             * m3u8广告拼接
-             */
-            M3U8,
-            /**
-             * 普通播放
-             */
-            NORMAL,
-            /**
-             * 初始状态
-             */
-            NONE;
-      }
-
-      private PLAY_MODE mPlayMode = PLAY_MODE.NONE;
-
-
-
+	private PLAY_MODE mPlayMode = PLAY_MODE.NONE;
 
 	/**
 	 * 刷新进度handler
@@ -336,7 +332,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		public boolean handleMessage(Message msg) {
 			switch (msg.what) {
 			case HANDLER_TIME:
-				if (getActivity() == null || getActivity().getPlayFragment() == null) {
+				if (getActivity() == null
+						|| getActivity().getPlayFragment() == null) {
 					return false;
 				}
 				long oldTime = curTime;
@@ -347,11 +344,13 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 					localSeek = curTime / 1000;
 				}
 				/************* end by zlb for pip ************/
-				int bufferPercentage = (int) (totleTime * getActivity().getPlayFragment().getBufferPercentage() / 100000);
+				int bufferPercentage = (int) (totleTime
+						* getActivity().getPlayFragment().getBufferPercentage() / 100000);
 				if (oldTime == curTime) {
 					loadLayout.loading();
 					blockTime++;
-					statisticsVideoInfo.setBufcount(statisticsVideoInfo.getBufcount() + 1);
+					statisticsVideoInfo.setBufcount(statisticsVideoInfo
+							.getBufcount() + 1);
 				} else {
 					loadLayout.finish();
 					if (playRecord != null) {
@@ -362,10 +361,12 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 					}
 				}
 				if (mHalfController != null)
-					mHalfController.updateProgress((int) curTime / 1000, bufferPercentage);
+					mHalfController.updateProgress((int) curTime / 1000,
+							bufferPercentage);
 
 				if (mFullController != null)
-					mFullController.updateProgress((int) curTime / 1000, bufferPercentage);
+					mFullController.updateProgress((int) curTime / 1000,
+							bufferPercentage);
 				if (isSikp && eTime > 0) {
 					if (curTime / 1000 + 15 >= eTime && isShowSkipEnd) {
 						isShowSkipEnd = false;
@@ -378,7 +379,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 						return false;
 					}
 				}
-				handler.sendEmptyMessageDelayed(HANDLER_TIME, HANDLER_TIME_DELAYED);
+				handler.sendEmptyMessageDelayed(HANDLER_TIME,
+						HANDLER_TIME_DELAYED);
 				break;
 			case UPDATE_STATICICS_BLOCK_TIME:
 				// updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.BLOCK_ACTION,
@@ -386,43 +388,52 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				blockTime = 0;
 				break;
 			case UPDATE_STATICICS_TIME:
-				handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME, UPDATE_STATICICS_TIME);
+				handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME,
+						UPDATE_STATICICS_TIME);
 				if (updateCount == 0) {
 					if (timeElapsed - lastTimeElapsed < 15) {
 						updateCount = 0;
-//						handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME, (timeElapsed - lastTimeElapsed) * 1000);
+						// handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME,
+						// (timeElapsed - lastTimeElapsed) * 1000);
 					} else {
 						updateCount = 1;
-						updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.TIME_ACTION,
+						updatePlayDataStatistics(
+								DataConstant.StaticticsVersion2Constatnt.PlayerAction.TIME_ACTION,
 								timeElapsed);
 						lastTimeElapsed = timeElapsed;
-			
-//						handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME, 60000);
+
+						// handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME,
+						// 60000);
 					}
 				} else if (updateCount == 1) {
 					if (timeElapsed - lastTimeElapsed < 60) {
 						updateCount = 1;
-//						handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME, (timeElapsed - lastTimeElapsed) * 1000);
+						// handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME,
+						// (timeElapsed - lastTimeElapsed) * 1000);
 					} else {
 						updateCount = 2;
-						updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.TIME_ACTION,
+						updatePlayDataStatistics(
+								DataConstant.StaticticsVersion2Constatnt.PlayerAction.TIME_ACTION,
 								(timeElapsed - lastTimeElapsed));
 						lastTimeElapsed = timeElapsed;
-					
-//						handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME, 3 * 60000);
+
+						// handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME,
+						// 3 * 60000);
 					}
 
 				} else if (updateCount == 2) {
-					if (timeElapsed - lastTimeElapsed >180) {
+					if (timeElapsed - lastTimeElapsed > 180) {
 						updateCount = 2;
-						if(timeElapsed - lastTimeElapsed>=180){
-						      finaltime=180;
+						if (timeElapsed - lastTimeElapsed >= 180) {
+							finaltime = 180;
 						}
-						updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.TIME_ACTION,
+						updatePlayDataStatistics(
+								DataConstant.StaticticsVersion2Constatnt.PlayerAction.TIME_ACTION,
 								finaltime);
 						lastTimeElapsed = timeElapsed;
 						handler.removeMessages(UPDATE_STATICICS_TIME);
-						handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME, 3 * 60000);
+						handler.sendEmptyMessageDelayed(UPDATE_STATICICS_TIME,
+								3 * 60000);
 					}
 				}
 				break;
@@ -464,19 +475,19 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * 本地视频(不包括有下载记录的视频)播放的位置，需要传给小窗,单位s
 	 */
 	private long localSeek;
-      private PlayUrl p2pPlayer;
-      /**
-       * 设置p2p开关
-       */
-      private boolean isP2PMode = PreferencesManager.getInstance().getUtp();
+	private PlayUrl p2pPlayer;
+	/**
+	 * 设置p2p开关
+	 */
+	private boolean isP2PMode = PreferencesManager.getInstance().getUtp();
 
-      /**
-       * g3调度地址
-       */
-      private String ddUrl;
-      private User canPlayResult;
+	/**
+	 * g3调度地址
+	 */
+	private String ddUrl;
+	private User canPlayResult;
 
-      /**** end add by zlb for pip *****/
+	/**** end add by zlb for pip *****/
 
 	public PlayAlbumController(BasePlayActivity activity) {
 		super(activity);
@@ -488,8 +499,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		isHd = PreferencesManager.getInstance().isPlayHd();
 		super.create();
 		startLoadingData();
-		
-		
+
 		/*
 		 * 艾瑞初始化视频信息
 		 */
@@ -498,97 +508,107 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			IRVideo.getInstance(getActivity()).newVideoPlay(
 					String.valueOf(vid), this.totleTime, false);
 		} catch (Exception e) {
-			Log.e("gongmeng", "vvtracker playablbum init");
+			// Log.e("gongmeng", "vvtracker playablbum init");
 		}
 	}
 
 	@Override
 	protected void initLayout() {
-            ADPlayFragment.VipViewCallBack mVipViewCallBack = new ADPlayFragment.VipViewCallBack() {
+		ADPlayFragment.VipViewCallBack mVipViewCallBack = new ADPlayFragment.VipViewCallBack() {
 
-                  @Override
-                  public void onClick() {
-                        if (PreferencesManager.getInstance().isLogin()) {
-                              if (false) {
-                                    // playAdFragment.stopFrontAd();
-                                    playAdFragment.pause();
-                                    playAdFragment.setMobileNetBg(false);
-                                    getFrontAd();
-                              } else {
-//                                    VipProductsActivity.launchFromPlay(getActivity(),
-//                                            getActivity().getResources().getString(R.string.pim_vip_good_title), aid, vid);
-                              }
-                        } else {
-                              LetvAccountLogin.launch(getActivity());
-                        }
-                        String apFl = "95";
-                        if (UIs.isLandscape(getActivity())) {
-                              apFl = "a18";
-                        }
-//                        LetvUtil.staticticsInfoPost(getActivity(), apFl, null, 0, 0, null, aid + "", vid + "", null);
-                  }
+			@Override
+			public void onClick() {
+				if (PreferencesManager.getInstance().isLogin()) {
+					if (false) {
+						// playAdFragment.stopFrontAd();
+						playAdFragment.pause();
+						playAdFragment.setMobileNetBg(false);
+						getFrontAd();
+					} else {
+						// VipProductsActivity.launchFromPlay(getActivity(),
+						// getActivity().getResources().getString(R.string.pim_vip_good_title),
+						// aid, vid);
+					}
+				} else {
+					LetvAccountLogin.launch(getActivity());
+				}
+				String apFl = "95";
+				if (UIs.isLandscape(getActivity())) {
+					apFl = "a18";
+				}
+				// LetvUtil.staticticsInfoPost(getActivity(), apFl, null, 0, 0,
+				// null, aid + "", vid + "", null);
+			}
 
-                  @Override
-                  public int getVideoCurrentTime() {
-                        try {
-                              if (getActivity().getPlayFragment() != null) {
-                                    return getActivity().getPlayFragment().getCurrentPosition();
-                              }
-                        } catch (Exception e) {
-                              e.printStackTrace();
-                        }
+			@Override
+			public int getVideoCurrentTime() {
+				try {
+					if (getActivity().getPlayFragment() != null) {
+						return getActivity().getPlayFragment()
+								.getCurrentPosition();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
-                        return 0;
-                  }
+				return 0;
+			}
 
-                  @Override
-                  public void ads3G2GClick() {
-                        if (UIs.isLandscape(getActivity())){
-                              mFullController.star();
-                        } else {
-                              mHalfController.star();
-                        }
-                        playAdFragment.setPauseAd(false);
-                        star();
-                        handler.postDelayed(new Runnable() {
-							
-							@Override
-							public void run() {
-								if(isPlayedAdFinish){
-									if (UIs.isLandscape(getActivity())){
-	                                    mFullController.fullPlayControllerPlay.performClick();
-	                              } else {
-	                                    mHalfController.halfPlayControllerPlay.performClick();
-	                              }
-								}
-								
+			@Override
+			public void ads3G2GClick() {
+				if (UIs.isLandscape(getActivity())) {
+					mFullController.star();
+				} else {
+					mHalfController.star();
+				}
+				playAdFragment.setPauseAd(false);
+				star();
+				handler.postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						if (isPlayedAdFinish) {
+							if (UIs.isLandscape(getActivity())) {
+								mFullController.fullPlayControllerPlay
+										.performClick();
+							} else {
+								mHalfController.halfPlayControllerPlay
+										.performClick();
 							}
-						}, 500);
-                  }
-            };
+						}
+
+					}
+				}, 500);
+			}
+		};
 		if (getLaunchMode() == PlayController.PLAY_ALBUM) {// 播放专辑
 			loadLayout = new PlayLoadLayout(getActivity());
 			loadLayout.setCallBack(this);
-			loadLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+			loadLayout.setLayoutParams(new LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 			getActivity().getPlayUpper().addView(loadLayout);
 			loadLayout.loading();
 
-			UIs.inflate(getActivity(), R.layout.detailplay_half_progress, getActivity().getPlayUpper(), true);
-			UIs.inflate(getActivity(), R.layout.detailplay_full_controller, getActivity().getPlayUpper(), true);
-			UIs.inflate(getActivity(), R.layout.play_album_lower, getActivity().getPlayLower(), true);
+			UIs.inflate(getActivity(), R.layout.detailplay_half_progress,
+					getActivity().getPlayUpper(), true);
+			UIs.inflate(getActivity(), R.layout.detailplay_full_controller,
+					getActivity().getPlayUpper(), true);
+			UIs.inflate(getActivity(), R.layout.play_album_lower, getActivity()
+					.getPlayLower(), true);
 			initViewPagerAndTab();
 			setLaunchMode(PlayController.PLAY_ALBUM);
-                  playAdFragment = new ADPlayFragment();
-                  playAdFragment.setViewCallBack(mVipViewCallBack);
-                  playAdFragment.setAdListener(this);
-                  getActivity().getAdLayout().setViewCallBack(mVipViewCallBack);
-                  // playAdFragment.setUid(LetvUtil.getUID());
-                  // playAdFragment.setPcode(LetvUtil.getPcode());
-                  // playAdFragment.setPtid(LetvUtil.getUUID(getActivity()));
-                  // getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper,
-                  // playAdFragment).commit();
-                  getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper, playAdFragment)
-                          .commitAllowingStateLoss();
+			playAdFragment = new ADPlayFragment();
+			playAdFragment.setViewCallBack(mVipViewCallBack);
+			playAdFragment.setAdListener(this);
+			getActivity().getAdLayout().setViewCallBack(mVipViewCallBack);
+			// playAdFragment.setUid(LetvUtil.getUID());
+			// playAdFragment.setPcode(LetvUtil.getPcode());
+			// playAdFragment.setPtid(LetvUtil.getUUID(getActivity()));
+			// getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper,
+			// playAdFragment).commit();
+			getActivity().getSupportFragmentManager().beginTransaction()
+					.add(R.id.play_upper, playAdFragment)
+					.commitAllowingStateLoss();
 			initHalfController();
 			initFullController();
 		} else if (getLaunchMode() == PlayController.PLAY_VIDEO) {// 播放视频
@@ -597,22 +617,25 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			}
 			loadLayout = new PlayLoadLayout(getActivity());
 			loadLayout.setCallBack(this);
-			loadLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+			loadLayout.setLayoutParams(new LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 			getActivity().getPlayUpper().addView(loadLayout);
 			loadLayout.loading();
-			UIs.inflate(getActivity(), R.layout.detailplay_full_controller, getActivity().getPlayUpper(), true);
+			UIs.inflate(getActivity(), R.layout.detailplay_full_controller,
+					getActivity().getPlayUpper(), true);
 
-                  playAdFragment = new ADPlayFragment();
-                  playAdFragment.setViewCallBack(mVipViewCallBack);
-                  playAdFragment.setAdListener(this);
-                  getActivity().getAdLayout().setViewCallBack(mVipViewCallBack);
-                  // playAdFragment.setUid(LetvUtil.getUID());
-                  // playAdFragment.setPcode(LetvUtil.getPcode());
-                  // playAdFragment.setPtid(LetvUtil.getUUID(getActivity()));
-                  // getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper,
-                  // playAdFragment).commit();
-                  getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper, playAdFragment)
-                          .commitAllowingStateLoss();
+			playAdFragment = new ADPlayFragment();
+			playAdFragment.setViewCallBack(mVipViewCallBack);
+			playAdFragment.setAdListener(this);
+			getActivity().getAdLayout().setViewCallBack(mVipViewCallBack);
+			// playAdFragment.setUid(LetvUtil.getUID());
+			// playAdFragment.setPcode(LetvUtil.getPcode());
+			// playAdFragment.setPtid(LetvUtil.getUUID(getActivity()));
+			// getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper,
+			// playAdFragment).commit();
+			getActivity().getSupportFragmentManager().beginTransaction()
+					.add(R.id.play_upper, playAdFragment)
+					.commitAllowingStateLoss();
 
 			initFullController();
 		} else {// 播放扫描，暂时只是这个
@@ -622,22 +645,25 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 			loadLayout = new PlayLoadLayout(getActivity());
 			loadLayout.setCallBack(this);
-			loadLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+			loadLayout.setLayoutParams(new LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 			getActivity().getPlayUpper().addView(loadLayout);
 			loadLayout.loading();
-			UIs.inflate(getActivity(), R.layout.detailplay_full_controller, getActivity().getPlayUpper(), true);
+			UIs.inflate(getActivity(), R.layout.detailplay_full_controller,
+					getActivity().getPlayUpper(), true);
 
-                  playAdFragment = new ADPlayFragment();
-                  playAdFragment.setViewCallBack(mVipViewCallBack);
-                  playAdFragment.setAdListener(this);
-                  getActivity().getAdLayout().setViewCallBack(mVipViewCallBack);
-                  // playAdFragment.setUid(LetvUtil.getUID());
-                  // playAdFragment.setPcode(LetvUtil.getPcode());
-                  // playAdFragment.setPtid(LetvUtil.getUUID(getActivity()));
-                  // getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper,
-                  // playAdFragment).commit();
-                  getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper, playAdFragment)
-                          .commitAllowingStateLoss();
+			playAdFragment = new ADPlayFragment();
+			playAdFragment.setViewCallBack(mVipViewCallBack);
+			playAdFragment.setAdListener(this);
+			getActivity().getAdLayout().setViewCallBack(mVipViewCallBack);
+			// playAdFragment.setUid(LetvUtil.getUID());
+			// playAdFragment.setPcode(LetvUtil.getPcode());
+			// playAdFragment.setPtid(LetvUtil.getUUID(getActivity()));
+			// getActivity().getSupportFragmentManager().beginTransaction().add(R.id.play_upper,
+			// playAdFragment).commit();
+			getActivity().getSupportFragmentManager().beginTransaction()
+					.add(R.id.play_upper, playAdFragment)
+					.commitAllowingStateLoss();
 			initFullController();
 		}
 	}
@@ -650,12 +676,12 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			if (aid < 0) {
 				aid = 0;
 			}
-                  if (aid == 0){
-                        isSingle = true;
-                  }
+			if (aid == 0) {
+				isSingle = true;
+			}
 			curPage = intent.getIntExtra("curPage", 1);
 			vid = intent.getIntExtra("vid", 0);
-                  isPlayedAd = intent.getBooleanExtra("fromPip",false);
+			isPlayedAd = intent.getBooleanExtra("fromPip", false);
 			if (vid < 0) {
 				vid = 0;
 			}
@@ -665,7 +691,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			Intent intent = getActivity().getIntent();
 			vid = intent.getIntExtra("vid", 0);
 			curPage = intent.getIntExtra("curPage", 1);
-                  isPlayedAd = intent.getBooleanExtra("fromPip",false);
+			isPlayedAd = intent.getBooleanExtra("fromPip", false);
 			if (vid < 0) {
 				vid = 0;
 			}
@@ -674,18 +700,21 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		} else {
 			Intent intent = getActivity().getIntent();
 			realUrl = intent.getStringExtra("uri");
-                  isPlayedAd = intent.getBooleanExtra("fromPip",false);
+			isPlayedAd = intent.getBooleanExtra("fromPip", false);
 			seek = intent.getLongExtra("seek", 0);
 		}
-		updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.INIT_ACTION, -1);
-		   try {
-     			// 环境日志在用户的每次开机上报
-     			IP ip = LetvApplication.getInstance().getIp();
-     			DataStatistics.getInstance().sendEnvInfo(getActivity(), "0", "0", ip == null ? "" : ip.getClient_ip(),
-     					LetvUtil.getSource(),true);
-     		} catch (Exception e) {
-     			e.printStackTrace();
-     		}
+		updatePlayDataStatistics(
+				DataConstant.StaticticsVersion2Constatnt.PlayerAction.INIT_ACTION,
+				-1);
+		try {
+			// 环境日志在用户的每次开机上报
+			IP ip = LetvApplication.getInstance().getIp();
+			DataStatistics.getInstance().sendEnvInfo(getActivity(), "0", "0",
+					ip == null ? "" : ip.getClient_ip(), LetvUtil.getSource(),
+					true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -696,19 +725,19 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		destroyTasks();
 		resetTimeCount();
 		if (tabs != null) {
-                  tabs.setListener(null);
-                  tabs.setAdapter(null);
-                  tabs.removeAllViewsInLayout();
+			tabs.setListener(null);
+			tabs.setAdapter(null);
+			tabs.removeAllViewsInLayout();
 		}
 
 		if (viewPager != null) {
-                  viewPager.setAdapter(null);
-                  viewPager.removeAllViewsInLayout();
+			viewPager.setAdapter(null);
+			viewPager.removeAllViewsInLayout();
 		}
 
-            if (viewPagerAdapter != null) {
-                  viewPagerAdapter.format();
-            }
+		if (viewPagerAdapter != null) {
+			viewPagerAdapter.format();
+		}
 
 		if (loadLayout != null) {
 			loadLayout.removeAllViews();
@@ -723,7 +752,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		if (mHalfController != null)
 			mHalfController.format();
 
-            getActivity().getSupportFragmentManager().beginTransaction().remove(playAdFragment).commit();
+		getActivity().getSupportFragmentManager().beginTransaction()
+				.remove(playAdFragment).commit();
 
 		getActivity().getPlayUpper().removeAllViews();
 		getActivity().getPlayLower().removeAllViews();
@@ -756,7 +786,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		isLocalFile = false;
 		filePath = null;
 		isShowToast = true;
-            playAdFragment = null;
+		playAdFragment = null;
 		isShowSkipEnd = true;
 		seek = 0;
 		resetTimeCount();
@@ -789,7 +819,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * 初始化全屏控制器
 	 * */
 	private void initFullController() {
-		mFullController = new PlayAlbumFullController(this, getActivity().getWindow().getDecorView().getRootView());
+		mFullController = new PlayAlbumFullController(this, getActivity()
+				.getWindow().getDecorView().getRootView());
 		mFullController.setCallBack(this);
 	}
 
@@ -797,7 +828,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * 初始化半屏控制器
 	 * */
 	private void initHalfController() {
-		mHalfController = new PlayAlbumHalfController(this, getActivity().getWindow().getDecorView().getRootView());
+		mHalfController = new PlayAlbumHalfController(this, getActivity()
+				.getWindow().getDecorView().getRootView());
 		mHalfController.setCallBack(this);
 	}
 
@@ -805,20 +837,24 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * 初始化ViewPager和tab
 	 * */
 	private void initViewPagerAndTab() {
-		viewPager = (SettingViewPager) getActivity().findViewById(R.id.detailplay_half_detail_viewpager);
+		viewPager = (SettingViewPager) getActivity().findViewById(
+				R.id.detailplay_half_detail_viewpager);
 		viewPager.setPagingEnabled(true);
-		viewPagerAdapter = new DetailPlayPagerAdapter(getActivity().getSupportFragmentManager());
+		viewPagerAdapter = new DetailPlayPagerAdapter(getActivity()
+				.getSupportFragmentManager());
 		viewPager.setAdapter(viewPagerAdapter);
 
 		viewPager.setCurrentItem(2);
-		tabs = (ScrollTabIndicator) getActivity().findViewById(R.id.detailplay_half_detail_indicator);
+		tabs = (ScrollTabIndicator) getActivity().findViewById(
+				R.id.detailplay_half_detail_indicator);
 
-		DetailPlayScrollingTabsAdapter tabsAdapter = new DetailPlayScrollingTabsAdapter(getActivity());
-		tabs.setViewPager(viewPager,1);
+		DetailPlayScrollingTabsAdapter tabsAdapter = new DetailPlayScrollingTabsAdapter(
+				getActivity());
+		tabs.setViewPager(viewPager, 1);
 		tabs.setAdapter(tabsAdapter);
 		tabs.setListener(onPageChangeListener);
 	}
-	
+
 	@Override
 	public ViewPager getViewPager() {
 		return viewPager;
@@ -840,44 +876,46 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		handler.removeMessages(HANDLER_TIME);
 		handler.removeMessages(UPDATE_STATICICS_TIME);
 	}
-	private boolean ispost=true;
+
+	private boolean ispost = true;
+
 	/**
 	 * 监听播放器当前状态
 	 * */
 	@Override
 	public void onChange(int mCurrentState) {
 		if (mCurrentState == VideoView.STATE_PLAYING) {
-			errorCodeJoint=0;
+			errorCodeJoint = 0;
 			startTime = System.currentTimeMillis();
 
-                  if (playAdFragment != null) {
-                        playAdFragment.closePauseAd();
-                  }
-          
+			if (playAdFragment != null) {
+				playAdFragment.closePauseAd();
+			}
+
 			{
-				
+
 				// 开始播放了初始化播放记录和进度条
 				curTime = getActivity().getPlayFragment().getCurrentPosition();
 				totleTime = getActivity().getPlayFragment().getDuration();
 
-				
-				
 				if (mHalfController != null)
-					mHalfController.initProgress((int) totleTime / 1000, (int) curTime / 1000, 0);
+					mHalfController.initProgress((int) totleTime / 1000,
+							(int) curTime / 1000, 0);
 
 				if (mFullController != null)
-					mFullController.initProgress((int) totleTime / 1000, (int) curTime / 1000, 0);
+					mFullController.initProgress((int) totleTime / 1000,
+							(int) curTime / 1000, 0);
 
 				if (playRecord != null) {
 					playRecord.setTotalDuration(totleTime / 1000);// 根据真实播放文件初始化总时长
 				}
-				//艾瑞检测，视频启动
+				// 艾瑞检测，视频启动
 				try {
 					IRVideo.getInstance(getActivity()).videoPlay();
 				} catch (Exception e) {
-					Log.e("gongmeng", "vvTracker Video play error");
+					// Log.e("gongmeng", "vvTracker Video play error");
 				}
-				
+
 			}
 			// 开始刷新进度
 			startHandlerTime();
@@ -893,9 +931,10 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			if (mFullController != null) {
 				mFullController.star();
 			}
-//			LetvUtil.ireTrackerEventStart(getActivity(), album, video, realUrl, filePath);
+			// LetvUtil.ireTrackerEventStart(getActivity(), album, video,
+			// realUrl, filePath);
 			canToPip = true;
-			if(viewPagerAdapter!=null){
+			if (viewPagerAdapter != null) {
 				viewPagerAdapter.notifyDataSetChanged();
 				if (videosCallBack != null)
 					videosCallBack.notify(videosCallBackState);// 刷新半屏的视频列表
@@ -907,13 +946,14 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			{// 统计播放时长
 				long ct = System.currentTimeMillis();
 				if (startTime != 0) {
-					statisticsVideoInfo.setPlayedTime(statisticsVideoInfo.getPlayedTime() + (ct - startTime));
+					statisticsVideoInfo.setPlayedTime(statisticsVideoInfo
+							.getPlayedTime() + (ct - startTime));
 				}
-				//艾瑞检测，视频启动
+				// 艾瑞检测，视频启动
 				try {
 					IRVideo.getInstance(getActivity()).videoPause();
 				} catch (Exception e) {
-					Log.e("gongmeng", "vvTracker Video pause error");
+					// Log.e("gongmeng", "vvTracker Video pause error");
 				}
 			}
 
@@ -930,22 +970,26 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			}
 
 			if (playRecord != null) {
-				LetvPlayRecordFunction.submitPlayTraces(getActivity(), playRecord.getChannelId(),
-						playRecord.getAlbumId(), playRecord.getVideoId(), playRecord.getVideoNextId(),
-						playRecord.getType(), playRecord.getTotalDuration(), playRecord.getPlayedDuration(),
-						playRecord.getTitle(), playRecord.getImg(), playRecord.getCurEpsoid());
+				LetvPlayRecordFunction.submitPlayTraces(getActivity(),
+						playRecord.getChannelId(), playRecord.getAlbumId(),
+						playRecord.getVideoId(), playRecord.getVideoNextId(),
+						playRecord.getType(), playRecord.getTotalDuration(),
+						playRecord.getPlayedDuration(), playRecord.getTitle(),
+						playRecord.getImg(), playRecord.getCurEpsoid());
 			}
-//			LetvUtil.ireTrackerEventEnd(getActivity(), realUrl, filePath);
+			// LetvUtil.ireTrackerEventEnd(getActivity(), realUrl, filePath);
 		} else if (mCurrentState == VideoView.STATE_ERROR) {
 
 			errorCodeJoint = LetvUtil.intJoint(errorCodeExtra, errorCodeWhat);
-			
-			 updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.PLAY_ACTION, -1);
+
+			updatePlayDataStatistics(
+					DataConstant.StaticticsVersion2Constatnt.PlayerAction.PLAY_ACTION,
+					-1);
 			statisticsVideoInfo.setStatus("4");
 
-                  if (playAdFragment != null) {
-                        playAdFragment.closePauseAd();
-                  }
+			if (playAdFragment != null) {
+				playAdFragment.closePauseAd();
+			}
 
 			if (loadLayout != null) {
 				if (isLocalFile && !TextUtils.isEmpty(filePath)) {
@@ -960,23 +1004,24 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			playCallBackState = 7;
 			statisticsVideoInfo.setErr("3");
 			stopHandlerTime();
-			
-			if (getActivity() != null && getActivity().getPlayFragment() != null) {
+
+			if (getActivity() != null
+					&& getActivity().getPlayFragment() != null) {
 				getActivity().getPlayFragment().pause();
 				getActivity().getPlayFragment().stopPlayback();
 			}
-			
-			//艾瑞检测，视频结束
+
+			// 艾瑞检测，视频结束
 			try {
 				IRVideo.getInstance(getActivity()).videoEnd();
 			} catch (Exception e) {
-				Log.e("gongmeng", "vvTracker Video end error");
+				// Log.e("gongmeng", "vvTracker Video end error");
 			}
 		} else if (mCurrentState == VideoView.STATE_IDLE) {
 
-                  if (playAdFragment != null) {
-                        playAdFragment.closePauseAd();
-                  }
+			if (playAdFragment != null) {
+				playAdFragment.closePauseAd();
+			}
 
 			if (playCallBackState == 0) {
 				if (loadLayout != null)
@@ -1008,12 +1053,13 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			{// 统计播放时长
 				long ct = System.currentTimeMillis();
 				if (startTime != 0) {
-					statisticsVideoInfo.setPlayedTime((statisticsVideoInfo.getPlayedTime() + (ct - startTime)) / 1000);
+					statisticsVideoInfo.setPlayedTime((statisticsVideoInfo
+							.getPlayedTime() + (ct - startTime)) / 1000);
 				}
 				try {
 					IRVideo.getInstance(getActivity()).videoEnd();
 				} catch (Exception e) {
-					Log.e("gongmeng", "vvTracker Video end error");
+					// Log.e("gongmeng", "vvTracker Video end error");
 				}
 			}
 			statisticsVideoInfo.setPid(aid + "");
@@ -1032,31 +1078,34 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			stopHandlerTime();
 
 			LogInfo.log("onChange", statisticsVideoInfo.toString());
-			updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.TIME_ACTION,
+			updatePlayDataStatistics(
+					DataConstant.StaticticsVersion2Constatnt.PlayerAction.TIME_ACTION,
 					(timeElapsed - lastTimeElapsed));
-			updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.END_ACTION, -1);
+			updatePlayDataStatistics(
+					DataConstant.StaticticsVersion2Constatnt.PlayerAction.END_ACTION,
+					-1);
 			resetTimeCount();
 			// DataStatistics.getInstance().sendVideoInfo(getActivity(),
 			// statisticsVideoInfo);
 			// LetvUtil.ireTrackerEventEnd(getActivity(), realUrl, filePath);
 		} else if (mCurrentState == VideoView.STATE_ENFORCEMENT) {
-                  if (playAdFragment != null) {
-                        playAdFragment.closePauseAd();
-                  }
+			if (playAdFragment != null) {
+				playAdFragment.closePauseAd();
+			}
 			if (getActivity().getPlayFragment().isEnforcementPause()) {
 				{// 统计播放时长
 					long ct = System.currentTimeMillis();
 					if (startTime != 0) {
-						statisticsVideoInfo.setPlayedTime(statisticsVideoInfo.getPlayedTime() + (ct - startTime));
+						statisticsVideoInfo.setPlayedTime(statisticsVideoInfo
+								.getPlayedTime() + (ct - startTime));
 					}
-					
+
 					try {
 						IRVideo.getInstance(getActivity()).videoPause();
 					} catch (Exception e) {
-						Log.e("gongmeng", "vvTracker Video pause error");
+						// Log.e("gongmeng", "vvTracker Video pause error");
 					}
-					
-					
+
 				}
 				// 暂停播放，隐藏loading
 				loadLayout.finish();
@@ -1082,10 +1131,12 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		if (getLaunchMode() == PlayController.PLAY_ALBUM) {
 			new RequestAlbum(getActivity()).start();
 		} else if (getLaunchMode() == PlayController.PLAY_VIDEO) {
-			new checkPlayRecordTask(getActivity(), false, curPage, aid, vid).start();
-		}  else {
+			new checkPlayRecordTask(getActivity(), false, curPage, aid, vid)
+					.start();
+		} else {
 			if (!TextUtils.isEmpty(realUrl)) {// 直接给播放地址的播放
-				getActivity().getPlayFragment().playLocal(realUrl, (int) seek * 1000);
+				getActivity().getPlayFragment().playLocal(realUrl,
+						(int) seek * 1000);
 				/**** add by zlb for pip *****/
 				localPath = realUrl;
 				localSeek = seek;
@@ -1093,7 +1144,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean getVideoList(int page) {
 		if (page != curPage) {
@@ -1101,8 +1152,9 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				curPage = page;// 存在直接翻页
 				return true;
 			} else {
-				new RequestVideoList(getActivity(), false, page, aid,0).start();
-                Log.d("newsPage", "page = " + page);
+				new RequestVideoList(getActivity(), false, page, aid, 0)
+						.start();
+				Log.d("newsPage", "page = " + page);
 			}
 		}
 		return false;
@@ -1151,11 +1203,11 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			 * */
 			if (!alreadyPrompt) {
 				alreadyPrompt = true;
-                        if (video != null && playAdFragment != null) {
-                              playAdFragment.setPauseAd(true);
-                              playAdFragment.setADPause(true);
-                              getActivity().getPlayFragment().setEnforcementPause(true);
-                        }
+				if (video != null && playAdFragment != null) {
+					playAdFragment.setPauseAd(true);
+					playAdFragment.setADPause(true);
+					getActivity().getPlayFragment().setEnforcementPause(true);
+				}
 			}
 			break;
 		}
@@ -1174,57 +1226,61 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		isShowSkipEnd = true;
 
 		resetTimeCount();
-		getActivity().getPlayFragment().playNet(realUrl, false, isDolby, (int) playRecord.getPlayedDuration() * 1000);
-		if(ispostplay){
-    		
-	       	  updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.PLAY_ACTION, -1);
-			}
-		
+		getActivity().getPlayFragment().playNet(realUrl, false, isDolby,
+				(int) playRecord.getPlayedDuration() * 1000);
+		if (ispostplay) {
+
+			updatePlayDataStatistics(
+					DataConstant.StaticticsVersion2Constatnt.PlayerAction.PLAY_ACTION,
+					-1);
+		}
+
 	}
 
 	/**
 	 * 播放 只针对本专辑下的视频
 	 * */
 	public void play(Video video) {
-		try{
-		if (video.getId() != vid || loadLayout.getErrState() != 0) {
-			loadLayout.loading();
-			canplay = false;
-			statisticsVideoInfo.setStatus("2");// 手动结束
-			destroyTasks();
-			getActivity().getPlayFragment().pause();
-			getActivity().getPlayFragment().stopPlayback();
+		try {
+			if (video.getId() != vid || loadLayout.getErrState() != 0) {
+				loadLayout.loading();
+				canplay = false;
+				statisticsVideoInfo.setStatus("2");// 手动结束
+				destroyTasks();
+				getActivity().getPlayFragment().pause();
+				getActivity().getPlayFragment().stopPlayback();
 
-                  if (playAdFragment != null) {
-                        playAdFragment.setPauseAd(false);
-                        playAdFragment.pause();
-                        playAdFragment.stopPlayback();
-                  }
+				if (playAdFragment != null) {
+					playAdFragment.setPauseAd(false);
+					playAdFragment.pause();
+					playAdFragment.stopPlayback();
+				}
 
-			this.vid = video.getId();
-			this.setVideo(video);
-			isLocalFile = false;
-			filePath = null;
-			videosCallBackState = PlayAlbumControllerCallBack.STATE_FINISH;
-			if (videosCallBack != null)
-				videosCallBack.notify(videosCallBackState);// 刷新半屏的视频列表
+				this.vid = video.getId();
+				this.setVideo(video);
+				isLocalFile = false;
+				filePath = null;
+				videosCallBackState = PlayAlbumControllerCallBack.STATE_FINISH;
+				if (videosCallBack != null)
+					videosCallBack.notify(videosCallBackState);// 刷新半屏的视频列表
 
-//			if (mFullController != null)
-//				mFullController.initVideos();// 刷新全屏的视频列表
-			playRecord = null;
+				// if (mFullController != null)
+				// mFullController.initVideos();// 刷新全屏的视频列表
+				playRecord = null;
 
-                  startLoadingData();
-			createPlayRecord();
+				startLoadingData();
+				createPlayRecord();
 
-			requestStartTime = System.currentTimeMillis();// 请求开始时间
-			new RequestVideoFile(getActivity()).start();
-		 	
-		}
-		}catch (Exception e) {
-			// TODO: handle exception
+				requestStartTime = System.currentTimeMillis();// 请求开始时间
+				new RequestVideoFile(getActivity()).start();
+
 			}
-		
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 	}
+
 	/**
 	 * 播放 针对清晰度切换，VideoFile接口失败后重试
 	 * */
@@ -1239,12 +1295,12 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		destroyTasks();
 		getActivity().getPlayFragment().pause();
 		getActivity().getPlayFragment().stopPlayback();
-            if (playAdFragment != null) {
-                  playAdFragment.setPauseAd(false);
-                  playAdFragment.pause();
-                  playAdFragment.stopPlayback();
-            }
-            startLoadingData();
+		if (playAdFragment != null) {
+			playAdFragment.setPauseAd(false);
+			playAdFragment.pause();
+			playAdFragment.stopPlayback();
+		}
+		startLoadingData();
 		createPlayRecord();
 
 		requestStartTime = System.currentTimeMillis();// 请求开始时间
@@ -1256,7 +1312,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * */
 	public void playNext() {
 		loadLayout.loading();
-            isPlayedAd = false;
+		isPlayedAd = false;
 		Video v = video;
 		if (videos != null && videos.size() > 0) {
 			isLocalFile = false;
@@ -1294,48 +1350,54 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 					if (pageSize * (page - 1) + pos + 1 < totle) {
 						if (pos < videoList.size()) {
 							if (pos + 1 == videoList.size()) {// 本页最后一条数据
-//                                                videosCallBack.setCurPage(curPage + 1);
-//								if (videos.containsKey(page + 1)) {// 如果已经有下页数据，播放
-//									VideoList list = videos.get(page + 1);
-//									if (list != null && list.size() > 0) {
-//										play(list.get(0));
-//                                                            curPage = curPage + 1;
-//                                                            videosCallBack.notify(0);
-//										return;
-//									} else {
-//										this.curPage = page + 1;
-//										destroyTasks();
-//										getActivity().getPlayFragment().pause();
-//										getActivity().getPlayFragment().stopPlayback();
-//
-//										playRecord = null;
-//										vid = 0;
-//
-//										requestStartTime = System.currentTimeMillis();// 请求开始时间
-//										new RequestVideoList(getActivity(), true, curPage, aid, 0).start();
-//                                                            videosCallBack.setCurPage(curPage);
-//                                                            return;
-//									}
-//								} else {// 如果没有下页数据，请求再播放
-//									this.curPage = page + 1;
-//									destroyTasks();
-//									getActivity().getPlayFragment().pause();
-//									getActivity().getPlayFragment().stopPlayback();
-//
-//									playRecord = null;
-//									vid = 0;
-//
-//									requestStartTime = System.currentTimeMillis();// 请求开始时间
-//									new RequestVideoList(getActivity(), true, curPage, aid, 0).start();
-//                                                      videosCallBack.setCurPage(curPage);
-//                                                      return;
-//								}
+								// videosCallBack.setCurPage(curPage + 1);
+								// if (videos.containsKey(page + 1)) {//
+								// 如果已经有下页数据，播放
+								// VideoList list = videos.get(page + 1);
+								// if (list != null && list.size() > 0) {
+								// play(list.get(0));
+								// curPage = curPage + 1;
+								// videosCallBack.notify(0);
+								// return;
+								// } else {
+								// this.curPage = page + 1;
+								// destroyTasks();
+								// getActivity().getPlayFragment().pause();
+								// getActivity().getPlayFragment().stopPlayback();
+								//
+								// playRecord = null;
+								// vid = 0;
+								//
+								// requestStartTime =
+								// System.currentTimeMillis();//
+								// 请求开始时间
+								// new RequestVideoList(getActivity(), true,
+								// curPage, aid, 0).start();
+								// videosCallBack.setCurPage(curPage);
+								// return;
+								// }
+								// } else {// 如果没有下页数据，请求再播放
+								// this.curPage = page + 1;
+								// destroyTasks();
+								// getActivity().getPlayFragment().pause();
+								// getActivity().getPlayFragment().stopPlayback();
+								//
+								// playRecord = null;
+								// vid = 0;
+								//
+								// requestStartTime =
+								// System.currentTimeMillis();//
+								// 请求开始时间
+								// new RequestVideoList(getActivity(), true,
+								// curPage, aid, 0).start();
+								// videosCallBack.setCurPage(curPage);
+								// return;
+								// }
 
-
-                                                getActivity().finish();
+								getActivity().finish();
 							} else {// 本也直接去下集播放
 								play(videoList.get(pos + 1));
-//                                                getActivity().finish();
+								// getActivity().finish();
 								return;
 							}
 						} else {
@@ -1346,333 +1408,370 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 					}
 				}
 			}
-			
 
 		} else {// 没有视频列表，关闭
 			getActivity().finish();
 		}
 	}
 
+	/**
+	 * 得到前帖广告
+	 * */
+	private void getFrontAd() {
+		if (video != null
+				&& playAdFragment != null
+				&& PreferencesManager.getInstance().getUserId()
+						.equalsIgnoreCase("")) {
+			com.letv.ads.util.LogInfo.log("ads", " vid=" + vid);
+			playAdFragment.getDemandFrontAd(video.getCid(), aid, vid, video
+					.getMid(), uuidTimp, PreferencesManager.getInstance()
+					.getUserId(), video.getDuration() + "", "", "0",
+					isSupportM3U8(), video.needPay(), true);
+			getActivity().getPlayFragment().setEnforcementWait(true);
+		}
+	}
 
+	/**
+	 * 正常流程得到前贴广告
+	 */
+	private void getFrontAdNormal() {
+		Log.d("ads", "getFrontAdNormal");
+		if (null != video && video.needPay()) {// 付费视频跳过广告
+			return;
+		}
+		if (!needPlayAd
+				|| !PreferencesManager.getInstance().getUserId()
+						.equalsIgnoreCase("")) {
+			return;
+		}
+		boolean flag = false;
+		switch (NetWorkTypeUtils.getNetType()) {
+		case NetWorkTypeUtils.NETTYPE_2G:
+		case NetWorkTypeUtils.NETTYPE_3G:
+			flag = true;
+			boolean isDownLoad = false;
+			if (!isDownLoad && !isLocalFile) {
+				if ((!alreadyPrompt)) {
+					if (video != null && playAdFragment != null) {
+						playAdFragment.setPauseAd(true);
+						playAdFragment.setADPause(true);
+						getPauseAd();
+					}
+					alreadyPrompt = true;
+					if (video != null && playAdFragment != null) {
+						adConsumeTime = System.currentTimeMillis();
+						playAdFragment.getDemandFrontAd(video.getCid(), aid,
+								vid, video.getMid(), uuidTimp,
+								PreferencesManager.getInstance().getUserId(),
+								video.getDuration() + "", "", "0",
+								isSupportM3U8(), video.needPay(), true);
+						getActivity().getPlayFragment().setEnforcementPause(
+								true);
+					}
+					getActivity().getPlayFragment().setEnforcementWait(true);
+					// setMobileNetBg(true);
+					loadLayout.finish();
+					// UIs.showToast(R.string.play_2g3gnet_tag);
+				} else {
+					// UIs.showToast(R.string.play_net_tag);
+					if (video != null && playAdFragment != null) {
+						adConsumeTime = System.currentTimeMillis();
+						playAdFragment.getDemandFrontAd(video.getCid(), aid,
+								vid, video.getMid(), uuidTimp,
+								PreferencesManager.getInstance().getUserId(),
+								video.getDuration() + "", "", "0",
+								isSupportM3U8(), video.needPay(), true);
+						// getActivity().getPlayFragment().setEnforcementPause(true);
+						getActivity().getPlayFragment()
+								.setEnforcementWait(true);
+					}
+				}
+			} else {
+				flag = false;
+			}
+			break;
+		}
+		if (!flag) {
+			Log.d("ads", "playAdFragment=" + playAdFragment);
+			if (video != null && playAdFragment != null) {
+				adConsumeTime = System.currentTimeMillis();
+				playAdFragment.getDemandFrontAd(video.getCid(), aid, vid, video
+						.getMid(), uuidTimp, PreferencesManager.getInstance()
+						.getUserId(), video.getDuration() + "", "", "0",
+						isSupportM3U8(), video.needPay(), true);
+				getActivity().getPlayFragment().setEnforcementWait(true);
+			}
+		}
+	}
 
-      /**
-       * 得到前帖广告
-       * */
-      private void getFrontAd() {
-            if (video != null && playAdFragment != null) {
-                  com.letv.ads.util.LogInfo.log("ads" , " vid=" + vid);
-                  playAdFragment.getDemandFrontAd(video.getCid(), aid, vid, video.getMid(), uuidTimp, PreferencesManager
-                                  .getInstance().getUserId(), video.getDuration() + "", "", "0", isSupportM3U8(), video.needPay(),
-                          true);
-                  getActivity().getPlayFragment().setEnforcementWait(true);
-            }
-      }
+	/**
+	 * 是否支持软解播放
+	 * 
+	 * @return
+	 */
+	private boolean isSupportM3U8() {
+		return false;
+		// String vf = LetvApplication.getInstance().getVideoFormat();
+		// return "ios".equals(vf);
+	}
 
-      /**
-       * 正常流程得到前贴广告
-       */
-      private void getFrontAdNormal() {
-    	  	Log.d("ads", "getFrontAdNormal");
-            if (null != video && video.needPay()) {// 付费视频跳过广告
-                  return;
-            }
-            if (!needPlayAd) {
-                  return;
-            }
-            boolean flag = false;
-            switch (NetWorkTypeUtils.getNetType()) {
-                  case NetWorkTypeUtils.NETTYPE_2G:
-                  case NetWorkTypeUtils.NETTYPE_3G:
-                        flag = true;
-                        boolean isDownLoad = false;
-                        if (!isDownLoad && !isLocalFile) {
-                              if ((!alreadyPrompt)) {
-                                    if (video != null && playAdFragment != null) {
-                                          playAdFragment.setPauseAd(true);
-                                          playAdFragment.setADPause(true);
-                                          getPauseAd();
-                                    }
-                                    alreadyPrompt = true;
-                                    if (video != null && playAdFragment != null) {
-                                          adConsumeTime = System.currentTimeMillis();
-                                          playAdFragment.getDemandFrontAd(video.getCid(), aid, vid, video.getMid(), uuidTimp,
-                                                  PreferencesManager.getInstance().getUserId(), video.getDuration() + "", "", "0",
-                                                  isSupportM3U8(), video.needPay(), true);
-                                          getActivity().getPlayFragment().setEnforcementPause(true);
-                                    }
-                                    getActivity().getPlayFragment().setEnforcementWait(true);
-//                                    setMobileNetBg(true);
-                                    loadLayout.finish();
-                                    // UIs.showToast(R.string.play_2g3gnet_tag);
-                              } else {
-//                                    UIs.showToast(R.string.play_net_tag);
-                                    if (video != null && playAdFragment != null) {
-                                          adConsumeTime = System.currentTimeMillis();
-                                          playAdFragment.getDemandFrontAd(video.getCid(), aid, vid, video.getMid(), uuidTimp,
-                                                  PreferencesManager.getInstance().getUserId(), video.getDuration() + "", "", "0",
-                                                  isSupportM3U8(), video.needPay(), true);
-                                          // getActivity().getPlayFragment().setEnforcementPause(true);
-                                          getActivity().getPlayFragment().setEnforcementWait(true);
-                                    }
-                              }
-                        } else {
-                              flag = false;
-                        }
-                        break;
-            }
-            if (!flag) {
-            	Log.d("ads","playAdFragment=" + playAdFragment);
-                  if (video != null && playAdFragment != null) {
-                        adConsumeTime = System.currentTimeMillis();
-                        playAdFragment.getDemandFrontAd(video.getCid(), aid, vid, video.getMid(), uuidTimp, PreferencesManager
-                                        .getInstance().getUserId(), video.getDuration() + "", "", "0", isSupportM3U8(),
-                                video.needPay(), true);
-                        getActivity().getPlayFragment().setEnforcementWait(true);
-                  }
-            }
-      }
+	/**
+	 * 前帖广告完成的回调
+	 * */
+	@Override
+	public void onFinish(boolean isFinishByHand, boolean hasAds) {
+		handler.removeMessages(UPDATE_STATICICS_TIME);
+		handler.sendEmptyMessage(UPDATE_STATICICS_TIME);
+		if (!TextUtils.isEmpty(realUrl)) {
+			updatePlayDataStatistics(
+					DataConstant.StaticticsVersion2Constatnt.PlayerAction.PLAY_ACTION,
+					-1);
+		} else {
+			ispostplay = true;
+		}
+		if (video != null && playAdFragment != null && hasAds) {
+			playAdFragment.setPauseAd(false);
+			mIVideoStatusInformer = playAdFragment.getIVideoStatusInformer();
+		}
+		if (getActivity().getPlayFragment().isEnforcementPause()
+				&& playAdFragment != null && playAdFragment.isHaveFrontAds()) {
+			getActivity().getPlayFragment().setEnforcementPause(false);
+		}
 
+		getActivity().getPlayFragment().start();
 
+		getActivity().getPlayFragment().setEnforcementWait(false);
+		adConsumeTime = System.currentTimeMillis() - adConsumeTime;
+		if (getRealUrlConsumeTime < 30 * 1000 && adConsumeTime < 120 * 1000) {// 上报加载时长
+			// (加载广告和请求调度地址是异步调用)
+			staticticsLoadTimeInfo(getActivity());
+		}
+		if (isFinishByHand) {
 
+		} else {
+			if (playCallBackState == 7) {// 某些设备上，播放完广告后，无法播放视频
+				if (TextUtils.isEmpty(realUrl)) {
+					new RequestVideoFile(getActivity()).start();
+				} else {
+					startPlayNet();
+				}
+			} else {
+				getActivity().getPlayFragment().start();
+			}
+		}
 
-      /**
-       * 是否支持软解播放
-       *
-       * @return
-       */
-      private boolean isSupportM3U8() {
-            return false;
-            // String vf = LetvApplication.getInstance().getVideoFormat();
-            // return "ios".equals(vf);
-      }
+		isPlayedAdFinish = true;
+	}
 
-      /**
-       * 前帖广告完成的回调
-       * */
-      @Override
-      public void onFinish(boolean isFinishByHand ,boolean hasAds) {
-  		handler.removeMessages(UPDATE_STATICICS_TIME);
-  		handler.sendEmptyMessage(UPDATE_STATICICS_TIME);
-    	  if(!TextUtils.isEmpty(realUrl)){
-          	  updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.PLAY_ACTION, -1);
-                }else{
-                	ispostplay=true;
-                }
-            if (video != null && playAdFragment != null && hasAds) {
-                  playAdFragment.setPauseAd(false);
-                  mIVideoStatusInformer = playAdFragment.getIVideoStatusInformer();
-            }
-            if (getActivity().getPlayFragment().isEnforcementPause() && playAdFragment != null
-                    && playAdFragment.isHaveFrontAds()) {
-                  getActivity().getPlayFragment().setEnforcementPause(false);
-            }
-            
-                getActivity().getPlayFragment().start();
-            
-            getActivity().getPlayFragment().setEnforcementWait(false);
-            adConsumeTime = System.currentTimeMillis() - adConsumeTime;
-            if (getRealUrlConsumeTime < 30 * 1000 && adConsumeTime < 120 * 1000) {// 上报加载时长
-                  // (加载广告和请求调度地址是异步调用)
-                  staticticsLoadTimeInfo(getActivity());
-            }
-            if (isFinishByHand) {
+	/**
+	 * 各接口缓冲时间统计
+	 * 
+	 * @param mContext
+	 */
+	private void staticticsLoadTimeInfo(Context mContext) {
+		try {
+			StringBuilder sb = new StringBuilder();
+			long sVid = 0;
+			long sCid = 0;
+			if (video != null) {
+				sVid = video.getId();
+				sCid = video.getCid();
+			}
+			int vid = getActivity().getIntent().getIntExtra("vid", 0);
+			if (vid > 0) {// 调度播放时，如果有vid，则上报视频详情时长，否则上报 专辑视频详情 lhz
+				LogInfo.log("lhz", "videoDetailsConsumeTime:"
+						+ videoDetailsConsumeTime);
+				albumVListConsumeTime = videoDetailsConsumeTime;
+			}
+			long adsTotalTime = 0;
+			long adsRequestTime = 0;
+			long adsLoadingTime = 0;
+			if (playAdFragment != null) {
+				adsTotalTime = playAdFragment.getAdsVideoTotalTime();
+				adsRequestTime = playAdFragment.getAdsLoadingTime();
+				adsLoadingTime = playAdFragment.getAdsPlayLoadTime();
+			}
+			sb.append("type1=" + LetvUtil.getNetType(mContext) + "&");
+			sb.append("type2=" + "0" + "&");
+			sb.append("type3="
+					+ LetvUtil.staticticsLoadTimeInfoFormat(adConsumeTime)
+					+ "&");
+			sb.append("type4="
+					+ LetvUtil
+							.staticticsLoadTimeInfoFormat(albumVListConsumeTime)
+					+ "&");
+			sb.append("type5="
+					+ LetvUtil
+							.staticticsLoadTimeInfoFormat(videoFileConsumeTime)
+					+ "&");
+			sb.append("type6="
+					+ LetvUtil.staticticsLoadTimeInfoFormat(canPlayConsumeTime)
+					+ "&");
+			sb.append("type7="
+					+ LetvUtil
+							.staticticsLoadTimeInfoFormat(albumPayConsumeTime)
+					+ "&");
+			sb.append("type8="
+					+ LetvUtil.staticticsLoadTimeInfoFormat(adJoinConsumeTime)
+					+ "&");
+			sb.append("type9="
+					+ LetvUtil
+							.staticticsLoadTimeInfoFormat(getRealUrlConsumeTime)
+					+ "&");
+			sb.append("type10="
+					+ LetvUtil.staticticsLoadTimeInfoFormat(totalConsumeTime)
+					+ "&");
 
-            } else {
-                  if (playCallBackState == 7) {// 某些设备上，播放完广告后，无法播放视频
-                        if (TextUtils.isEmpty(realUrl)) {
-                              new RequestVideoFile(getActivity()).start();
-                        } else {
-                              startPlayNet();
-                        }
-                  } else {
-                        getActivity().getPlayFragment().start();
-                  }
-            }
-           
-            isPlayedAdFinish=true;
-      }
+			sb.append("type11="
+					+ LetvUtil.staticticsLoadTimeInfoFormat(adsRequestTime)
+					+ "&");
+			sb.append("type12=" + adsTotalTime + "&");
+			sb.append("type13="
+					+ LetvUtil.staticticsLoadTimeInfoFormat(loadingConsumeTime)
+					+ "&");
+			sb.append("type14="
+					+ LetvUtil.staticticsLoadTimeInfoFormat(adsLoadingTime));
 
+			// DataStatistics.getInstance().sendActionInfo(mContext, "0", "0",
+			// LetvUtil.getPcode(), "22", sb.toString(),
+			// "0", sCid + "", aid + "", sVid + "", LetvUtil.getUID(), null,
+			// null, null, null,
+			// PreferencesManager.getInstance().isLogin() ? 0 : 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-      /**
-       * 各接口缓冲时间统计
-       *
-       * @param mContext
-       */
-      private void staticticsLoadTimeInfo(Context mContext) {
-            try {
-                  StringBuilder sb = new StringBuilder();
-                  long sVid = 0;
-                  long sCid = 0;
-                  if (video != null) {
-                        sVid = video.getId();
-                        sCid = video.getCid();
-                  }
-                  int vid = getActivity().getIntent().getIntExtra("vid", 0);
-                  if (vid > 0) {// 调度播放时，如果有vid，则上报视频详情时长，否则上报 专辑视频详情 lhz
-                        LogInfo.log("lhz", "videoDetailsConsumeTime:" + videoDetailsConsumeTime);
-                        albumVListConsumeTime = videoDetailsConsumeTime;
-                  }
-                  long adsTotalTime = 0;
-                  long adsRequestTime = 0;
-                  long adsLoadingTime = 0;
-                  if (playAdFragment != null) {
-                        adsTotalTime = playAdFragment.getAdsVideoTotalTime();
-                        adsRequestTime = playAdFragment.getAdsLoadingTime();
-                        adsLoadingTime = playAdFragment.getAdsPlayLoadTime();
-                  }
-                  sb.append("type1=" + LetvUtil.getNetType(mContext) + "&");
-                  sb.append("type2=" + "0" + "&");
-                  sb.append("type3=" + LetvUtil.staticticsLoadTimeInfoFormat(adConsumeTime) + "&");
-                  sb.append("type4=" + LetvUtil.staticticsLoadTimeInfoFormat(albumVListConsumeTime) + "&");
-                  sb.append("type5=" + LetvUtil.staticticsLoadTimeInfoFormat(videoFileConsumeTime) + "&");
-                  sb.append("type6=" + LetvUtil.staticticsLoadTimeInfoFormat(canPlayConsumeTime) + "&");
-                  sb.append("type7=" + LetvUtil.staticticsLoadTimeInfoFormat(albumPayConsumeTime) + "&");
-                  sb.append("type8=" + LetvUtil.staticticsLoadTimeInfoFormat(adJoinConsumeTime) + "&");
-                  sb.append("type9=" + LetvUtil.staticticsLoadTimeInfoFormat(getRealUrlConsumeTime) + "&");
-                  sb.append("type10=" + LetvUtil.staticticsLoadTimeInfoFormat(totalConsumeTime) + "&");
+	private ArrayList<CommonAdItem> ads;
+	private long adTotalDuration;
 
-                  sb.append("type11=" + LetvUtil.staticticsLoadTimeInfoFormat(adsRequestTime) + "&");
-                  sb.append("type12=" + adsTotalTime + "&");
-                  sb.append("type13=" + LetvUtil.staticticsLoadTimeInfoFormat(loadingConsumeTime) + "&");
-                  sb.append("type14=" + LetvUtil.staticticsLoadTimeInfoFormat(adsLoadingTime));
+	/**
+	 * 广告拼接
+	 */
+	@Override
+	public void onM3U8(ArrayList<CommonAdItem> ads) {
+		if (null != ads && ads.size() >= 0
+				&& SimpleAdMediaType.VIDEO == ads.get(0).mediaFileType) {
+			this.ads = ads;
+			String ahl = "";
+			for (int i = 0; i < ads.size(); i++) {
+				adTotalDuration += ads.get(i).duration * 1000;
+				if (i == ads.size() - 1) {
+					ahl += ads.get(i).mediaFileUrl + "&tts=ios";
+				} else {
+					ahl += ads.get(i).mediaFileUrl + "&tts=ios|";
+				}
+			}
+			String vl = ddUrl;
+			String atl = "";
+			if (!TextUtils.isEmpty(ahl)) {
+				new RequestAdJoining(getActivity(), ahl, vl, atl).start();
+			} else {
+				mPlayMode = PLAY_MODE.NORMAL;
+				getActivity().getPlayFragment().setEnforcementPause(false);
+				getActivity().getPlayFragment().setEnforcementWait(false);
+				startPlayNet();
+			}
+		} else {
+			mPlayMode = PLAY_MODE.NORMAL;
+			startPlayNet();
+		}
+	}
 
-//                  DataStatistics.getInstance().sendActionInfo(mContext, "0", "0", LetvUtil.getPcode(), "22", sb.toString(),
-//                          "0", sCid + "", aid + "", sVid + "", LetvUtil.getUID(), null, null, null, null,
-//                          PreferencesManager.getInstance().isLogin() ? 0 : 1);
-            } catch (Exception e) {
-                  e.printStackTrace();
-            }
-      }
+	/**
+	 * 请求 广告拼接
+	 * */
+	public class RequestAdJoining extends LetvHttpAsyncTask<AdJoiningBean> {
 
+		private String ahl;
+		private String vl;
+		private String atl;
 
-      private ArrayList<CommonAdItem> ads;
-      private long adTotalDuration;
+		public RequestAdJoining(Context context, String ahl, String vl,
+				String atl) {
+			super(context);
+			this.ahl = ahl;
+			this.vl = vl;
+			this.atl = atl;
+		}
 
-      /**
-       * 广告拼接
-       */
-      @Override
-      public void onM3U8(ArrayList<CommonAdItem> ads) {
-            if (null != ads && ads.size() >= 0 && SimpleAdMediaType.VIDEO == ads.get(0).mediaFileType) {
-                  this.ads = ads;
-                  String ahl = "";
-                  for (int i = 0; i < ads.size(); i++) {
-                        adTotalDuration += ads.get(i).duration * 1000;
-                        if (i == ads.size() - 1) {
-                              ahl += ads.get(i).mediaFileUrl + "&tts=ios";
-                        } else {
-                              ahl += ads.get(i).mediaFileUrl + "&tts=ios|";
-                        }
-                  }
-                  String vl = ddUrl;
-                  String atl = "";
-                  if (!TextUtils.isEmpty(ahl)) {
-                        new RequestAdJoining(getActivity(), ahl, vl, atl).start();
-                  } else {
-                        mPlayMode = PLAY_MODE.NORMAL;
-                        getActivity().getPlayFragment().setEnforcementPause(false);
-                        getActivity().getPlayFragment().setEnforcementWait(false);
-                        startPlayNet();
-                  }
-            } else {
-                  mPlayMode = PLAY_MODE.NORMAL;
-                  startPlayNet();
-            }
-      }
+		@Override
+		public LetvDataHull<AdJoiningBean> doInBackground() {
+			adJoinConsumeTime = System.currentTimeMillis();
+			return LetvHttpApi.requestAdJoining(0, ahl, vl, atl,
+					new AdJoiningParser());
+		}
 
+		@Override
+		public void onPostExecute(int updateId, AdJoiningBean result) {
+			adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
+			tasks.remove(this);
+			if (null != result) {
+				boolean ahlSuccess = (TextUtils.isEmpty(ahl) || (!TextUtils
+						.isEmpty(ahl) && result.isAhsSuccess())) ? true : false;
+				boolean vlSuccess = (TextUtils.isEmpty(vl) || (!TextUtils
+						.isEmpty(vl) && result.isVsSuccess())) ? true : false;
+				boolean atlSuccess = (TextUtils.isEmpty(atl) || (!TextUtils
+						.isEmpty(atl) && result.isAtsSuccess())) ? true : false;
+				if (ahlSuccess && vlSuccess && atlSuccess
+						&& null != result.getMuri()) {
+					realUrl = result.getMuri();
+					curTime = 0;// 初始化初始播放时间
+					mPlayMode = PLAY_MODE.M3U8;
+					getActivity().getPlayFragment().setEnforcementPause(false);
+					getActivity().getPlayFragment().setEnforcementWait(false);
+					startPlayNet();
 
-      /**
-       * 请求 广告拼接
-       * */
-      public class RequestAdJoining extends LetvHttpAsyncTask<AdJoiningBean> {
+					getActivity().getAdLayout().startAd();
+					getActivity().getPlayGestrue().setVisibility(View.GONE);
+					getActivity().getPlayUpper().setVisibility(View.GONE);
+				} else {
+					requestAdJoinFailed();
+				}
+				if (null != playAdFragment) {
+					playAdFragment.setAdJoinBean(result.getAhs(),
+							result.getVs());
+				}
+			}
+		}
 
-            private String ahl;
-            private String vl;
-            private String atl;
+		@Override
+		public void netErr(int updateId, String errMsg) {
+			adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
+			tasks.remove(this);
+			requestAdJoinFailed();
+		}
 
-            public RequestAdJoining(Context context, String ahl, String vl, String atl) {
-                  super(context);
-                  this.ahl = ahl;
-                  this.vl = vl;
-                  this.atl = atl;
-            }
+		@Override
+		public void dataNull(int updateId, String errMsg) {
+			adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
+			tasks.remove(this);
+			requestAdJoinFailed();
+		}
 
-            @Override
-            public LetvDataHull<AdJoiningBean> doInBackground() {
-                  adJoinConsumeTime = System.currentTimeMillis();
-                  return LetvHttpApi.requestAdJoining(0, ahl, vl, atl, new AdJoiningParser());
-            }
+		@Override
+		public void netNull() {
+			adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
+			tasks.remove(this);
+			requestAdJoinFailed();
+		}
 
-            @Override
-            public void onPostExecute(int updateId, AdJoiningBean result) {
-                  adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
-                  tasks.remove(this);
-                  if (null != result) {
-                        boolean ahlSuccess = (TextUtils.isEmpty(ahl) || (!TextUtils.isEmpty(ahl) && result.isAhsSuccess())) ? true
-                                : false;
-                        boolean vlSuccess = (TextUtils.isEmpty(vl) || (!TextUtils.isEmpty(vl) && result.isVsSuccess())) ? true
-                                : false;
-                        boolean atlSuccess = (TextUtils.isEmpty(atl) || (!TextUtils.isEmpty(atl) && result.isAtsSuccess())) ? true
-                                : false;
-                        if (ahlSuccess && vlSuccess && atlSuccess && null != result.getMuri()) {
-                              realUrl = result.getMuri();
-                              curTime = 0;// 初始化初始播放时间
-                              mPlayMode = PLAY_MODE.M3U8;
-                              getActivity().getPlayFragment().setEnforcementPause(false);
-                              getActivity().getPlayFragment().setEnforcementWait(false);
-                              startPlayNet();
+		@Override
+		public void noUpdate() {
+			adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
+			super.noUpdate();
+		}
 
-                              getActivity().getAdLayout().startAd();
-                              getActivity().getPlayGestrue().setVisibility(View.GONE);
-                              getActivity().getPlayUpper().setVisibility(View.GONE);
-                        } else {
-                              requestAdJoinFailed();
-                        }
-                        if (null != playAdFragment) {
-                              playAdFragment.setAdJoinBean(result.getAhs(), result.getVs());
-                        }
-                  }
-            }
+		private void requestAdJoinFailed() {
+			mPlayMode = PLAY_MODE.NORMAL;
+			getActivity().getPlayFragment().setEnforcementPause(false);
+			getActivity().getPlayFragment().setEnforcementWait(false);
+			startPlayNet();
+		}
 
-            @Override
-            public void netErr(int updateId, String errMsg) {
-                  adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
-                  tasks.remove(this);
-                  requestAdJoinFailed();
-            }
+	}
 
-            @Override
-            public void dataNull(int updateId, String errMsg) {
-                  adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
-                  tasks.remove(this);
-                  requestAdJoinFailed();
-            }
-
-            @Override
-            public void netNull() {
-                  adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
-                  tasks.remove(this);
-                  requestAdJoinFailed();
-            }
-
-            @Override
-            public void noUpdate() {
-                  adJoinConsumeTime = System.currentTimeMillis() - adJoinConsumeTime;
-                  super.noUpdate();
-            }
-
-            private void requestAdJoinFailed() {
-                  mPlayMode = PLAY_MODE.NORMAL;
-                  getActivity().getPlayFragment().setEnforcementPause(false);
-                  getActivity().getPlayFragment().setEnforcementWait(false);
-                  startPlayNet();
-            }
-
-      }
-
-
-
-      /**
+	/**
 	 * 检查是否有播放记录
 	 * */
 	private class checkPlayRecordTask extends LetvSimpleAsyncTask<PlayRecord> {
@@ -1685,7 +1784,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 		private long videoId = 0;
 
-		public checkPlayRecordTask(Context context, boolean isAlbum, int page, long albumId, long videoId) {
+		public checkPlayRecordTask(Context context, boolean isAlbum, int page,
+				long albumId, long videoId) {
 			super(context, false);
 			tasks.add(this);
 			this.page = page;
@@ -1701,14 +1801,17 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 				if (isAlbum) {
 					if (videoId > 0) {
-						playRecord = LetvPlayRecordFunction.getPoint(0, (int) videoId, false);
+						playRecord = LetvPlayRecordFunction.getPoint(0,
+								(int) videoId, false);
 					} else {
 						if (page == 1) {
-							playRecord = LetvPlayRecordFunction.getPoint((int) albumId, 0, false);
+							playRecord = LetvPlayRecordFunction.getPoint(
+									(int) albumId, 0, false);
 						}
 					}
 				} else {
-					playRecord = LetvPlayRecordFunction.getPoint(0, (int) videoId, false);
+					playRecord = LetvPlayRecordFunction.getPoint(0,
+							(int) videoId, false);
 				}
 
 				return playRecord;
@@ -1730,11 +1833,11 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				totleTime = playRecord.getTotalDuration() * 1000;
 
 			}
-                  if (isAlbum) {
+			if (isAlbum) {
 
-                  } else {
-                        new RequestVideo(context).start();
-                  }
+			} else {
+				new RequestVideo(context).start();
+			}
 
 		}
 	}
@@ -1761,7 +1864,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		@Override
 		public AlbumNew loadLocalData() {
 			try {
-				LocalCacheBean bean = LetvCacheDataHandler.readDetailData(String.valueOf(aid));
+				LocalCacheBean bean = LetvCacheDataHandler
+						.readDetailData(String.valueOf(aid));
 				if (bean != null) {
 					AlbumNew album = null;
 					AlbumNewParse albumNewParse = new AlbumNewParse();
@@ -1782,9 +1886,11 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				setAlbum(result);
 				merge = LetvFunction.getMerge(album.getStyle());
 				order = LetvFunction.getOrder(album.getCid());
-				totle = merge == 0 ? album.getPlatformVideoInfo() : album.getPlatformVideoNum();// 合并与不合并总级数取不一样的字段
+				totle = merge == 0 ? album.getPlatformVideoInfo() : album
+						.getPlatformVideoNum();// 合并与不合并总级数取不一样的字段
 				isList = LetvFunction.getIsList(album.getStyle());// 初始化，是宫格合适列表
-				new checkPlayRecordTask(context, true, curPage, aid, vid).start();
+				new checkPlayRecordTask(context, true, curPage, aid, vid)
+						.start();
 
 				introductionCallBackState = PlayAlbumControllerCallBack.STATE_FINISH;
 				if (introductionCallBack != null)
@@ -1805,10 +1911,12 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				markId = null;
 			}
 			AlbumNewParse parser = new AlbumNewParse();
-			LetvDataHull<AlbumNew> dataHull = LetvHttpApi.requestAlbumVideoInfo(0, String.valueOf(vid), "video",
-					markId, parser);
+			LetvDataHull<AlbumNew> dataHull = LetvHttpApi
+					.requestAlbumVideoInfo(0, String.valueOf(vid), "video",
+							markId, parser);
 			if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-				LetvCacheDataHandler.saveDetailData(parser.getMarkId(), dataHull.getSourceData(), String.valueOf(aid));
+				LetvCacheDataHandler.saveDetailData(parser.getMarkId(),
+						dataHull.getSourceData(), String.valueOf(aid));
 			}
 
 			return dataHull;
@@ -1820,15 +1928,17 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			setAlbum(result);
 			merge = LetvFunction.getMerge(album.getStyle());
 			order = LetvFunction.getOrder(album.getCid());
-                  if (isSingle){
-                        aid = 0;
-                  } else {
-                        aid = album.getPid();
-                  }
-			totle = merge == 0 ? album.getPlatformVideoInfo() : album.getPlatformVideoNum();// 合并与不合并总级数取不一样的字段
+			if (isSingle) {
+				aid = 0;
+			} else {
+				aid = album.getPid();
+			}
+			totle = merge == 0 ? album.getPlatformVideoInfo() : album
+					.getPlatformVideoNum();// 合并与不合并总级数取不一样的字段
 			isList = LetvFunction.getIsList(album.getStyle());// 初始化，是宫格合适列表
 			if (!isLocalSucceed()) {
-				new checkPlayRecordTask(context, true, curPage, aid, vid).start();
+				new checkPlayRecordTask(context, true, curPage, aid, vid)
+						.start();
 				getCommentsCallBackState = PlayAlbumControllerCallBack.STATE_FINISH;
 				if (getCommentsCallBack != null)
 					getCommentsCallBack.notify(getCommentsCallBackState);
@@ -1836,11 +1946,11 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				if (introductionCallBack != null)
 					introductionCallBack.notify(introductionCallBackState);
 			}
-                  if (aid != 0) {
-                        new RequestVideoList(context, true, 1, aid, vid).start();
-                  } else {
-                        new RequestVideo(context).start();
-                  }
+			if (aid != 0) {
+				new RequestVideoList(context, true, 1, aid, vid).start();
+			} else {
+				new RequestVideo(context).start();
+			}
 		}
 
 		@Override
@@ -1925,7 +2035,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		@Override
 		public Video loadLocalData() {
 			try {
-				LocalCacheBean bean = LetvCacheDataHandler.readDetailData(String.valueOf(vid));
+				LocalCacheBean bean = LetvCacheDataHandler
+						.readDetailData(String.valueOf(vid));
 				if (bean != null) {
 					Video video = null;
 					VideoParser videoParser = new VideoParser();
@@ -1967,10 +2078,11 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				markId = null;
 			}
 			VideoParser parser = new VideoParser();
-			LetvDataHull<Video> dataHull = LetvHttpApi.requestAlbumVideoInfo(0, String.valueOf(vid), "video", markId,
-					parser);
+			LetvDataHull<Video> dataHull = LetvHttpApi.requestAlbumVideoInfo(0,
+					String.valueOf(vid), "video", markId, parser);
 			if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-				LetvCacheDataHandler.saveDetailData(parser.getMarkId(), dataHull.getSourceData(), String.valueOf(vid));
+				LetvCacheDataHandler.saveDetailData(parser.getMarkId(),
+						dataHull.getSourceData(), String.valueOf(vid));
 			}
 			return dataHull;
 		}
@@ -2048,7 +2160,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 		private int localDataPos;
 
-		public RequestVideoList(Context context, boolean isPlay, int page, long aid, long vid) {
+		public RequestVideoList(Context context, boolean isPlay, int page,
+				long aid, long vid) {
 			super(context);
 			tasks.add(this);
 			this.isPlay = isPlay;
@@ -2066,18 +2179,23 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			try {
 				LocalCacheBean bean = null;
 				if (videoId > 0) {
-					List<LocalCacheBean> beans = LetvCacheDataHandler.readDetailVLData(String.valueOf(albumId));
+					List<LocalCacheBean> beans = LetvCacheDataHandler
+							.readDetailVLData(String.valueOf(albumId));
 					if (beans != null && beans.size() > 0) {
 						for (LocalCacheBean b : beans) {
-							if (b.getCacheData() != null && b.getCacheData().contains(String.valueOf(videoId))) {
+							if (b.getCacheData() != null
+									&& b.getCacheData().contains(
+											String.valueOf(videoId))) {
 								bean = b;
 								break;
 							}
 						}
 					}
 				} else {
-					bean = LetvCacheDataHandler.readDetailVLData(String.valueOf(albumId), String.valueOf(page),
-							String.valueOf(pageSize), order, String.valueOf(merge));
+					bean = LetvCacheDataHandler.readDetailVLData(
+							String.valueOf(albumId), String.valueOf(page),
+							String.valueOf(pageSize), order,
+							String.valueOf(merge));
 				}
 
 				VideoList videoList = null;
@@ -2108,18 +2226,18 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			if (result != null) {
 				int p = result.getPagenum();
 				if (isPlay) {
-					System.out.println("p = ="+p);
-					System.out.println("vid = ="+vid);
-						if (p <= 0&&vid<=0) {
-							curPage = page;
-							setVideo(result.get(0));
-							vid = video.getId();
-						} else {
-							curPage = p;
-							setVideo(result.get(localDataPos));
-							vid = video.getId();
-						}
-				
+					System.out.println("p = =" + p);
+					System.out.println("vid = =" + vid);
+					if (p <= 0 && vid <= 0) {
+						curPage = page;
+						setVideo(result.get(0));
+						vid = video.getId();
+					} else {
+						curPage = p;
+						setVideo(result.get(localDataPos));
+						vid = video.getId();
+					}
+
 					createPlayRecord();
 
 					if (playRecord != null) {
@@ -2140,8 +2258,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				videosCallBackState = PlayAlbumControllerCallBack.STATE_FINISH;
 				if (videosCallBack != null)
 					videosCallBack.notify(videosCallBackState);
-//				if (mFullController != null)
-//					mFullController.initVideos();
+				// if (mFullController != null)
+				// mFullController.initVideos();
 
 				return true;
 			}
@@ -2153,10 +2271,12 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		public LetvDataHull<VideoList> doInBackground() {
 
 			VideoListParser parser = new VideoListParser();
-			LetvDataHull<VideoList> dataHull = LetvHttpApi.requestAlbumVideoList(0, String.valueOf(albumId),
-					String.valueOf(videoId), String.valueOf(page), String.valueOf(pageSize), order,
-					String.valueOf(merge), markId, parser);
-            Log.d("newsPage", "page&pageSize = " + page + " " + pageSize);
+			LetvDataHull<VideoList> dataHull = LetvHttpApi
+					.requestAlbumVideoList(0, String.valueOf(albumId),
+							String.valueOf(videoId), String.valueOf(page),
+							String.valueOf(pageSize), order,
+							String.valueOf(merge), markId, parser);
+			Log.d("newsPage", "page&pageSize = " + page + " " + pageSize);
 
 			if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
 				if (dataHull.getDataEntity() == null) {
@@ -2174,8 +2294,10 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 					if (bodyObject != null && !bodyObject.has("pagenum")) {
 						bodyObject.put("pagenum", p);
 					}
-					LetvCacheDataHandler.saveDetailVLData(markId, jsonObject.toString(), String.valueOf(albumId),
-							String.valueOf(p), String.valueOf(pageSize), order, String.valueOf(merge));
+					LetvCacheDataHandler.saveDetailVLData(markId,
+							jsonObject.toString(), String.valueOf(albumId),
+							String.valueOf(p), String.valueOf(pageSize), order,
+							String.valueOf(merge));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -2190,9 +2312,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			tasks.remove(this);
 			int p = result.getPagenum();
 			if (isPlay && !isLocalSucceed()) {
-				
-				
-				
+
 				if (p <= 0) {
 					curPage = page;
 					setVideo(result.get(0));
@@ -2202,7 +2322,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 					setVideo(result.get(result.getVideoPosition() - 1));
 					vid = video.getId();
 				}
-				if(videoId>0){
+				if (videoId > 0) {
 					if (result != null && result.size() > 0) {
 						if (videoId > 0) {
 							for (int i = 0; i < result.size(); i++) {
@@ -2236,8 +2356,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			videosCallBackState = PlayAlbumControllerCallBack.STATE_FINISH;
 			if (videosCallBack != null)
 				videosCallBack.notify(videosCallBackState);
-//			if (mFullController != null)
-//				mFullController.initVideos();
+			// if (mFullController != null)
+			// mFullController.initVideos();
 		}
 
 		@Override
@@ -2295,7 +2415,6 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		}
 	}
 
-
 	/**
 	 * 请求播放视频的调度地址
 	 * */
@@ -2327,7 +2446,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			if (introductionCallBack != null) {
 				introductionCallBack.requestDetails(video.getCid(), vid + "");
 			}
-			if (LetvTools.checkIp(video.getControlAreas(), video.getDisableType())) {
+			if (LetvTools.checkIp(video.getControlAreas(),
+					video.getDisableType())) {
 				if (video.canPlay()) {
 					if (video.needJump()) {
 						loadLayout.jumpError();
@@ -2335,9 +2455,10 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 						canToPip = false;
 						return false;
 					} else {
-						if (needCheckCanPlay && video.needPay() && album != null) {
+						if (needCheckCanPlay && video.needPay()
+								&& album != null) {
 							if (PreferencesManager.getInstance().isLogin()) {
-//								new RequestCanplay(context).start();
+								// new RequestCanplay(context).start();
 								tasks.remove(this);
 								return false;
 							} else {
@@ -2374,29 +2495,44 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			}
 			if (mid.equals(video.getMid())) {
 				LetvDataHull<VideoFile> dataHull = null;
-				String tm = String.valueOf(TimestampBean.getTm().getCurServerTime());
+				String tm = String.valueOf(TimestampBean.getTm()
+						.getCurServerTime());
 				String key = LetvTools.generateVideoFileKey(mid, tm);
 				if (isDolby) {
-					dataHull = LetvHttpApi.requestVideoFile(0, mid, "0", "no", tm, key,
-							new VideoFileParser(video.getPay() == 2));
+					dataHull = LetvHttpApi.requestVideoFile(0, mid, "0", "no",
+							tm, key, new VideoFileParser(video.getPay() == 2));
 				} else {
 					dataHull = LetvHttpApi.requestVideoFile(0, mid, "0",
-							LetvApplication.getInstance().getVideoFormat(), tm, key, new VideoFileParser(
-									video.getPay() == 2));
+							LetvApplication.getInstance().getVideoFormat(), tm,
+							key, new VideoFileParser(video.getPay() == 2));
 				}
 
 				if (dataHull != null && dataHull.getErrMsg() == 5) {
-					LetvDataHull<TimestampBean> dh = LetvHttpApi.getTimestamp(0, new TimestampParser());
-					if (dh != null && dh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
+					LetvDataHull<TimestampBean> dh = LetvHttpApi.getTimestamp(
+							0, new TimestampParser());
+					if (dh != null
+							&& dh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
 						if (mid.equals(video.getMid())) {
-							tm = String.valueOf(TimestampBean.getTm().getCurServerTime());
+							tm = String.valueOf(TimestampBean.getTm()
+									.getCurServerTime());
 							key = LetvTools.generateVideoFileKey(mid, tm);
 							if (isDolby) {
-								dataHull = LetvHttpApi.requestVideoFile(0, mid, "0", "no", tm, key,
-										new VideoFileParser(video.getPay() == 2));
+								dataHull = LetvHttpApi
+										.requestVideoFile(0, mid, "0", "no",
+												tm, key, new VideoFileParser(
+														video.getPay() == 2));
 							} else {
-								dataHull = LetvHttpApi.requestVideoFile(0, mid, "0", LetvApplication.getInstance()
-										.getVideoFormat(), tm, key, new VideoFileParser(video.getPay() == 2));
+								dataHull = LetvHttpApi
+										.requestVideoFile(
+												0,
+												mid,
+												"0",
+												LetvApplication.getInstance()
+														.getVideoFormat(),
+												tm,
+												key,
+												new VideoFileParser(video
+														.getPay() == 2));
 							}
 						}
 
@@ -2465,12 +2601,13 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		private String mid;
 		private DDUrlsResult ddUrlsResult;
 
-		public RequestRealPlayUrl(Context context, VideoFile videoFile, String mid) {
+		public RequestRealPlayUrl(Context context, VideoFile videoFile,
+				String mid) {
 			super(context);
 			tasks.add(this);
 			this.videoFile = videoFile;
 			this.mid = mid;
-                  setP2pMode();
+			setP2pMode();
 		}
 
 		@Override
@@ -2486,21 +2623,24 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 						isHd = true;
 					}
 				}
-				DDUrlsResult ddUrlsResult = PlayUtils.getDDUrls(videoFile, isHd, isDolby);
-				if (ddUrlsResult != null && ddUrlsResult.getDdurls() != null && ddUrlsResult.getDdurls().length > 0) {
+				DDUrlsResult ddUrlsResult = PlayUtils.getDDUrls(videoFile,
+						isHd, isDolby);
+				if (ddUrlsResult != null && ddUrlsResult.getDdurls() != null
+						&& ddUrlsResult.getDdurls().length > 0) {
 					PlayAlbumController.this.isHd = ddUrlsResult.isHd();
 					PlayAlbumController.this.isDolby = ddUrlsResult.isDolby();
 					PlayAlbumController.this.hasHd = ddUrlsResult.isHasHigh();
-					PlayAlbumController.this.hasStandard = ddUrlsResult.isHasLow();
+					PlayAlbumController.this.hasStandard = ddUrlsResult
+							.isHasLow();
 					this.ddUrlsResult = ddUrlsResult;
 					streamLevel = ddUrlsResult.getStreamLevel();
-                              if (!isPlayedAd){
-                                    getFrontAdNormal();
-                                    LogInfo.log("ads","request ads");
-                                    isPlayedAd = true;
-                              }
+					if (!isPlayedAd) {
+						getFrontAdNormal();
+						LogInfo.log("ads", "request ads");
+						isPlayedAd = true;
+					}
 
-                              // updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.CLOAD_ACTION,
+					// updatePlayDataStatistics(DataConstant.StaticticsVersion2Constatnt.PlayerAction.CLOAD_ACTION,
 					// -1);
 					return true;
 				} else {
@@ -2516,20 +2656,26 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		@Override
 		public LetvDataHull<RealPlayUrlInfo> doInBackground() {
 			if (mid.equals(video.getMid())) {
-                        // p2p播放
-                        LeService p2pService = LetvApplication.getInstance().getP2pService();
-                        if (isP2PMode && null != p2pService) {
-                              ddUrl = PlayUtils.getDdUrl(ddUrlsResult.getDdurls(),
-                                      null == canPlayResult ? "" : canPlayResult.getToken(), PreferencesManager.getInstance()
-                                              .getUserId());
-                              LetvDataHull<RealPlayUrlInfo> dataHull = new LetvDataHull<RealPlayUrlInfo>();
-                              dataHull.setDataType(LetvDataHull.DataType.DATA_IS_INTEGRITY);
-                              return dataHull;
-                        }
-				LetvDataHull<RealPlayUrlInfo> dataHull = PlayUtils.getRealUrl(ddUrlsResult.getDdurls());
+				// p2p播放
+				LeService p2pService = LetvApplication.getInstance()
+						.getP2pService();
+				if (isP2PMode && null != p2pService) {
+					ddUrl = PlayUtils.getDdUrl(
+							ddUrlsResult.getDdurls(),
+							null == canPlayResult ? "" : canPlayResult
+									.getToken(), PreferencesManager
+									.getInstance().getUserId());
+					LetvDataHull<RealPlayUrlInfo> dataHull = new LetvDataHull<RealPlayUrlInfo>();
+					dataHull.setDataType(LetvDataHull.DataType.DATA_IS_INTEGRITY);
+					return dataHull;
+				}
+				LetvDataHull<RealPlayUrlInfo> dataHull = PlayUtils
+						.getRealUrl(ddUrlsResult.getDdurls());
 				if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-					statisticsVideoInfo.setDdurl(dataHull.getDataEntity().getDdUrl());
-					statisticsVideoInfo.setPlayurl(dataHull.getDataEntity().getRealUrl());
+					statisticsVideoInfo.setDdurl(dataHull.getDataEntity()
+							.getDdUrl());
+					statisticsVideoInfo.setPlayurl(dataHull.getDataEntity()
+							.getRealUrl());
 					return dataHull;
 				}
 			}
@@ -2540,13 +2686,14 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		@Override
 		public void onPostExecute(int updateId, RealPlayUrlInfo result) {
 			tasks.remove(this);
-                  if (null == result) {
-                        // 执行p2p播放
-                        p2pPlayer = new PlayUrl(LetvApplication.getInstance().getP2pService().getServicePort(), ddUrl, "", "");
-                        realUrl = p2pPlayer.getPlay();
-                        startPlayNet();
-                        return;
-                  }
+			if (null == result) {
+				// 执行p2p播放
+				p2pPlayer = new PlayUrl(LetvApplication.getInstance()
+						.getP2pService().getServicePort(), ddUrl, "", "");
+				realUrl = p2pPlayer.getPlay();
+				startPlayNet();
+				return;
+			}
 			if (200 == result.getCode() && mid.equals(video.getMid())) {
 				realUrl = result.getRealUrl();
 				startPlayNet();
@@ -2570,7 +2717,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		@Override
 		public void netErr(int updateId, String errMsg) {
 			tasks.remove(this);
-			if(mid==null&&video==null){
+			if (mid == null && video == null) {
 				return;
 			}
 			if (mid.equals(video.getMid())) {
@@ -2597,29 +2744,27 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		}
 	}
 
-
-      /**
-       * 设置是否开启P2P
-       */
-      private void setP2pMode() {
-            switch (NetWorkTypeUtils.getNetType()) {
-                  case NetWorkTypeUtils.NETTYPE_2G:
-                  case NetWorkTypeUtils.NETTYPE_3G:
-                        isP2PMode = false;
-                        break;
-                  default:
-                        if (PreferencesManager.getInstance().getUtp()) {
-                              isP2PMode = true;
-                        } else {
-                              isP2PMode = false;
-                        }
-                        break;
-            }
-            if(isDolby){
-                  isP2PMode = false;
-            }
-      }
-
+	/**
+	 * 设置是否开启P2P
+	 */
+	private void setP2pMode() {
+		switch (NetWorkTypeUtils.getNetType()) {
+		case NetWorkTypeUtils.NETTYPE_2G:
+		case NetWorkTypeUtils.NETTYPE_3G:
+			isP2PMode = false;
+			break;
+		default:
+			if (PreferencesManager.getInstance().getUtp()) {
+				isP2PMode = true;
+			} else {
+				isP2PMode = false;
+			}
+			break;
+		}
+		if (isDolby) {
+			isP2PMode = false;
+		}
+	}
 
 	/**
 	 * 请求时间戳
@@ -2654,42 +2799,43 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		public int STATE_RETRY = 6;
 
 		public void notify(int state);
-		
+
 		public void requestDetails(long cid, String vid);
 
-            public void setCurPage(int curPage);
+		public void setCurPage(int curPage);
 	}
 
 	@Override
 	public void seekFinish(int progress) {
 		getActivity().getPlayFragment().seekTo(progress * 1000);
 	}
-	public boolean ispostplay=false;
+
+	public boolean ispostplay = false;
+
 	@Override
 	public void star() {
-//            setMobileNetBg(false);
-		
-//		   getActivity().getPlayFragment().seekTo(getActivity().getPlayFragment().getCurrentPosition());
-           getActivity().getPlayFragment().start();
-      
-         	
-            if (playAdFragment != null && playAdFragment.isPauseAd()) {
-                  playAdFragment.setADPause(false);
-                  playAdFragment.setPauseAd(false);
-            } else {
-                  if (getActivity().getPlayFragment().isEnforcementPause() && playAdFragment != null
-                          && !playAdFragment.isPlaying()) {
-                        loadLayout.loading();
-                        getActivity().getPlayFragment().setEnforcementPause(false);
-                        UIs.showToast("当前为非WIFI网络，继续播放将消耗流量");
-                        // UIs.showToast(R.string.play_net_tag);
-                  }
-                  if (playAdFragment != null) {
-                        playAdFragment.setPauseAd(false);
-                        playAdFragment.star();
-                  }
-               
-            }
+		// setMobileNetBg(false);
+
+		// getActivity().getPlayFragment().seekTo(getActivity().getPlayFragment().getCurrentPosition());
+		getActivity().getPlayFragment().start();
+
+		if (playAdFragment != null && playAdFragment.isPauseAd()) {
+			playAdFragment.setADPause(false);
+			playAdFragment.setPauseAd(false);
+		} else {
+			if (getActivity().getPlayFragment().isEnforcementPause()
+					&& playAdFragment != null && !playAdFragment.isPlaying()) {
+				loadLayout.loading();
+				getActivity().getPlayFragment().setEnforcementPause(false);
+				UIs.showToast("当前为非WIFI网络，继续播放将消耗流量");
+				// UIs.showToast(R.string.play_net_tag);
+			}
+			if (playAdFragment != null) {
+				playAdFragment.setPauseAd(false);
+				playAdFragment.star();
+			}
+
+		}
 
 	}
 
@@ -2703,13 +2849,15 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 	@Override
 	public void full() {
-		getActivity().getmOrientationSensorListener().lockOnce(getActivity().getRequestedOrientation());
+		getActivity().getmOrientationSensorListener().lockOnce(
+				getActivity().getRequestedOrientation());
 		UIs.screenLandscape(getActivity());
 	}
 
 	@Override
 	public void half() {
-		getActivity().getmOrientationSensorListener().lockOnce(getActivity().getRequestedOrientation());
+		getActivity().getmOrientationSensorListener().lockOnce(
+				getActivity().getRequestedOrientation());
 		UIs.screenPortrait(getActivity());
 		if (videosCallBack != null)
 			videosCallBack.notify(videosCallBackState);// 刷新半屏的视频列表
@@ -2718,59 +2866,58 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 	@Override
 	public void favorite() {/*
-		if (LetvFunction.collection(FavouriteBean.getInstance(album, video),
-				UIs.isLandscape(getActivity()) ? DataConstant.ACTION.FAVORITEACTION.FULL_PLAYER_CLICK_ACTION
-						: DataConstant.ACTION.FAVORITEACTION.HALF_PLAYER_CLICK_ACTION)) {
-			if (mFullController != null) {
-				mFullController.favorite(1);
-			}
-			if (mHalfController != null) {
-				mHalfController.favorite(1);
-			}
-			UIs.showToast(R.string.toast_favorite_ok);
-		}
-	*/}
+							 * if
+							 * (LetvFunction.collection(FavouriteBean.getInstance
+							 * (album, video), UIs.isLandscape(getActivity()) ?
+							 * DataConstant
+							 * .ACTION.FAVORITEACTION.FULL_PLAYER_CLICK_ACTION :
+							 * DataConstant
+							 * .ACTION.FAVORITEACTION.HALF_PLAYER_CLICK_ACTION))
+							 * { if (mFullController != null) {
+							 * mFullController.favorite(1); } if
+							 * (mHalfController != null) {
+							 * mHalfController.favorite(1); }
+							 * UIs.showToast(R.string.toast_favorite_ok); }
+							 */
+	}
 
 	@Override
 	public void cancelFavorite() {/*
-		if (LetvFunction.unCollection(getFavId(album, video))) {
-			if (mFullController != null) {
-				mFullController.favorite(0);
-			}
-			if (mHalfController != null) {
-				mHalfController.favorite(0);
-			}
-			UIs.showToast(R.string.toast_favorite_cancel);
-		}
-	*/}
+								 * if (LetvFunction.unCollection(getFavId(album,
+								 * video))) { if (mFullController != null) {
+								 * mFullController.favorite(0); } if
+								 * (mHalfController != null) {
+								 * mHalfController.favorite(0); }
+								 * UIs.showToast(R
+								 * .string.toast_favorite_cancel); }
+								 */
+	}
 
 	@Override
 	public void download() {/*
-		if (!video.needPay() || PreferencesManager.getInstance().isVip()) {
-			if (LetvTools.checkIp(video.getControlAreas(), video.getDisableType())) {
-				if (LetvFunction.startDownLoad(getActivity(), album, video, downloadHd, isDolby, isShowToast,
-						UIs.isLandscape(getActivity()) ? true : false)) {
-					isShowToast = false;
-					changeDownload();
-				}
-			} else {
-				UIs.showToast("海外版权，无法下载");
-			}
-		} else {
-			UIs.showToast("付费内容，vip用户才能下载");
-		}
-
-	*/}
+							 * if (!video.needPay() ||
+							 * PreferencesManager.getInstance().isVip()) { if
+							 * (LetvTools.checkIp(video.getControlAreas(),
+							 * video.getDisableType())) { if
+							 * (LetvFunction.startDownLoad(getActivity(), album,
+							 * video, downloadHd, isDolby, isShowToast,
+							 * UIs.isLandscape(getActivity()) ? true : false)) {
+							 * isShowToast = false; changeDownload(); } } else {
+							 * UIs.showToast("海外版权，无法下载"); } } else {
+							 * UIs.showToast("付费内容，vip用户才能下载"); }
+							 */
+	}
 
 	/**
 	 * 改变为已下载状态
 	 * */
 	public void changeDownload() {/*
-		if (mFullController != null)
-			mFullController.download(1);
-		if (mHalfController != null)
-			mHalfController.download(1);
-	*/}
+								 * if (mFullController != null)
+								 * mFullController.download(1); if
+								 * (mHalfController != null)
+								 * mHalfController.download(1);
+								 */
+	}
 
 	@Override
 	public void back() {
@@ -2798,7 +2945,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		if (!super.onKeyDown(keyCode, event)) {
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
 				if (event.getRepeatCount() == 0) {
-					if (UIs.isLandscape(getActivity()) && getLaunchMode() == PLAY_ALBUM) {
+					if (UIs.isLandscape(getActivity())
+							&& getLaunchMode() == PLAY_ALBUM) {
 						half();
 
 					} else {
@@ -2820,17 +2968,18 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	@Override
 	public void onRequestErr() {
 		retryNum++;
-		
+
 		switch (playCallBackState) {
 		case 1:
 		case 2:
 			startLoadingData();
 			break;
 		case 3:
-			new RequestVideoList(getActivity(), true, curPage, aid, vid).start();
+			new RequestVideoList(getActivity(), true, curPage, aid, vid)
+					.start();
 			break;
 		case 4:
-//			new RequestCanplay(getActivity()).start();
+			// new RequestCanplay(getActivity()).start();
 			break;
 		case 5:
 		case 6:
@@ -2848,7 +2997,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			}
 			break;
 		}
-		
+
 	}
 
 	/**
@@ -2856,13 +3005,17 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * */
 	@Override
 	public void onVipErr(boolean isLogin) {/*
-		if (isLogin) {
-			VipProductsActivity.launch(getActivity(),
-					getActivity().getResources().getString(R.string.pim_vip_good_title));
-		} else {
-			LoginMainActivity.launch(getActivity(), LoginMainActivity.FORPLAY);
-		}
-	*/}
+											 * if (isLogin) {
+											 * VipProductsActivity
+											 * .launch(getActivity(),
+											 * getActivity
+											 * ().getResources().getString
+											 * (R.string.pim_vip_good_title)); }
+											 * else {
+											 * LoginMainActivity.launch(getActivity
+											 * (), LoginMainActivity.FORPLAY); }
+											 */
+	}
 
 	/**
 	 * 不版权外跳
@@ -2934,13 +3087,14 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 	@Override
 	public void onDownloadStateChange() {/*
-		if (mFullController != null) {
-			mFullController.download(0);
-		}
-		if (videosCallBack != null) {
-			videosCallBack.notify(PlayAlbumControllerCallBack.STATE_OTHER);
-		}
-	*/}
+										 * if (mFullController != null) {
+										 * mFullController.download(0); } if
+										 * (videosCallBack != null) {
+										 * videosCallBack
+										 * .notify(PlayAlbumControllerCallBack
+										 * .STATE_OTHER); }
+										 */
+	}
 
 	@Override
 	public void onHeadsetPlug() {
@@ -2952,6 +3106,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		if (mHalfController != null)
 			mHalfController.onVolumeChange(max, cur);
 	}
+
 	@Override
 	public void curVolume(int max, int progrees) {
 		if (mFullController != null)
@@ -2967,6 +3122,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		if (mHalfController != null)
 			mHalfController.onVolumeChange(max, progrees);
 	}
+
 	@Override
 	public Video getVideo() {
 		return video;
@@ -2983,7 +3139,6 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 					playRecord.setPlayedDuration(0);
 				}
 			}
-			
 
 		} else {
 			eTime = 0;
@@ -2996,7 +3151,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 			mHalfController.videoChange(album, video);
 
 	}
-	
+
 	@Override
 	public AlbumNew getAlbum() {
 		return album;
@@ -3005,10 +3160,10 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	public void setAlbum(AlbumNew album) {
 
 		this.album = album;
-//		if (mFullController != null)
-//			mFullController.albumChange(album);
-//		if (mHalfController != null)
-//			mHalfController.albumChange(album);
+		// if (mFullController != null)
+		// mFullController.albumChange(album);
+		// if (mHalfController != null)
+		// mHalfController.albumChange(album);
 	}
 
 	public long getCurTime() {
@@ -3024,39 +3179,41 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 * */
 	@Override
 	public void openDownload() {/*
-		if (isDownloadState == false) {
-			isDownloadState = true;
-			if (viewPager != null && viewPager.getCurrentItem() != 1) {
-				viewPager.setCurrentItem(1, false);
-			}
-			tabs.setVisibility(View.GONE);
-			viewPager.setPagingEnabled(false);
-			videosCallBack.notify(introductionCallBackState = PlayAlbumControllerCallBack.STATE_FINISH);
-		}
-	*/}
+								 * if (isDownloadState == false) {
+								 * isDownloadState = true; if (viewPager != null
+								 * && viewPager.getCurrentItem() != 1) {
+								 * viewPager.setCurrentItem(1, false); }
+								 * tabs.setVisibility(View.GONE);
+								 * viewPager.setPagingEnabled(false);
+								 * videosCallBack
+								 * .notify(introductionCallBackState =
+								 * PlayAlbumControllerCallBack.STATE_FINISH); }
+								 */
+	}
 
 	/**
 	 * 半屏页关闭下载列表
 	 * */
 	@Override
 	public void closeDownload() {/*
-		if (isDownloadState == true) {
-			isDownloadState = false;
-			if (viewPager != null && viewPager.getCurrentItem() != 1) {
-				viewPager.setCurrentItem(1, false);
-			}
-			tabs.setVisibility(View.VISIBLE);
-			viewPager.setPagingEnabled(true);
-			videosCallBack.notify(introductionCallBackState = PlayAlbumControllerCallBack.STATE_FINISH);
-		}
-	*/}
+								 * if (isDownloadState == true) {
+								 * isDownloadState = false; if (viewPager !=
+								 * null && viewPager.getCurrentItem() != 1) {
+								 * viewPager.setCurrentItem(1, false); }
+								 * tabs.setVisibility(View.VISIBLE);
+								 * viewPager.setPagingEnabled(true);
+								 * videosCallBack
+								 * .notify(introductionCallBackState =
+								 * PlayAlbumControllerCallBack.STATE_FINISH); }
+								 */
+	}
 
 	private OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
 
 		@Override
 		public void onPageSelected(int arg0) {
 			if (arg0 != 1) {
-				
+
 			}
 		}
 
@@ -3071,7 +3228,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 	@Override
 	public void changeDownLoad(boolean isHd) {
-//		downloadHd = isHd;
+		// downloadHd = isHd;
 	}
 
 	@Override
@@ -3128,7 +3285,8 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		super.onLandscapeScrollFinish(incremental);
 		// if (!isLock) {
 		int duration = getActivity().getPlayFragment().getDuration();
-		int pos = getActivity().getPlayFragment().getCurrentPosition() + (int) (incremental * duration);
+		int pos = getActivity().getPlayFragment().getCurrentPosition()
+				+ (int) (incremental * duration);
 		if (pos < 0) {
 			pos = 1;
 		}
@@ -3142,26 +3300,23 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 
 	@Override
 	public void onDoubleFingersUp() {/*
-		super.onDoubleFingersUp();
-		if (null != album && video != null) {
-			if (null == mTsController) {
-				mTsController = new TsController(this);
-			}
-			mTsController.pushPlay();
-		}
-
-	*/}
+									 * super.onDoubleFingersUp(); if (null !=
+									 * album && video != null) { if (null ==
+									 * mTsController) { mTsController = new
+									 * TsController(this); }
+									 * mTsController.pushPlay(); }
+									 */
+	}
 
 	@Override
 	public void onDoubleFingersDown() {/*
-		super.onDoubleFingersDown();
-		if (null != album && video != null) {
-			if (null == mTsController) {
-				mTsController = new TsController(this);
-			}
-			mTsController.pushDownLoad();
-		}
-	*/}
+										 * super.onDoubleFingersDown(); if (null
+										 * != album && video != null) { if (null
+										 * == mTsController) { mTsController =
+										 * new TsController(this); }
+										 * mTsController.pushDownLoad(); }
+										 */
+	}
 
 	/**
 	 * 退出 页面，销毁相关对象
@@ -3219,47 +3374,46 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		tasks.clear();
 	}
 
-
 	/**
 	 * 得到暂停广告
 	 * */
 	private void getPauseAd() {
-            com.letv.ads.util.LogInfo.log("ads", "getDemandPauseAd");
-            if (video != null && playAdFragment != null) {
-			playAdFragment.getDemandPauseAd(video.getCid(), aid, vid, video.getMid(), uuidTimp, PreferencesManager
-					.getInstance().getUserId(), video.getDuration() + "", "", "0");
+		com.letv.ads.util.LogInfo.log("ads", "getDemandPauseAd");
+		if (video != null && playAdFragment != null) {
+			playAdFragment.getDemandPauseAd(video.getCid(), aid, vid, video
+					.getMid(), uuidTimp, PreferencesManager.getInstance()
+					.getUserId(), video.getDuration() + "", "", "0");
 		}
 	}
 
-
-//	/**
-//	 * 登录成功回来
-//	 * */
-//	@Override
-//	public void onActivityResultLoginSuccess() {
-//		loadLayout.loading();
-//		new RequestVideoFile(getActivity()).start();
-//	}
-//
-//	/**
-//	 * 支付成功后回来
-//	 * */
-//	@Override
-//	public void onActivityResultPaySuccess() {
-//		loadLayout.loading();
-//		new RequestVideoFile(getActivity()).start();
-//	}
+	// /**
+	// * 登录成功回来
+	// * */
+	// @Override
+	// public void onActivityResultLoginSuccess() {
+	// loadLayout.loading();
+	// new RequestVideoFile(getActivity()).start();
+	// }
+	//
+	// /**
+	// * 支付成功后回来
+	// * */
+	// @Override
+	// public void onActivityResultPaySuccess() {
+	// loadLayout.loading();
+	// new RequestVideoFile(getActivity()).start();
+	// }
 
 	@Override
 	public void toPip() {
 		if (!canToPip) {
 			return;
 		}
-		
-		
+
 		Bundle mBundle = new Bundle();
 		mBundle.putBoolean("isLive", false);
-		mBundle.putString("albumtitle", (album != null ? album.getNameCn() : null));
+		mBundle.putString("albumtitle", (album != null ? album.getNameCn()
+				: null));
 		mBundle.putString("order", order);
 		mBundle.putLong("aid", aid);
 		mBundle.putLong("vid", vid);
@@ -3272,7 +3426,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 		mBundle.putLong("seek", localSeek);
 		PipService.launch(getActivity(), mBundle);
 		handler.postDelayed(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -3281,9 +3435,7 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 				}
 			}
 		}, 500);
-		
-		
-		
+
 	}
 
 	private long getLastVideoPos(HashMap<Integer, VideoList> list) {
@@ -3320,24 +3472,29 @@ public class PlayAlbumController extends PlayController implements VideoViewStat
 	 */
 	private void updatePlayDataStatistics(String actionCode, long pt) {
 		try {
-//			long sVid = 0;
+			// long sVid = 0;
 			long sCid = 4;
 			String sb = null;
-//			if (video != null) {
-//				sVid = video.getId();
-//				sCid = video.getCid();
-//			}
+			// if (video != null) {
+			// sVid = video.getId();
+			// sCid = video.getCid();
+			// }
 			if (isLocalFile) {
 				sb = "offline=1";
 			}
-			DataStatistics.getInstance().sendPlayInfo(getActivity(), "0", "0", actionCode, errorCodeJoint+"", (pt > 0 ? pt : 0) + "",
-					"-", LetvUtil.getUID(), uuidTimp, sCid + "", aid + "", vid + "",
-					video == null ? null : video.getDuration() + "", retryNum + "", "0", streamLevel, realUrl, null,
-					sb, null, null, LetvUtil.getPcode(), PreferencesManager.getInstance().isLogin() ? 0 : 1, null,"-","-");
+			DataStatistics.getInstance().sendPlayInfo(getActivity(), "0", "0",
+					actionCode, errorCodeJoint + "", (pt > 0 ? pt : 0) + "",
+					"-", LetvUtil.getUID(), uuidTimp, sCid + "", aid + "",
+					vid + "", video == null ? null : video.getDuration() + "",
+					retryNum + "", "0", streamLevel, realUrl, null, sb, null,
+					null, LetvUtil.getPcode(),
+					PreferencesManager.getInstance().isLogin() ? 0 : 1, null,
+					"-", "-");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	@Override
 	public void onPlayFailed() {
 

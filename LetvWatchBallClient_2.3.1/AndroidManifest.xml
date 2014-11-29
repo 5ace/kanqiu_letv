@@ -4,7 +4,7 @@
     android:versionCode="7"
     android:versionName="2.3.2" >
 
-   <uses-sdk android:minSdkVersion="4" />
+   <uses-sdk android:minSdkVersion="7" />
 
     <application
         android:name=".LetvApplication"
@@ -189,7 +189,6 @@
             android:name=".activity.SharePageActivity"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"
@@ -229,10 +228,6 @@
             android:name="com.umeng.fb.ui.FeedbackConversation"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
-        
-        
-        
-        
         
            <activity
             android:name=".activity.RegisterActivity"

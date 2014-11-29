@@ -184,7 +184,6 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements OnClickLi
 		switch (v.getId()) {
 
 		case R.id.sina_icon:// 新浪分享
-			Log.e("gongmeng", "sina");
 			LetvShareControl.mShareAlbum.setType(1);
 			onShareSina();
 			break;
@@ -195,14 +194,12 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements OnClickLi
 			onShareRenren();
 			break;
 		case R.id.weixin_icon:// 微信分享
-			Log.e("gongmeng", "weixin");
 			onShareWeixin();
 			break;
 		case R.id.lestar_icon:// 大卡分享
 			onShareLestar();
 			break;
 		case R.id.qq_icon:// qq微博分享
-			Log.e("gongmeng", "qq");
 			onShareQQ();
 
 			break;

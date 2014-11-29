@@ -253,7 +253,7 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 			getView().findViewById(R.id.btn_head_loginout).setVisibility(View.VISIBLE);
 			TextView textv_nick = (TextView) getActivity().findViewById(R.id.textv_nickname);
 			textv_nick.setText(userName);
-			Log.e("gongmeng", "username:"+userName);
+			//Log.e("gongmeng", "username:"+userName);
 			PreferencesManager.getInstance().setNickUserName(userName);
 			// 添加头像k
 			RoundImageView roundHead = (RoundImageView) getActivity().findViewById(R.id.btn_head_login);
@@ -349,7 +349,7 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 			super(context);
 			this.tk = tk;
 			this.userName = userName;
-			Log.e("gongmeng", "get nickname");
+			//Log.e("gongmeng", "get nickname");
 		}
 
 		@Override
@@ -367,8 +367,6 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 
 		@Override
 		public void onPostExecute(int updateId, User result) {
-			Log.e("gongmeng", "update the nickname");
-			Log.e("gongmeng", result.getNickname());
 			updateUI(0, result);
 		}
 	}

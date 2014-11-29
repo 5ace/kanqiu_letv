@@ -362,7 +362,7 @@ public class SlidingMenuFragmentHome extends Fragment implements OnClickListener
 	}
 	
 	public void refreshMain(){
-		Log.e("gongmeng", "refresh the main fragment");
+		//Log.e("gongmeng", "refresh the main fragment");
 		if(isLiveFragment) {
 			mLiveFragment.refreshData();
 		}

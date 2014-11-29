@@ -504,12 +504,6 @@ public class LiveAdapter extends SectionedBaseAdapter {
 																.updateSuscribeStatus();
 													}
 													ExpandlableItem eItem = new ExpandlableItem();
-													Log.e("gongmeng", "home:"
-															+ game.home
-															+ " section:"
-															+ section
-															+ " position："
-															+ position);
 													eItem.groupPosition = section;
 													eItem.childPosition = position;
 													unsubscribeList.add(eItem);
@@ -778,7 +772,7 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 		@Override
 		public LetvDataHull<TicketCount> doInBackground() {
-			Log.e("gongmeng", "begin to get ticket count");
+			
 			if (liveid == null || liveid.length() < 16)
 				return null;
 			String channel = liveid.substring(0, 2);
@@ -820,12 +814,11 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 		@Override
 		public void onPostExecute(int updateId, TicketCount result) {
-			Log.e("gongmeng", "ticket:" + result.count);
+			
 			if (!result.count.equalsIgnoreCase("0")) {
-				Log.e("gongmeng", "homevsguest:" + game.home + " " + game.guest);
+				
 				PreferencesManager.getInstance().setTicketCount("1");
-				Log.e("gongmeng", "home:" + game.home + " section:" + section
-						+ " position：" + position);
+				
 				mViewChildHodler.watchStatus
 						.setImageResource(R.drawable.live_ordered);
 				mViewChildHodler.watchStatus.setClickable(false);
@@ -946,7 +939,6 @@ public class LiveAdapter extends SectionedBaseAdapter {
 					liveid, from, streamId, splatId, userId, lsstart, apisign,
 					new DynamicCheckParser());
 			String source = dh.getSourceData();
-			Log.e("gongmeng", "source:" + source);
 			JSONObject data;
 			DynamicCheck bean = new DynamicCheck();
 			try {
@@ -968,7 +960,7 @@ public class LiveAdapter extends SectionedBaseAdapter {
 		@Override
 		public void onPostExecute(int updateId, DynamicCheck result) {
 			if (result != null && !result.code.equalsIgnoreCase("1004")) {
-				Log.e("gongmeng", "homevsguest:" + game.home + " " + game.guest);
+				
 				mViewChildHolder.watchStatus
 						.setImageResource(R.drawable.live_ordered);
 				mViewChildHolder.watchStatus.setClickable(false);
@@ -976,8 +968,7 @@ public class LiveAdapter extends SectionedBaseAdapter {
 				mViewChildHolder.content_frame.setClickable(false);
 				mViewChildHolder.content_frame.setEnabled(false);
 				notifyDataSetChanged();
-				Log.e("gongmeng", "home:" + game.home + " section:" + section
-						+ " position：" + position);
+				
 				PushSubscribeGame mPushSubscribeGame = new PushSubscribeGame();
 				mPushSubscribeGame.id = game.id;
 				mPushSubscribeGame.home = game.home;
@@ -1048,8 +1039,7 @@ public class LiveAdapter extends SectionedBaseAdapter {
 		public RequestSubscribe(Context context, Game mLiveInfo, String date,
 				Runnable callback) {
 			super(context, true);
-			Log.e("gongmeng", "homevsguest:" + mLiveInfo.home + " "
-					+ mLiveInfo.guest);
+			
 			this.mLiveInfo = mLiveInfo;
 			this.date = date;
 			this.callback = callback;
@@ -1141,8 +1131,6 @@ public class LiveAdapter extends SectionedBaseAdapter {
 		public RequestUnsubscribe(Context context, Game mLiveInfo,
 				Runnable callback) {
 			super(context, true);
-			Log.e("gongmeng", "homevsguest:" + mLiveInfo.home + " "
-					+ mLiveInfo.guest);
 			this.mLiveInfo = mLiveInfo;
 			this.callback = callback;
 

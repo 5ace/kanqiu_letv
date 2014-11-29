@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.letv.ads.AdsManager;
 import com.letv.ads.util.LogInfo;
@@ -128,7 +127,7 @@ public class LetvApplication extends Application {
 		 * LetvWbPushService.unschedule(this); } }
 		 */
 		regid = getRegistrationId(mApplicationContext);
-		LogInfo.log("push token:" + regid.toString());
+		//LogInfo.log("push token:" + regid.toString());
 		if (regid.isEmpty()) {
 			// 开始注册推送服务
 			registerInBackground();
@@ -499,7 +498,7 @@ public class LetvApplication extends Application {
 					}
 					regid = mLpm.register(SENDER_ID);
 					msg = "Device registered, registration ID=" + regid;
-					Log.d("gongmeng", msg);
+			//		Log.d("gongmeng", msg);
 					// You should send the registration ID to your server over
 					// HTTP, so it
 					// can send messages to your app.
