@@ -23,27 +23,29 @@ public class LetvWeixinShare {
 	/**
 	 * 分享图片
 	 * */
-	public static void share(Activity context, String caption, String imaUrl , String playUrl) {
-		try{
-			IWXAPI api = WXAPIFactory.createWXAPI(context, ShareConstant.Weixin.APP_ID, true);
+	public static void share(Activity context, String caption, String imaUrl,
+			String playUrl) {
+		try {
+			IWXAPI api = WXAPIFactory.createWXAPI(context,
+					ShareConstant.Weixin.APP_ID, true);
 			api.registerApp(ShareConstant.Weixin.APP_ID);
+			Bitmap bmp = null;
+			if (!imaUrl.equalsIgnoreCase(""))
+				bmp = returnBitMap(imaUrl);
 
-			Bitmap bmp =returnBitMap(imaUrl);
+			if (bmp != null) {
 
-			if (bmp!=null) {
-				
-//				WXImageObject imgObj = new WXImageObject();
-//				imgObj.setImagePath(path);
-				
-				WXVideoObject videoObject = new WXVideoObject() ;
-				videoObject.videoUrl = playUrl ;
+				// WXImageObject imgObj = new WXImageObject();
+				// imgObj.setImagePath(path);
+
+				WXVideoObject videoObject = new WXVideoObject();
+				videoObject.videoUrl = playUrl;
 
 				WXMediaMessage msg = new WXMediaMessage();
 				msg.title = "看球";
 				msg.mediaObject = videoObject;
 				msg.description = caption;
-				
-				
+
 				Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 60, 80, true);
 				bmp.recycle();
 				msg.thumbData = bmpToByteArray(thumbBmp, true);
@@ -54,11 +56,11 @@ public class LetvWeixinShare {
 
 				api.sendReq(req);
 			} else {
-				
-				WXVideoObject videoObject = new WXVideoObject() ;
-				videoObject.videoUrl = playUrl ;
-//				WXTextObject textObj = new WXTextObject();
-//				textObj.text = caption;
+
+				WXVideoObject videoObject = new WXVideoObject();
+				videoObject.videoUrl = playUrl;
+				// WXTextObject textObj = new WXTextObject();
+				// textObj.text = caption;
 
 				WXMediaMessage msg = new WXMediaMessage();
 				msg.mediaObject = videoObject;
@@ -68,11 +70,11 @@ public class LetvWeixinShare {
 				SendMessageToWX.Req req = new SendMessageToWX.Req();
 				req.transaction = buildTransaction("text"); // transaction字段用于唯一标识一个请求
 				req.message = msg;
-				
+
 				// 调用api接口发送数据到微信
 				api.sendReq(req);
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -99,25 +101,27 @@ public class LetvWeixinShare {
 		return (type == null) ? String.valueOf(System.currentTimeMillis())
 				: type + System.currentTimeMillis();
 	}
-	public static Bitmap returnBitMap(String url) {   
-		   URL myFileUrl = null;   
-		   Bitmap bitmap = null;   
-		   try {   
-		    myFileUrl = new URL(url);   
-		   } catch (MalformedURLException e) {   
-		    e.printStackTrace();   
-		   }   
-		   try {   
-		    HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();   
-		    conn.setDoInput(true);   
-		    conn.connect();   
-		    InputStream is = conn.getInputStream();   
-		    bitmap = BitmapFactory.decodeStream(is);   
-		    is.close();   
-		   } catch (IOException e) {   
-		    e.printStackTrace();   
-		   }   
-		   return bitmap;   
-		} 
+
+	public static Bitmap returnBitMap(String url) {
+		URL myFileUrl = null;
+		Bitmap bitmap = null;
+		try {
+			myFileUrl = new URL(url);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		try {
+			HttpURLConnection conn = (HttpURLConnection) myFileUrl
+					.openConnection();
+			conn.setDoInput(true);
+			conn.connect();
+			InputStream is = conn.getInputStream();
+			bitmap = BitmapFactory.decodeStream(is);
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return bitmap;
+	}
 
 }

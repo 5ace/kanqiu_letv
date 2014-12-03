@@ -25,30 +25,40 @@ import com.renren.api.connect.android.status.StatusSetResponseBean;
 import com.renren.api.connect.android.view.RenrenAuthListener;
 
 public class LetvRenrenShare {
-	
+
 	/**
 	 * 判断是否登录
 	 * */
-	public static boolean isLogin(final Context context){
-		final Renren renren = new Renren(ShareConstant.Renren.API_KEY, ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID, context);
-		if(renren.isAccessTokenValid()){
-			return true ;
+	public static boolean isLogin(final Context context) {
+		final Renren renren = new Renren(ShareConstant.Renren.API_KEY,
+				ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID,
+				context);
+		if (renren.isAccessTokenValid()) {
+			return true;
 		}
-		
-		return false ;
+
+		return false;
 	}
-	
+
 	/**
 	 * 登录
 	 * */
-	public static void login(final Activity context , final ShareAlbum album , final int order, final int vid){
-		final Renren renren = new Renren(ShareConstant.Renren.API_KEY, ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID, context);
+	public static void login(final Activity context, final ShareAlbum album,
+			final int order, final int vid) {
+		final Renren renren = new Renren(ShareConstant.Renren.API_KEY,
+				ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID,
+				context);
 		final RenrenAuthListener listener = new RenrenAuthListener() {
 
 			@Override
 			public void onComplete(Bundle values) {
-				if(context instanceof BasePlayActivity){
-					SharePageActivity.launch(context,4, album.getShare_AlbumName(), album.getIcon(), album.getShare_id(), album.getType(), album.getCid(), album.getYear(), album.getDirector(), album.getActor(), album.getTimeLength() , order, vid);
+				if (context instanceof BasePlayActivity) {
+					SharePageActivity.launch(context, 4,
+							album.getShare_AlbumName(), album.getIcon(),
+							album.getShare_id(), album.getType(),
+							album.getCid(), album.getYear(),
+							album.getDirector(), album.getActor(),
+							album.getTimeLength(), order, vid, false, "");
 				}
 			}
 
@@ -64,35 +74,39 @@ public class LetvRenrenShare {
 			@Override
 			public void onCancelAuth(Bundle values) {
 			}
-			
+
 		};
-		
-		renren.authorizeFull(context , listener);
+
+		renren.authorizeFull(context, listener);
 	}
 
 	/**
 	 * 分享图片
 	 * */
-	public static void share(Activity context ,String caption, final String imaUrl ,final AbstractRequestListener<PhotoUploadResponseBean> listener) {
-		try{
-			Renren renren = new Renren(ShareConstant.Renren.API_KEY, ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID, context);
+	public static void share(Activity context, String caption,
+			final String imaUrl,
+			final AbstractRequestListener<PhotoUploadResponseBean> listener) {
+		try {
+			Renren renren = new Renren(ShareConstant.Renren.API_KEY,
+					ShareConstant.Renren.SECRET_KEY,
+					ShareConstant.Renren.APP_ID, context);
 			final PhotoHelper photoHelper = new PhotoHelper(renren);
 			PhotoUploadRequestParam photoParam = new PhotoUploadRequestParam();
 			if (!"".equals(caption)) {
 				photoParam.setCaption(caption);
 			}
-			
+
 			String path = LetvCacheTools.StringTool.createFilePath(imaUrl);
 			File file = new File(path);
 			String newpath = LetvCacheTools.StringTool.createFilePath2(imaUrl);
 			File newfile = new File(newpath);
-			
-			if(file.exists()){
-				
+
+			if (file.exists()) {
+
 				FileInputStream inputStream = null;
 				FileOutputStream fos = null;
-				
-				try{
+
+				try {
 					inputStream = new FileInputStream(file);
 					fos = new FileOutputStream(newfile);
 					byte[] buffer = new byte[1024];
@@ -100,22 +114,22 @@ public class LetvRenrenShare {
 					while ((len = inputStream.read(buffer)) != -1) {
 						fos.write(buffer, 0, len);
 					}
-				}catch(Exception exception){
+				} catch (Exception exception) {
 					exception.printStackTrace();
-				}finally{
-					try{
+				} finally {
+					try {
 						inputStream.close();
 						fos.close();
-					}catch (Exception e) {
+					} catch (Exception e) {
 					}
 				}
 			}
 
-			if(newfile.exists()){
+			if (newfile.exists()) {
 				photoParam.setFile(newfile);
 				photoHelper.asyncUploadPhoto(photoParam, listener);
-			}else{
-				AbstractRequestListener<StatusSetResponseBean> l = new AbstractRequestListener<StatusSetResponseBean>(){
+			} else {
+				AbstractRequestListener<StatusSetResponseBean> l = new AbstractRequestListener<StatusSetResponseBean>() {
 
 					@Override
 					public void onComplete(StatusSetResponseBean arg0) {
@@ -132,28 +146,33 @@ public class LetvRenrenShare {
 						listener.onRenrenError(arg0);
 					}
 				};
-				share(context ,caption ,l);
+				share(context, caption, l);
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 分享文字
 	 * */
-	public static void share(Activity context ,String status , AbstractRequestListener<StatusSetResponseBean> listener){
-		Renren renren = new Renren(ShareConstant.Renren.API_KEY, ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID, context);
+	public static void share(Activity context, String status,
+			AbstractRequestListener<StatusSetResponseBean> listener) {
+		Renren renren = new Renren(ShareConstant.Renren.API_KEY,
+				ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID,
+				context);
 		AsyncRenren aRenren = new AsyncRenren(renren);
 		StatusSetRequestParam param = new StatusSetRequestParam(status);
-		aRenren.publishStatus(param, listener , true);
+		aRenren.publishStatus(param, listener, true);
 	}
-	
+
 	/**
 	 * 登出
 	 * */
-	public static void logout(Activity context){
-		Renren renren = new Renren(ShareConstant.Renren.API_KEY, ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID, context);
+	public static void logout(Activity context) {
+		Renren renren = new Renren(ShareConstant.Renren.API_KEY,
+				ShareConstant.Renren.SECRET_KEY, ShareConstant.Renren.APP_ID,
+				context);
 		renren.logout(context);
 	}
 }

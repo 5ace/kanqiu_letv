@@ -724,7 +724,6 @@ public class LetvUtil {
 		LetvHttpLog.Err("type =" + type + "  id =" + id + "  vid=" + vid);
 		if (share != null) {
 			if (type == 1) {
-
 				replace_url = share.getVideo_url().replace("{vid}", vid + "");
 				replace_url = replace_url.replace("{index}", "1");
 				replace_url = replace_url.replace("{aid}", id + "");

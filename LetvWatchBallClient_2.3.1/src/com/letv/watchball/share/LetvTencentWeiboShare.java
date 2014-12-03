@@ -10,48 +10,56 @@ import com.tencent.weibo.TWeiboNew;
 import com.tencent.weibo.TWeiboNew.TWeiboListener;
 
 public class LetvTencentWeiboShare {
-	
-	private static void setAppId(){
-		
-		//设置app key 和 app secrect
+
+	private static void setAppId() {
+
+		// 设置app key 和 app secrect
 		TWeiboNew.redirectUri = ShareConstant.TencentWeibo.redirectUri;
 		TWeiboNew.clientId = ShareConstant.TencentWeibo.clientId;
 		TWeiboNew.clientSecret = ShareConstant.TencentWeibo.clientSecret;
 	}
+
 	/**
 	 * 判断是否登录
 	 * */
-	public static int isLogin(final Context context){
+	public static int isLogin(final Context context) {
 		setAppId();
-		return TWeiboNew.getInstance().isLogin(context) ;
+		return TWeiboNew.getInstance().isLogin(context);
 	}
-	
+
 	/**
 	 * 登录
 	 * */
-	public static void login(final Activity context , final ShareAlbum album , final int witch , final int order,final int vid){
+	public static void login(final Activity context, final ShareAlbum album,
+			final int witch, final int order, final int vid, final boolean isLive, final String liveShare) {
 		setAppId();
-		TWeiboNew.getInstance().login(context, new  TWeiboListener() {
-			
+		TWeiboNew.getInstance().login(context, new TWeiboListener() {
+
 			@Override
 			public void onFail(String message) {
-				
+
 			}
-			
+
 			@Override
 			public void onError() {
-				
+
 			}
-			
+
 			@Override
 			public void onComplete() {
-//				if((context instanceof ShareActivity) || (context instanceof ShareConfigActivity)){
-//					
-//				}else{
-				if(context instanceof BasePlayActivity){
-					SharePageActivity.launch(context ,witch , album.getShare_AlbumName(), album.getIcon(), album.getShare_id(), album.getType(), album.getCid(), album.getYear(), album.getDirector(), album.getActor(), album.getTimeLength() , order, vid);
+				// if((context instanceof ShareActivity) || (context instanceof
+				// ShareConfigActivity)){
+				//
+				// }else{
+				if (context instanceof BasePlayActivity) {
+					SharePageActivity.launch(context, witch,
+							album.getShare_AlbumName(), album.getIcon(),
+							album.getShare_id(), album.getType(),
+							album.getCid(), album.getYear(),
+							album.getDirector(), album.getActor(),
+							album.getTimeLength(), order, vid, isLive, liveShare);
 				}
-					//				}
+				// }
 			}
 		});
 	}
@@ -59,19 +67,21 @@ public class LetvTencentWeiboShare {
 	/**
 	 * 分享图片
 	 * */
-	public static void share(Activity context ,String caption, String imaUrl , boolean isQZoom,final TWeiboListener listener) {
+	public static void share(Activity context, String caption, String imaUrl,
+			boolean isQZoom, final TWeiboListener listener) {
 		setAppId();
-		try{
-			TWeiboNew.getInstance().share(context, listener, caption, imaUrl, isQZoom);
-		}catch (Exception e) {
+		try {
+			TWeiboNew.getInstance().share(context, listener, caption, imaUrl,
+					isQZoom);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 登出
 	 * */
-	public static void logout(Activity context){
+	public static void logout(Activity context) {
 		setAppId();
 		TWeiboNew.getInstance().logout(context);
 	}

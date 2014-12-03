@@ -184,10 +184,20 @@
                 <data android:pathPattern=".*\\.letv" />
             </intent-filter>
         </activity>
-        
+        <!-- 分享用的页面  -->
        <activity
             android:name=".activity.SharePageActivity"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_RESP_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+         <!-- 必须注册在微博授权，分享微博时候用到 -->
+        <activity android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser" 
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" >
         </activity>
         <activity
             android:name=".activity.SettingsActivity"

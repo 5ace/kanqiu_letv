@@ -796,8 +796,6 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 			StringBuilder stringBuilder = new StringBuilder("");
 			for (int i = 0; i < list.size(); i++) {
-				System.out.println("key键---值: " + list.get(i) + ","
-						+ map.get(list.get(i)));
 				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i))
 						+ "&");
 			}
@@ -915,8 +913,7 @@ public class LiveAdapter extends SectionedBaseAdapter {
 
 			StringBuilder stringBuilder = new StringBuilder("");
 			for (int i = 0; i < list.size(); i++) {
-				System.out.println("key键---值: " + list.get(i) + ","
-						+ map.get(list.get(i)));
+				
 				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i))
 						+ "&");
 			}

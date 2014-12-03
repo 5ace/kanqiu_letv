@@ -552,8 +552,7 @@ public class PlayLiveController extends PlayController implements
 
 		StringBuilder stringBuilder = new StringBuilder("");
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println("key键---值: " + list.get(i) + ","
-					+ map.get(list.get(i)));
+			
 			stringBuilder
 					.append(list.get(i) + "=" + map.get(list.get(i)) + "&");
 		}
@@ -1560,14 +1559,13 @@ public class PlayLiveController extends PlayController implements
 
 			StringBuilder stringBuilder = new StringBuilder("");
 			for (int i = 0; i < list.size(); i++) {
-				System.out.println("key键---值: " + list.get(i) + ","
-						+ map.get(list.get(i)));
+				
 				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i))
 						+ "&");
 			}
 			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 			String apisign = MD5.toMd5(stringBuilder.toString());
-
+			Log.e("gongmeng", "use:"+stringBuilder.toString()+"  apisign:"+apisign);
 			hull = LetvHttpApi.useTicket(0, uid, channel, category, season,
 					turn, gameid, "1", apisign, new UseTicketParser());
 			if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
@@ -1634,14 +1632,14 @@ public class PlayLiveController extends PlayController implements
 
 			StringBuilder stringBuilder = new StringBuilder("");
 			for (int i = 0; i < list.size(); i++) {
-				System.out.println("key键---值: " + list.get(i) + ","
-						+ map.get(list.get(i)));
+			
 				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i))
 						+ "&");
 			}
 			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 			String apisign = MD5.toMd5(stringBuilder.toString());
-
+			Log.e("gongmeng", "ticketcount:"+stringBuilder.toString()+"  apisign:"+apisign);
+			
 			hull = LetvHttpApi.getTicketCount(0, uid, channel, category,
 					season, turn, gameid, apisign, new TicketCountParser());
 			if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
@@ -2094,14 +2092,22 @@ public class PlayLiveController extends PlayController implements
 
 	public void setVideo(Video video) {
 		this.video = video;
-
 	}
-
+	//生成直播用的分享文案
+	public String getShare() {
+		String liveShare = "我正在使用-乐视看球APP-观看乐视体育直播："+
+				game.home+"vs"+game.guest+" 直播地址：http://m.letv.com/live/play_sports.html?id="+game.id;
+		return liveShare;
+	}
+	
+	public String getUrl(){
+		return "http://m.letv.com/live/play_sports.html?id="+game.id;
+	}
 	@Override
 	public AlbumNew getAlbum() {
 		return album;
 	}
-
+	
 	public void setAlbum(AlbumNew album) {
 		this.album = album;
 	}
@@ -2527,4 +2533,6 @@ public class PlayLiveController extends PlayController implements
 		}
 		playUrl(streamId, liveUrl, token);
 	}
+
+
 }
