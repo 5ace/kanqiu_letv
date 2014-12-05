@@ -6,37 +6,73 @@
 
     <ImageView
         android:id="@+id/push_icon"
-        android:layout_width="64.0dip"
+        android:layout_width="114.0dip"
         android:layout_height="fill_parent"
+        android:paddingLeft="0.0dip"
+        android:paddingBottom="0.0dip"
+        android:layout_marginLeft="0.0dip"
+        android:layout_marginBottom="0.0dip"
         android:layout_gravity="center_vertical"
-        android:padding="8.0dip"
-        android:scaleType="fitStart" />
+        android:layout_alignParentLeft="true"
+       />
 
-    <ImageView
-        android:id="@+id/push_traingle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:paddingBottom="1.0dip"
-        android:paddingRight="1.0px"
-        android:scaleType="centerInside"
-        android:src="@drawable/push_triangle" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="0.0dip"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/push_icon" >
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:paddingBottom="3.0dip"
+            android:paddingRight="5.0dip" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5.0dip"
+                android:scaleType="centerInside"
+                android:src="@drawable/push_small_icon" />
+
+            <TextView
+                style="@style/letv_text_14_ff393939"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="3.0dip"
+                android:gravity="center_vertical"
+                android:text="看球-乐视体育" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/push_text"
-            android:layout_width="fill_parent"
+            style="@style/letv_text_14_ff393939"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="6.0dip"
-            android:layout_marginRight="6.0dip"
+            android:layout_above="@id/bottom_layout"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="7.0dip"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:lines="2"
-            android:textColor="#ff393939"
-            android:textSize="14.0sp"
-            android:layout_toLeftOf="@id/push_traingle"
-        	android:layout_toRightOf="@id/push_icon" />
-    
+            android:paddingRight="9.0dip" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="1.0dip"
+            android:paddingRight="1.0px"
+            android:scaleType="centerInside"
+            android:src="@drawable/push_triangle" />
+    </RelativeLayout>
 </RelativeLayout>

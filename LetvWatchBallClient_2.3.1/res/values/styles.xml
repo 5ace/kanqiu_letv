@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <style name="letv_text_14_ff393939">
+        <item name="android:textSize">@dimen/letv_dimens_text_14</item>
+        <item name="android:textColor">@color/letv_color_ff393939</item>
+    </style>
 
     <style name="letv_16_ffffff">
         <item name="android:textColor">#ffffffff</item>
@@ -582,10 +586,12 @@
         <item name="android:textSize">@dimen/letv_dimens_text_15</item>
         <item name="android:background">@drawable/btn_blue_selecter</item>
     </style>
-   <style name="letv_text_12_ff000000">
+
+    <style name="letv_text_12_ff000000">
         <item name="android:textColor">@color/letv_color_ff000000</item>
         <item name="android:textSize">@dimen/letv_dimens_text_12</item>
     </style>
+
     <style name="letv_text_15_ff000000">
         <item name="android:textColor">@color/letv_color_ff000000</item>
         <item name="android:textSize">@dimen/letv_dimens_text_15</item>
@@ -650,18 +656,22 @@
         <item name="android:textColor">@drawable/red_white_text_selecter</item>
         <item name="android:textSize">@dimen/letv_dimens_text_15</item>
     </style>
-     <style name="letv_text_13_ffa1a1a1">
+
+    <style name="letv_text_13_ffa1a1a1">
         <item name="android:textColor">@color/letv_color_ffa1a1a1</item>
         <item name="android:textSize">@dimen/letv_dimens_text_13</item>
     </style>
-       <style name="letv_text_13_ff969696">
+
+    <style name="letv_text_13_ff969696">
         <item name="android:textColor">@color/letv_color_ff969696</item>
         <item name="android:textSize">@dimen/letv_dimens_text_13</item>
     </style>
-      <style name="letv_application_theme" parent="@android:style/Theme.NoTitleBar">
+
+    <style name="letv_application_theme" parent="@android:style/Theme.NoTitleBar">
         <item name="android:windowBackground">@color/letv_color_fff6f6f6</item>
     </style>
-     <style name="letv_text_15_ffffffff_shadow">
+
+    <style name="letv_text_15_ffffffff_shadow">
         <item name="android:textColor">@color/letv_color_ffffffff</item>
         <item name="android:textSize">@dimen/letv_dimens_text_15</item>
         <item name="android:shadowColor">@color/letv_color_cd000000</item>
@@ -669,7 +679,8 @@
         <item name="android:shadowDy">1.0</item>
         <item name="android:shadowRadius">5.0</item>
     </style>
-     <style name="letv_text_11_ffffffff_shadow">
+
+    <style name="letv_text_11_ffffffff_shadow">
         <item name="android:textColor">@color/letv_color_ffffffff</item>
         <item name="android:textSize">@dimen/letv_dimens_text_11</item>
         <item name="android:shadowColor">@color/letv_color_cd000000</item>
@@ -677,12 +688,13 @@
         <item name="android:shadowDy">1.0</item>
         <item name="android:shadowRadius">5.0</item>
     </style>
+
     <style name="letv_text_15_ff5c5c5c">
         <item name="android:textColor">@color/letv_color_ff5c5c5c</item>
         <item name="android:textSize">@dimen/letv_dimens_text_15</item>
     </style>
 
-    <!--feed back-->
+    <!-- feed back -->
     <style name="letv_text_15_blue_white_unenable">
         <item name="android:textColor">@drawable/white_blue_text_selecter</item>
         <item name="android:textSize">@dimen/letv_dimens_text_15</item>

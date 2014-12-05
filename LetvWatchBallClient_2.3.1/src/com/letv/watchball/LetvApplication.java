@@ -127,8 +127,9 @@ public class LetvApplication extends Application {
 		 * LetvWbPushService.schedule(this); } else {
 		 * LetvWbPushService.unschedule(this); } }
 		 */
+		
 		regid = getRegistrationId(mApplicationContext);
-		//LogInfo.log("push token:" + regid.toString());
+		LogInfo.log("push token:" + regid.toString());
 		if (regid.isEmpty()) {
 			// 开始注册推送服务
 			registerInBackground();
