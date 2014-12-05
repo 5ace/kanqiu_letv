@@ -11,7 +11,7 @@ public class DDUrlsResult implements LetvBaseBean{
 	
 	private boolean hasLow ;
 	
-	private boolean isHd ;
+	private int isHd ;
 	
 	private boolean isDolby ;
 	
@@ -54,11 +54,11 @@ public class DDUrlsResult implements LetvBaseBean{
 		this.hasLow = hasLow;
 	}
 
-	public boolean isHd() {
+	public int isHd() {
 		return isHd;
 	}
 
-	public void setHd(boolean isHd) {
+	public void setHd(int isHd) {
 		this.isHd = isHd;
 	}
 

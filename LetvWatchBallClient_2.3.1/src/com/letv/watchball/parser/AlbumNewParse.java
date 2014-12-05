@@ -59,8 +59,10 @@ public class AlbumNewParse extends LetvMobileParser<AlbumNew> {
 					album.setNameCn(getString(data, "name"));
 					album.setSubTitle(getString(data, "subname"));
 
-					album.setIcon_200_150(getString(getJSONObject(data, "images"), "200*150"));
-					album.setIcon_400_300(getString(getJSONObject(data, "images"), "400*300"));
+					album.setIcon_200_150(getString(
+							getJSONObject(data, "images"), "200*150"));
+					album.setIcon_400_300(getString(
+							getJSONObject(data, "images"), "400*300"));
 					album.setPic(album.getIcon_400_300());
 					album.setCid(getInt(data, "category"));
 					album.setReleaseDate(getString(data, "year"));
@@ -152,13 +154,16 @@ public class AlbumNewParse extends LetvMobileParser<AlbumNew> {
 				default:
 					album.setId(getLong(data, "id"));
 					album.setNameCn(getString(data, "nameCn"));
-                              album.setPid(getLong(data,"pid"));
+					album.setPid(getLong(data, "pid"));
 					album.setAlbumType(getString(data, "albumType"));
 					album.setSubTitle(getString(data, "subTitle"));
 					if (has(data, "picCollections")) {
-						album.setPic(getString(getJSONObject(data, "picCollections"), "150*200"));
+						album.setPic(getString(
+								getJSONObject(data, "picCollections"),
+								"150*200"));
 					} else if (has(data, "picAll")) {
-						album.setPic(getString(getJSONObject(data, "picAll"), "120*90"));
+						album.setPic(getString(getJSONObject(data, "picAll"),
+								"120*90"));
 					}
 					album.setScore(getFloat(data, "score"));
 					album.setCid(getInt(data, "cid"));
@@ -194,25 +199,25 @@ public class AlbumNewParse extends LetvMobileParser<AlbumNew> {
 					/**
 					 * 首页播放记录区块图片，首选300*300
 					 */
-//					JSONObject picAll = null;
-//					if (has(data, "picCollections")) {
-//						picAll = getJSONObject(data, "picCollections");
-//					} else if (has(data, "picAll")) {
-//						picAll = getJSONObject(data, "picAll");
-//					}
-//					if (picAll != null) {
-//						String str = getString(picAll, "300*300");
-//						if (!TextUtils.isEmpty(str)) {
-//							album.setPic300(str);
-//						} else {
-//							str = getString(picAll, "400*300");
-//							if (!TextUtils.isEmpty(str)) {
-//								album.setPic300(str);
-//							} else {
-//								album.setPic300(album.getPic());
-//							}
-//						}
-//					}
+					// JSONObject picAll = null;
+					// if (has(data, "picCollections")) {
+					// picAll = getJSONObject(data, "picCollections");
+					// } else if (has(data, "picAll")) {
+					// picAll = getJSONObject(data, "picAll");
+					// }
+					// if (picAll != null) {
+					// String str = getString(picAll, "300*300");
+					// if (!TextUtils.isEmpty(str)) {
+					// album.setPic300(str);
+					// } else {
+					// str = getString(picAll, "400*300");
+					// if (!TextUtils.isEmpty(str)) {
+					// album.setPic300(str);
+					// } else {
+					// album.setPic300(album.getPic());
+					// }
+					// }
+					// }
 					break;
 				}
 				return album;

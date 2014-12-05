@@ -1,14 +1,15 @@
 package com.letv.watchball.bean;
 
-
 /**
  * 所有可关注球队列表
+ * 
  * @author liuhanzhi
- *
+ * 
  */
-public class FocusTeamList extends Base{
+public class FocusTeamList extends Base {
 	public Body[] body;
-	public class Body{
+
+	public class Body {
 		/**
 		 * 赛事id
 		 */
@@ -27,8 +28,8 @@ public class FocusTeamList extends Base{
 		public String img_url;
 		public String level;
 		public Team[] teams;
-		
-		public class Team{
+
+		public class Team {
 			/**
 			 * 球队id
 			 */
@@ -42,12 +43,12 @@ public class FocusTeamList extends Base{
 			 */
 			public String img_url;
 			/**
-			 * 是否关注  0：不关注，1：关注
+			 * 是否关注 0：不关注，1：关注
 			 */
 			public String focused;
-			
+
 			public String level;
 		}
 	}
-	
+
 }

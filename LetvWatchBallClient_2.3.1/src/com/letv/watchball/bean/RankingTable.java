@@ -52,7 +52,7 @@ public class RankingTable extends Base {
 			 * 球队icon
 			 */
 			public String img_url;
-			
+
 			/**
 			 * 胜率 (对于篮球)
 			 */

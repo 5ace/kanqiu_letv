@@ -26,7 +26,8 @@ import com.handmark.pulltorefresh.library.OverscrollHelper;
 import com.handmark.pulltorefresh.library.PullToRefreshAdapterViewBase;
 import com.handmark.pulltorefresh.library.internal.EmptyViewMethodAccessor;
 
-public class PullToRefreshListViewHeader extends PullToRefreshAdapterViewBase<PinnedHeaderListView> {
+public class PullToRefreshListViewHeader extends
+		PullToRefreshAdapterViewBase<PinnedHeaderListView> {
 
 	public PullToRefreshListViewHeader(Context context) {
 		super(context);
@@ -40,7 +41,8 @@ public class PullToRefreshListViewHeader extends PullToRefreshAdapterViewBase<Pi
 		super(context, mode);
 	}
 
-	public PullToRefreshListViewHeader(Context context, Mode mode, AnimationStyle style) {
+	public PullToRefreshListViewHeader(Context context, Mode mode,
+			AnimationStyle style) {
 		super(context, mode, style);
 	}
 
@@ -50,10 +52,11 @@ public class PullToRefreshListViewHeader extends PullToRefreshAdapterViewBase<Pi
 	}
 
 	@Override
-	protected PinnedHeaderListView createRefreshableView(Context context, AttributeSet attrs) {
+	protected PinnedHeaderListView createRefreshableView(Context context,
+			AttributeSet attrs) {
 		final PinnedHeaderListView lv;
 		if (VERSION.SDK_INT >= 9) {
-//			if (VERSION.SDK_INT >= VERSION_CODES.GINGERBREAD) {
+			// if (VERSION.SDK_INT >= VERSION_CODES.GINGERBREAD) {
 			lv = new InternalExpandableListViewSDK9(context, attrs);
 		} else {
 			lv = new InternalExpandableListView(context, attrs);
@@ -64,7 +67,8 @@ public class PullToRefreshListViewHeader extends PullToRefreshAdapterViewBase<Pi
 		return lv;
 	}
 
-	class InternalExpandableListView extends PinnedHeaderListView implements EmptyViewMethodAccessor {
+	class InternalExpandableListView extends PinnedHeaderListView implements
+			EmptyViewMethodAccessor {
 
 		public InternalExpandableListView(Context context, AttributeSet attrs) {
 			super(context, attrs);
@@ -82,22 +86,26 @@ public class PullToRefreshListViewHeader extends PullToRefreshAdapterViewBase<Pi
 	}
 
 	@TargetApi(9)
-	final class InternalExpandableListViewSDK9 extends InternalExpandableListView {
+	final class InternalExpandableListViewSDK9 extends
+			InternalExpandableListView {
 
-		public InternalExpandableListViewSDK9(Context context, AttributeSet attrs) {
+		public InternalExpandableListViewSDK9(Context context,
+				AttributeSet attrs) {
 			super(context, attrs);
 		}
 
 		@Override
-		protected boolean overScrollBy(int deltaX, int deltaY, int scrollX, int scrollY, int scrollRangeX,
-				int scrollRangeY, int maxOverScrollX, int maxOverScrollY, boolean isTouchEvent) {
+		protected boolean overScrollBy(int deltaX, int deltaY, int scrollX,
+				int scrollY, int scrollRangeX, int scrollRangeY,
+				int maxOverScrollX, int maxOverScrollY, boolean isTouchEvent) {
 
-			final boolean returnValue = super.overScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX,
-					scrollRangeY, maxOverScrollX, maxOverScrollY, isTouchEvent);
+			final boolean returnValue = super.overScrollBy(deltaX, deltaY,
+					scrollX, scrollY, scrollRangeX, scrollRangeY,
+					maxOverScrollX, maxOverScrollY, isTouchEvent);
 
 			// Does all of the hard work...
-			OverscrollHelper.overScrollBy(PullToRefreshListViewHeader.this, deltaX, scrollX, deltaY, scrollY,
-					isTouchEvent);
+			OverscrollHelper.overScrollBy(PullToRefreshListViewHeader.this,
+					deltaX, scrollX, deltaY, scrollY, isTouchEvent);
 
 			return returnValue;
 		}

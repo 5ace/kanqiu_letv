@@ -41,7 +41,7 @@ public class LetvGallery extends Gallery {
 	private float gTouchStartX;
 	private float gTouchStartY;
 	public static boolean isFling = false;// 当为false时表示Gallery只可以一次滑动一张
-	
+
 	private ArrayList<OnItemSelectedListener> listeners = new ArrayList<AdapterView.OnItemSelectedListener>();
 
 	public LetvGallery(Context context, AttributeSet attrs) {
@@ -53,7 +53,8 @@ public class LetvGallery extends Gallery {
 		this.isRight = isRight;
 		this.delayMillis = delayMillis;
 		mHandler.removeMessages(MSG_GALLERY_IAMGE_MOVE);
-		mHandler.sendEmptyMessageDelayed(MSG_GALLERY_IAMGE_MOVE, this.delayMillis);
+		mHandler.sendEmptyMessageDelayed(MSG_GALLERY_IAMGE_MOVE,
+				this.delayMillis);
 	}
 
 	public void stopMove() {
@@ -79,7 +80,8 @@ public class LetvGallery extends Gallery {
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
 		int event;
 		int f = isScrollingLeft(e1, e2);
 		if (f == -1) {
@@ -181,44 +183,48 @@ public class LetvGallery extends Gallery {
 
 	private ViewPager pager;
 	private ListView listView;
+
 	public void setViewPager(ViewPager viewPager) {
 		this.pager = viewPager;
 	}
+
 	public void setListView(ListView listView) {
 		this.listView = listView;
 	}
-	
+
 	/**
 	 * 添加监听
 	 * */
-	public void addSelectedListener(OnItemSelectedListener itemSelectedListener){
+	public void addSelectedListener(OnItemSelectedListener itemSelectedListener) {
 		listeners.add(itemSelectedListener);
 	}
-	
+
 	/**
 	 * 移除监听
 	 * */
-	public void removeSelectedListener(OnItemSelectedListener itemSelectedListener){
+	public void removeSelectedListener(
+			OnItemSelectedListener itemSelectedListener) {
 		listeners.remove(itemSelectedListener);
 	}
-	
+
 	/**
 	 * 清除回调
 	 * */
-	public void clearSelectedListener(){
+	public void clearSelectedListener() {
 		listeners.clear();
 	}
-	
+
 	/**
 	 * 扩展选中监听
 	 * */
 	private OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
 
 		@Override
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-			if(listeners.size() > 0){
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			if (listeners.size() > 0) {
 				for (OnItemSelectedListener listener : listeners) {
-					if(listener != null){
+					if (listener != null) {
 						listener.onItemSelected(arg0, arg1, arg2, arg3);
 					}
 				}
@@ -227,7 +233,7 @@ public class LetvGallery extends Gallery {
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			
+
 		}
 	};
 }

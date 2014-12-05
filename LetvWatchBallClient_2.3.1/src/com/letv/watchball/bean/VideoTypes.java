@@ -1,11 +1,7 @@
 package com.letv.watchball.bean;
 
-
-
-
 /**
- * @author Liuheyuan
- * 视频新闻筛选字段
+ * @author Liuheyuan 视频新闻筛选字段
  */
 public class VideoTypes extends Base {
 	public Body body;
@@ -20,7 +16,8 @@ public class VideoTypes extends Base {
 		 */
 		public VideoBean[] filter;
 	}
-	public class VideoBean{
+
+	public class VideoBean {
 		public String name;
 		public String id;
 	}

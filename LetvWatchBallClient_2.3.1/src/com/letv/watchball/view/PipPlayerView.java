@@ -17,8 +17,9 @@ import com.letv.watchball.pip.PipPlayController;
 
 /**
  * 悬浮窗的view，控制的逻辑全在PipPlayController中
- * @author 
- *
+ * 
+ * @author
+ * 
  */
 public class PipPlayerView extends LinearLayout {
 
@@ -50,10 +51,10 @@ public class PipPlayerView extends LinearLayout {
 
 	private void closeStartPlayAsync() {
 		if (null != startPlayAsync) {
-			/*changed by zlb */
-//			startPlayAsync.cancel(true);
+			/* changed by zlb */
+			// startPlayAsync.cancel(true);
 			startPlayAsync.cancel();
-			/*end change by zlb */
+			/* end change by zlb */
 		}
 		startPlayAsync = null;
 	}
@@ -91,7 +92,7 @@ public class PipPlayerView extends LinearLayout {
 	protected void onCreate(Bundle bundle) {
 		boolean threeScreen = bundle.getBoolean("isThreeScreen");
 		if (threeScreen) {
-//			playController = new PipThreeScreenPlayController(this);
+			// playController = new PipThreeScreenPlayController(this);
 		} else {
 			boolean isLive = bundle.getBoolean("isLive");
 			if (isLive) {
@@ -129,7 +130,7 @@ public class PipPlayerView extends LinearLayout {
 		unregisterLockScreenBroadcast();
 		closeStartPlayAsync();
 	}
-	
+
 	public void finish() {
 		onPause();
 		onDestroy();
@@ -140,7 +141,8 @@ public class PipPlayerView extends LinearLayout {
 	 * */
 	public void registerLockScreenBroadcast() {
 		if (lockScreenIntentFilter != null) {
-			getContext().registerReceiver(lockScreenreceiver, lockScreenIntentFilter);
+			getContext().registerReceiver(lockScreenreceiver,
+					lockScreenIntentFilter);
 		}
 	}
 
@@ -151,7 +153,9 @@ public class PipPlayerView extends LinearLayout {
 		try {
 			getContext().unregisterReceiver(lockScreenreceiver);
 		} catch (Exception e) {
-			Log.e("LHY", "PipMediaController-unregisterLockScreenBroadcast-Exception = " + e.toString());
+			Log.e("LHY",
+					"PipMediaController-unregisterLockScreenBroadcast-Exception = "
+							+ e.toString());
 		}
 
 	}
@@ -167,10 +171,10 @@ public class PipPlayerView extends LinearLayout {
 				mPipPlayController.onPause();
 				// 锁屏
 				Log.d("zlb", "Intent.ACTION_SCREEN_OFF");
-			} else if(Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+			} else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
 				Log.d("zlb", "Intent.ACTION_USER_PRESENT");
 				mPipPlayController.onResume();
-            }
+			}
 		}
 	};
 }

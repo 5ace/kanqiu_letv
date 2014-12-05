@@ -13,7 +13,7 @@ public class TicketCountParser extends LetvMainParser<TicketCount, JSONObject> {
 	@Override
 	public TicketCount parse(JSONObject data) {
 		TicketCount ticketCount = new TicketCount();
-		//Log.e("gongmeng", "ticketcount:" + data.toString());
+		// Log.e("gongmeng", "ticketcount:" + data.toString());
 		try {
 			if (data != null) {
 				JSONObject body = data.getJSONObject("body");
@@ -33,7 +33,7 @@ public class TicketCountParser extends LetvMainParser<TicketCount, JSONObject> {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		//Log.e("gongmeng", "count:" + ticketCount.count);
+		// Log.e("gongmeng", "count:" + ticketCount.count);
 		return ticketCount;
 	}
 

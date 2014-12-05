@@ -6,9 +6,9 @@ import org.json.JSONObject;
 import com.letv.watchball.bean.RealPlayUrlInfo;
 
 public class RealPlayUrlInfoParser {
-	
+
 	private RealPlayUrlInfo realPlayUrlInfo = null;
-	
+
 	public RealPlayUrlInfoParser(RealPlayUrlInfo realPlayUrlInfo) {
 		this.realPlayUrlInfo = realPlayUrlInfo;
 	}

@@ -23,7 +23,6 @@ import com.sina.weibo.sdk.openapi.models.Status;
 import com.sina.weibo.sdk.openapi.models.StatusList;
 import com.sina.weibo.sdk.utils.LogUtil;
 
-
 public class LetvSinaShareOauth {
 
 	private static Oauth2AccessToken accessToken;
@@ -51,17 +50,18 @@ public class LetvSinaShareOauth {
 	 * 分享时登录
 	 * */
 	public static void login(final Activity context, final ShareAlbum album,
-			final int order, final int vid,  final boolean isLive, final String liveShare) {
+			final int order, final int vid, final boolean isLive,
+			final String liveShare) {
 		if (isLogin(context) && context instanceof BasePlayActivity) {
 
 			SharePageActivity.launch(context, 1, album.getShare_AlbumName(),
 					album.getIcon(), album.getShare_id(), album.getType(),
 					album.getCid(), album.getYear(), album.getDirector(),
-					album.getActor(), album.getTimeLength(), order, vid, isLive,
-					liveShare);
+					album.getActor(), album.getTimeLength(), order, vid,
+					isLive, liveShare);
 
 		} else {
-			
+
 		}
 	}
 
@@ -76,13 +76,13 @@ public class LetvSinaShareOauth {
 	 * @param listener
 	 *            回调接口
 	 */
-	public static void share(Context context, String textContent, String imaUrl,
-			RequestListener listener) {
+	public static void share(Context context, String textContent,
+			String imaUrl, RequestListener listener) {
 
 		try {
 			String ImagePath = LetvCacheTools.StringTool.createFilePath(imaUrl);
 			if (accessToken.getToken() != null) {
-			
+
 			} else {
 				Toast.makeText(context, "分享失败", Toast.LENGTH_LONG);
 			}
@@ -114,9 +114,9 @@ public class LetvSinaShareOauth {
 
 		@Override
 		public void onWeiboException(WeiboException e) {
-			
+
 			ErrorInfo info = ErrorInfo.parse(e.getMessage());
-			
+
 		}
 	};
 }

@@ -61,7 +61,7 @@ public class RankerFragment extends Fragment {
 	 * 排名数据
 	 */
 	private RankingTable rankingTable = new RankingTable();
-	
+
 	private Match match;
 
 	@Override
@@ -70,25 +70,29 @@ public class RankerFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		// return super.onCreateView(inflater, container, savedInstanceState);
-		return inflater.inflate(R.layout.ranker_fragment,container, false);
+		return inflater.inflate(R.layout.ranker_fragment, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		ranker_fragment_expandableListView = (ExpandableListView) getView().findViewById(R.id.ranker_fragment_expandableListView);
+		ranker_fragment_expandableListView = (ExpandableListView) getView()
+				.findViewById(R.id.ranker_fragment_expandableListView);
 		ranker_fragment_expandableListView.setAdapter(myExpandableAdapter);
 		ranker_fragment_expandableListView.setGroupIndicator(null);
-		ranker_fragment_expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+		ranker_fragment_expandableListView
+				.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
-			@Override
-			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-				return true;
-			}
-		});
+					@Override
+					public boolean onGroupClick(ExpandableListView parent,
+							View v, int groupPosition, long id) {
+						return true;
+					}
+				});
 	}
 
 	/**
@@ -107,24 +111,28 @@ public class RankerFragment extends Fragment {
 	 */
 	private void setLevel(String level) {
 		this.level = level;
-		if("2".equals(level)){
-			//篮球
-			getView().findViewById(R.id.ranker_fragment_draw).setVisibility(View.GONE);
-			((TextView)getView().findViewById(R.id.ranker_fragment_score_tv)).setText(R.string.ranker_fragment_header_win_rate);
-		}else{
-			getView().findViewById(R.id.ranker_fragment_draw).setVisibility(View.VISIBLE);
-			((TextView)getView().findViewById(R.id.ranker_fragment_score_tv)).setText(R.string.ranker_fragment_header_score);
+		if ("2".equals(level)) {
+			// 篮球
+			getView().findViewById(R.id.ranker_fragment_draw).setVisibility(
+					View.GONE);
+			((TextView) getView().findViewById(R.id.ranker_fragment_score_tv))
+					.setText(R.string.ranker_fragment_header_win_rate);
+		} else {
+			getView().findViewById(R.id.ranker_fragment_draw).setVisibility(
+					View.VISIBLE);
+			((TextView) getView().findViewById(R.id.ranker_fragment_score_tv))
+					.setText(R.string.ranker_fragment_header_score);
 		}
 	}
-	
-	public void setMatch(Match match){
-		if(null == match){
+
+	public void setMatch(Match match) {
+		if (null == match) {
 			return;
 		}
-		if(null != this.match && this.match.type.equals(match.type)){
+		if (null != this.match && this.match.type.equals(match.type)) {
 			return;
 		}
-		//match变化时，先clear之前的数据
+		// match变化时，先clear之前的数据
 		rankingTable = new RankingTable();
 		myExpandableAdapter.notifyDataSetChanged();
 		this.match = match;
@@ -161,7 +169,8 @@ public class RankerFragment extends Fragment {
 		public LetvDataHull<RankingTable> doInBackground() {
 			LetvDataHull<RankingTable> dataHull = null;
 
-			dataHull = LetvHttpApi.requestTable(match_type, level, new LetvGsonParser<RankingTable>(0, RankingTable.class));
+			dataHull = LetvHttpApi.requestTable(match_type, level,
+					new LetvGsonParser<RankingTable>(0, RankingTable.class));
 			return dataHull;
 		}
 
@@ -248,25 +257,28 @@ public class RankerFragment extends Fragment {
 		}
 
 		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+		public View getGroupView(int groupPosition, boolean isExpanded,
+				View convertView, ViewGroup parent) {
 			GroupHolder mHolder = null;
 			if (null == convertView) {
 				mHolder = new GroupHolder();
-				convertView = LayoutInflater.from(getActivity()).inflate(R.layout.ranker_fragment_list_item_group, null);
-				mHolder.groupName = (TextView) convertView.findViewById(R.id.ranker_fragment_item_rank_group);
+				convertView = LayoutInflater.from(getActivity()).inflate(
+						R.layout.ranker_fragment_list_item_group, null);
+				mHolder.groupName = (TextView) convertView
+						.findViewById(R.id.ranker_fragment_item_rank_group);
 				convertView.setTag(mHolder);
-				
+
 				lParams0 = new LayoutParams(LayoutParams.MATCH_PARENT, 1);
 				lParamsNomel = (LayoutParams) convertView.getLayoutParams();
-			}else{
+			} else {
 				mHolder = (GroupHolder) convertView.getTag();
 			}
 			String groupName = getGroup(groupPosition).group;
 			if (TextUtils.isEmpty(groupName.trim())) {
-				if(null != lParams0)
+				if (null != lParams0)
 					convertView.setLayoutParams(lParams0);
 			} else {
-				if(null != lParamsNomel)
+				if (null != lParamsNomel)
 					convertView.setLayoutParams(lParamsNomel);
 				mHolder.groupName.setText(groupName);
 			}
@@ -274,28 +286,39 @@ public class RankerFragment extends Fragment {
 		}
 
 		@Override
-		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(int groupPosition, int childPosition,
+				boolean isLastChild, View convertView, ViewGroup parent) {
 			ChildHolder mHolder = null;
 			if (null == convertView) {
-				convertView = LayoutInflater.from(getActivity()).inflate(R.layout.ranker_fragment_list_item_child, null);
+				convertView = LayoutInflater.from(getActivity()).inflate(
+						R.layout.ranker_fragment_list_item_child, null);
 				mHolder = new ChildHolder();
-				mHolder.rank = (TextView) convertView.findViewById(R.id.ranker_fragment_item_rank);
-				mHolder.itemIcon = (LetvImageView) convertView.findViewById(R.id.ranker_fragment_item_icon);
-				mHolder.itemName = (TextView) convertView.findViewById(R.id.ranker_fragment_item_name);
-				mHolder.win = (TextView) convertView.findViewById(R.id.ranker_fragment_item_win);
-				mHolder.equality = (TextView) convertView.findViewById(R.id.ranker_fragment_item_equality_tv);
-				mHolder.equality_main = (LinearLayout) convertView.findViewById(R.id.ranker_fragment_item_equality);
-				mHolder.lose = (TextView) convertView.findViewById(R.id.ranker_fragment_item_lose);
-				mHolder.score = (TextView) convertView.findViewById(R.id.ranker_fragment_item_score);
-				mHolder.ranker_item_main = (LinearLayout) convertView.findViewById(R.id.ranker_item_main);
+				mHolder.rank = (TextView) convertView
+						.findViewById(R.id.ranker_fragment_item_rank);
+				mHolder.itemIcon = (LetvImageView) convertView
+						.findViewById(R.id.ranker_fragment_item_icon);
+				mHolder.itemName = (TextView) convertView
+						.findViewById(R.id.ranker_fragment_item_name);
+				mHolder.win = (TextView) convertView
+						.findViewById(R.id.ranker_fragment_item_win);
+				mHolder.equality = (TextView) convertView
+						.findViewById(R.id.ranker_fragment_item_equality_tv);
+				mHolder.equality_main = (LinearLayout) convertView
+						.findViewById(R.id.ranker_fragment_item_equality);
+				mHolder.lose = (TextView) convertView
+						.findViewById(R.id.ranker_fragment_item_lose);
+				mHolder.score = (TextView) convertView
+						.findViewById(R.id.ranker_fragment_item_score);
+				mHolder.ranker_item_main = (LinearLayout) convertView
+						.findViewById(R.id.ranker_item_main);
 				convertView.setTag(mHolder);
 			}
 
 			mHolder = (ChildHolder) convertView.getTag();
-			//设置背景颜色
-			if(childPosition%2 == 0){
+			// 设置背景颜色
+			if (childPosition % 2 == 0) {
 				mHolder.ranker_item_main.setBackgroundColor(0xffffffff);
-			}else{
+			} else {
 				mHolder.ranker_item_main.setBackgroundColor(0xffefefef);
 			}
 			GroupList mGroupList = getChild(groupPosition, childPosition);
@@ -303,16 +326,17 @@ public class RankerFragment extends Fragment {
 			mHolder.itemName.setText(String.valueOf(mGroupList.team));
 			mHolder.win.setText(String.valueOf(mGroupList.win));
 			mHolder.lose.setText(String.valueOf(mGroupList.lose));
-			if("2".equals(level)){
+			if ("2".equals(level)) {
 				mHolder.equality_main.setVisibility(View.GONE);
 				mHolder.score.setText(String.valueOf(mGroupList.win_rate));
-			}else{
+			} else {
 				mHolder.equality_main.setVisibility(View.VISIBLE);
 				mHolder.equality.setText(String.valueOf(mGroupList.draw));
 				mHolder.score.setText(String.valueOf(mGroupList.score));
 			}
 			mHolder.itemIcon.setImageResource(R.drawable.ic_default);
-			LetvCacheMannager.getInstance().loadImage(mGroupList.img_url, mHolder.itemIcon);
+			LetvCacheMannager.getInstance().loadImage(mGroupList.img_url,
+					mHolder.itemIcon);
 			return convertView;
 		}
 
@@ -329,13 +353,13 @@ public class RankerFragment extends Fragment {
 			public TextView equality;
 			public TextView lose;
 			public TextView score;
-			public LinearLayout ranker_item_main,equality_main;
+			public LinearLayout ranker_item_main, equality_main;
 		}
+
 		class GroupHolder {
 			public TextView groupName;
 		}
 	}
-	
 
 	@Override
 	public void onDestroyView() {
@@ -343,9 +367,11 @@ public class RankerFragment extends Fragment {
 		/**
 		 * frament 销毁时，移除此fragment
 		 */
-		Fragment fragment = getFragmentManager().findFragmentById(R.id.ranker_fragment);
-		FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-		if(null != fragment&&!ft.isEmpty()){
+		Fragment fragment = getFragmentManager().findFragmentById(
+				R.id.ranker_fragment);
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		if (null != fragment && !ft.isEmpty()) {
 			ft.remove(fragment).commitAllowingStateLoss();
 		}
 	}

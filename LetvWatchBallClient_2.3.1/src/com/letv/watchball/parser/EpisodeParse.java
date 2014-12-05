@@ -53,12 +53,12 @@ public class EpisodeParse extends LetvMobileParser<Episode> {
 	/**
 	 * 该视频是否允许下载：1-表示允许，2-表示不允许
 	 * */
-//	private final String ICON = "icon";
-	
+	// private final String ICON = "icon";
+
 	/**
 	 * 是否需要支付:1-否，2-是 字段
 	 * */
-	private final String PAY = "pay" ;
+	private final String PAY = "pay";
 
 	@Override
 	public Episode parse(JSONObject data) throws JSONException {
@@ -73,12 +73,12 @@ public class EpisodeParse extends LetvMobileParser<Episode> {
 		episode.setBtime(getLong(data, BTIME));
 		episode.setEtime(getLong(data, ETIME));
 		episode.setDuration(getLong(data, DURATION));
-//		episode.setIcon(getString(data, ICON));
-		
-		if(has(data, PAY)){
-			episode.setPay(getInt(data,PAY));
-		}else{
-			episode.setPay(1);//默认不付费
+		// episode.setIcon(getString(data, ICON));
+
+		if (has(data, PAY)) {
+			episode.setPay(getInt(data, PAY));
+		} else {
+			episode.setPay(1);// 默认不付费
 		}
 
 		return episode;

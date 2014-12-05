@@ -240,8 +240,9 @@ public class PlayLiveController extends PlayController implements
 	private AlbumNew album;
 	private Video video;
 	public Game game;
-	public boolean isHd;
+	public int isHd;
 	public boolean hasHd;
+	public boolean has1080p;
 	public boolean hasStandard;
 	private boolean isP2PMode = PreferencesManager.getInstance().getUtp();
 
@@ -393,6 +394,12 @@ public class PlayLiveController extends PlayController implements
 			hasHd = true;
 		}
 
+		if (game.live_1300 != null
+				&& !TextUtils.isEmpty(game.live_1300.streamId)
+				&& !TextUtils.isEmpty(game.live_1300.liveUrl)) {
+			has1080p = true;
+		}
+
 		if (game.live_350 != null && !TextUtils.isEmpty(game.live_350.liveUrl)) {
 			mLiveUrl = game.live_350.liveUrl;
 		}
@@ -400,11 +407,11 @@ public class PlayLiveController extends PlayController implements
 			mLiveUrl = game.live_800.liveUrl;
 		}
 		if (!TextUtils.isEmpty(mLiveUrl)) {
-			boolean playHd = PreferencesManager.getInstance().isPlayHd();
-			if (!playHd && game.live_350 != null
+			int playHd = PreferencesManager.getInstance().isPlayHd();
+			if (playHd == 0 && game.live_350 != null
 					&& !TextUtils.isEmpty(game.live_350.streamId)
 					&& !TextUtils.isEmpty(game.live_350.liveUrl)) {
-				isHd = false;
+				isHd = 0;
 				// 如果是付费直播，则需要鉴权
 				if (Integer.valueOf(game.pay) == 1) {
 					String userId = PreferencesManager.getInstance()
@@ -436,18 +443,19 @@ public class PlayLiveController extends PlayController implements
 						requestTicketCount.start();
 						return;
 					}
+					mToken = payToken_live350;
 					// Log.e("gogmeng", "live500_token" + payToken_live500);
 					playUrl(game.live_350.streamId, game.live_350.liveUrl,
 							payToken_live350);
 				} else {
 					playUrl(game.live_350.streamId, game.live_350.liveUrl);
 				}
-			} else {
+			} else if (playHd == 1) {
 				if (game.live_800 != null
 						&& !TextUtils.isEmpty(game.live_800.streamId)
 						&& !TextUtils.isEmpty(game.live_800.liveUrl)) {
-					isHd = true;
-					PreferencesManager.getInstance().setIsPlayHd(true);
+					isHd = 1;
+					PreferencesManager.getInstance().setIsPlayHd(1);
 					// 如果是付费直播，则需要鉴权
 					if (Integer.valueOf(game.pay) == 1) {
 						String userId = PreferencesManager.getInstance()
@@ -478,11 +486,59 @@ public class PlayLiveController extends PlayController implements
 							requestTicketCount.start();
 
 						}
+						mToken = payToken_live800;
 						// Log.e("gogmeng", "live800_token" + payToken_live800);
 						playUrl(game.live_800.streamId, game.live_800.liveUrl,
 								payToken_live800);
 					} else {
 						playUrl(game.live_800.streamId, game.live_800.liveUrl);
+					}
+				} else {
+					loadLayout.requestError();
+					return;
+				}
+
+			} else {
+				// 播放1080p
+				if (game.live_1300 != null
+						&& !TextUtils.isEmpty(game.live_1300.streamId)
+						&& !TextUtils.isEmpty(game.live_1300.liveUrl)) {
+					isHd = 2;
+					PreferencesManager.getInstance().setIsPlayHd(2);
+					// 如果是付费直播，则需要鉴权
+					if (Integer.valueOf(game.pay) == 1) {
+						String userId = PreferencesManager.getInstance()
+								.getUserId();
+						if (userId == null || userId.equalsIgnoreCase("")) {
+							nologin = true;
+							loadLoginUI();
+							return;
+						}
+
+						String pid = game.id;
+						String liveid = game.liveid;
+						String from = "mobile";
+						String streamId = game.live_350.streamId;
+						String splatId = "1013";
+						String lsstart = String.valueOf(game.status);
+						// (pid,liveid,from,streamId,splatId,userId,version,pcode)
+						mToken = requestDynamicCheck(pid, liveid, from,
+								streamId, splatId, userId, lsstart);
+						// 取得token失败后停止播放并尝试获取直播券数量
+						if (mToken == null || mToken.equalsIgnoreCase("")) {
+							// TODO
+							loadPayUI();
+							RequestTicketCount requestTicketCount = new RequestTicketCount(
+									this.getActivity(), game.liveid, userId,
+									ticketFrame);
+							requestTicketCount.start();
+
+						}
+						// Log.e("gogmeng", "live800_token" + payToken_live800);
+						playUrl(game.live_1300.streamId,
+								game.live_1300.liveUrl, mToken);
+					} else {
+						playUrl(game.live_1300.streamId, game.live_1300.liveUrl);
 					}
 				} else {
 					loadLayout.requestError();
@@ -552,7 +608,7 @@ public class PlayLiveController extends PlayController implements
 
 		StringBuilder stringBuilder = new StringBuilder("");
 		for (int i = 0; i < list.size(); i++) {
-			
+
 			stringBuilder
 					.append(list.get(i) + "=" + map.get(list.get(i)) + "&");
 		}
@@ -597,7 +653,6 @@ public class PlayLiveController extends PlayController implements
 
 		mLiveUrl = url;
 
-		
 		if (TextUtils.isEmpty(streamId)) {
 			play(url);
 		} else {
@@ -1559,13 +1614,12 @@ public class PlayLiveController extends PlayController implements
 
 			StringBuilder stringBuilder = new StringBuilder("");
 			for (int i = 0; i < list.size(); i++) {
-				
+
 				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i))
 						+ "&");
 			}
 			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 			String apisign = MD5.toMd5(stringBuilder.toString());
-			Log.e("gongmeng", "use:"+stringBuilder.toString()+"  apisign:"+apisign);
 			hull = LetvHttpApi.useTicket(0, uid, channel, category, season,
 					turn, gameid, "1", apisign, new UseTicketParser());
 			if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
@@ -1632,14 +1686,12 @@ public class PlayLiveController extends PlayController implements
 
 			StringBuilder stringBuilder = new StringBuilder("");
 			for (int i = 0; i < list.size(); i++) {
-			
+
 				stringBuilder.append(list.get(i) + "=" + map.get(list.get(i))
 						+ "&");
 			}
 			stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
 			String apisign = MD5.toMd5(stringBuilder.toString());
-			Log.e("gongmeng", "ticketcount:"+stringBuilder.toString()+"  apisign:"+apisign);
-			
 			hull = LetvHttpApi.getTicketCount(0, uid, channel, category,
 					season, turn, gameid, apisign, new TicketCountParser());
 			if (hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
@@ -2093,21 +2145,34 @@ public class PlayLiveController extends PlayController implements
 	public void setVideo(Video video) {
 		this.video = video;
 	}
-	//生成直播用的分享文案
+
+	// 生成直播用的分享文案
 	public String getShare() {
-		String liveShare = "我正在使用-乐视看球APP-观看乐视体育直播："+
-				game.home+"vs"+game.guest+" 直播地址：http://m.letv.com/live/play_sports.html?id="+game.id;
+		String liveShare = "";
+		if (game.vs.equalsIgnoreCase("1"))
+			liveShare = "【乐视体育超清直播】" + game.home + "vs" + game.guest
+					+ " 直播地址：http://m.letv.com/live/play_sports.html?id="
+					+ game.id + " @乐视体育 看球APP http://mobile.letv.com/?p=12";
+		else if (game.level.equalsIgnoreCase("其他"))
+			liveShare = "【乐视体育超清直播】" + game.title
+					+ " 直播地址：http://m.letv.com/live/play_sports.html?id="
+					+ game.id + " @乐视体育 看球APP http://mobile.letv.com/?p=12";
+		else
+			liveShare = "【乐视体育超清直播】" + game.level + game.title
+					+ " 直播地址：http://m.letv.com/live/play_sports.html?id="
+					+ game.id + " @乐视体育 看球APP http://mobile.letv.com/?p=12";
 		return liveShare;
 	}
-	
-	public String getUrl(){
-		return "http://m.letv.com/live/play_sports.html?id="+game.id;
+
+	public String getUrl() {
+		return "http://m.letv.com/live/play_sports.html?id=" + game.id;
 	}
+
 	@Override
 	public AlbumNew getAlbum() {
 		return album;
 	}
-	
+
 	public void setAlbum(AlbumNew album) {
 		this.album = album;
 	}
@@ -2520,19 +2585,11 @@ public class PlayLiveController extends PlayController implements
 		String lsstart = String.valueOf(game.status);
 		String token;
 		if (stream_code == 350) {
-			if (payToken_live350.equalsIgnoreCase(""))
-				payToken_live350 = requestDynamicCheck(pid, liveid, from,
-						streamId, splatId, userId, lsstart);
-
-			token = payToken_live350;
-		} else {
-			if (payToken_live800.equalsIgnoreCase(""))
-				payToken_live800 = requestDynamicCheck(pid, liveid, from,
-						streamId, splatId, userId, lsstart);
-			token = payToken_live800;
+			if (mToken.equalsIgnoreCase(""))
+				mToken = requestDynamicCheck(pid, liveid, from, streamId,
+						splatId, userId, lsstart);
 		}
-		playUrl(streamId, liveUrl, token);
+		playUrl(streamId, liveUrl, mToken);
 	}
-
 
 }

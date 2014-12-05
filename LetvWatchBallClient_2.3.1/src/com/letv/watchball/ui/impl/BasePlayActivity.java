@@ -471,22 +471,24 @@ public class BasePlayActivity extends LetvBaseActivity {
 		initWindow();
 
 	}
+
 	@Override
-	protected void onRestart(){
+	protected void onRestart() {
 		super.onRestart();
 		this.mPlayController.onActivityRestart();
 	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		if (!LetvShareControl.getInstance().isShare()) {
 			new RequestShareLinkTask(this).start();
 		}
 		sm.registerListener(mOrientationSensorListener, sensor,
 				SensorManager.SENSOR_DELAY_UI);
 		registerReceiver();
-		//this.mPlayController.onActivityResume();
+		// this.mPlayController.onActivityResume();
 		// boolean isLogin = PreferencesManager.getInstance().isLogin();
 		// if (isLogin) {
 		//

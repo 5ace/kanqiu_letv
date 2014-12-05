@@ -13,6 +13,9 @@ import android.content.SharedPreferences.Editor;
  */
 public class AccessTokenKeeper {
 	private static final String PREFERENCES_NAME = "com_weibo_sdk_android";
+	private static final String KEY_UID           = "uid";
+    private static final String KEY_ACCESS_TOKEN  = "access_token";
+    private static final String KEY_EXPIRES_IN    = "expires_in";
 	/**
 	 * 保存accesstoken到SharedPreferences
 	 * @param context Activity 上下文环境
@@ -21,15 +24,18 @@ public class AccessTokenKeeper {
 	public static void keepAccessToken(Context context, Oauth2AccessToken token) {
 		SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 		Editor editor = pref.edit();
-		editor.putString("token", token.getToken());
-		editor.putLong("expiresTime", token.getExpiresTime());
-		editor.commit();
+		editor.putString(KEY_UID, token.getUid());
+        editor.putString(KEY_ACCESS_TOKEN, token.getToken());
+        editor.putLong(KEY_EXPIRES_IN, token.getExpiresTime());
+        editor.commit();
+		
 	}
 	/**
 	 * 清空sharepreference
 	 * @param context
 	 */
 	public static void clear(Context context){
+		
 	    SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 	    Editor editor = pref.edit();
 	    editor.clear();
@@ -42,10 +48,11 @@ public class AccessTokenKeeper {
 	 * @return Oauth2AccessToken
 	 */
 	public static Oauth2AccessToken readAccessToken(Context context){
-		Oauth2AccessToken token = new Oauth2AccessToken();
-		SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
-		token.setToken(pref.getString("token", ""));
-		token.setExpiresTime(pref.getLong("expiresTime", 0));
+		 Oauth2AccessToken token = new Oauth2AccessToken();
+	        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+	        token.setUid(pref.getString(KEY_UID, ""));
+	        token.setToken(pref.getString(KEY_ACCESS_TOKEN, ""));
+	        token.setExpiresTime(pref.getLong(KEY_EXPIRES_IN, 0));
 		return token;
 	}
 }

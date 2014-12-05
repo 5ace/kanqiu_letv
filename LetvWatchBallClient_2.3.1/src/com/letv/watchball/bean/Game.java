@@ -20,7 +20,11 @@ public class Game implements Serializable{
        * 赛事
        */
       public String level0;
-      
+
+      /**
+       * 比赛的标题
+       */
+      public String title;
       /**
        * 主队
        */

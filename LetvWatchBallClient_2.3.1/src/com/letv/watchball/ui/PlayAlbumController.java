@@ -172,9 +172,9 @@ public class PlayAlbumController extends PlayController implements
 	public boolean hasStandard;
 
 	/**
-	 * 播放是否是高清
+	 * 播放的流
 	 * */
-	public boolean isHd;
+	public int isHd;
 
 	/**
 	 * 是否来自杜比频道
@@ -272,8 +272,7 @@ public class PlayAlbumController extends PlayController implements
 	/**
 	 * 当前播放视频的码流
 	 */
-	private String streamLevel = PreferencesManager.getInstance().isPlayHd() ? "13"
-			: "21";
+	private String streamLevel;
 
 	/**
 	 * ***************************广告，播放时长相关参数***********************
@@ -495,6 +494,17 @@ public class PlayAlbumController extends PlayController implements
 
 	@Override
 	public void create() {
+		switch(PreferencesManager.getInstance().isPlayHd()){
+		case 0:
+		 streamLevel = "13";
+		break;
+		case 1:
+			
+			 streamLevel = "21";
+			break;
+		case 2:
+			streamLevel = "24";
+		}
 		isSikp = PreferencesManager.getInstance().isSkip();
 		isHd = PreferencesManager.getInstance().isPlayHd();
 		super.create();
@@ -771,7 +781,7 @@ public class PlayAlbumController extends PlayController implements
 		setVideo(null);
 		hasHd = false;
 		hasStandard = false;
-		isHd = false;
+		isHd = 0;
 		isDolby = false;
 		playRecord = null;
 		curPage = 1;
@@ -1212,7 +1222,17 @@ public class PlayAlbumController extends PlayController implements
 			break;
 		}
 		statisticsVideoInfo.setPid(LetvUtil.getUUID(getActivity()));
-		statisticsVideoInfo.setCode(isHd ? "800" : "350");
+		switch (isHd) {
+		case 0:
+			statisticsVideoInfo.setCode("350");
+			break;
+		case 1:
+			statisticsVideoInfo.setCode("800");
+			break;
+		case 2:
+			statisticsVideoInfo.setCode("1300");
+		}
+
 		long ct = System.currentTimeMillis();// 请求结算时间
 		statisticsVideoInfo.setUtime(((int) (ct - requestStartTime) / 1000));
 
@@ -1289,7 +1309,6 @@ public class PlayAlbumController extends PlayController implements
 		resetTimeCount();
 		canplay = false;
 		statisticsVideoInfo.setStatus("2");// 手动结束
-
 		isLocalFile = false;
 		filePath = null;
 		destroyTasks();
@@ -2613,21 +2632,21 @@ public class PlayAlbumController extends PlayController implements
 		@Override
 		public boolean onPreExecute() {
 			if (mid.equals(video.getMid())) {
-				boolean isHd = PreferencesManager.getInstance().isPlayHd();
-				if (isHd) {
+				int isHd = PreferencesManager.getInstance().isPlayHd();
+				if (isHd==0) {
 					if (!PlayUtils.isSupportHd(video.getBrList())) {
-						isHd = false;
-					}
-				} else {
-					if (!PlayUtils.isSupportStandard(video.getBrList())) {
-						isHd = true;
+						isHd = 0;
 					}
 				}
+				Log.e("gongmeng", video.getBrList());
 				DDUrlsResult ddUrlsResult = PlayUtils.getDDUrls(videoFile,
 						isHd, isDolby);
 				if (ddUrlsResult != null && ddUrlsResult.getDdurls() != null
 						&& ddUrlsResult.getDdurls().length > 0) {
-					PlayAlbumController.this.isHd = ddUrlsResult.isHd();
+					// TODO 能够播放超清
+					
+						PlayAlbumController.this.isHd = ddUrlsResult.isHd();
+					
 					PlayAlbumController.this.isDolby = ddUrlsResult.isDolby();
 					PlayAlbumController.this.hasHd = ddUrlsResult.isHasHigh();
 					PlayAlbumController.this.hasStandard = ddUrlsResult

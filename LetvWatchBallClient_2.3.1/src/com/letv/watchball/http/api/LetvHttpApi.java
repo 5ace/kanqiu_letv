@@ -1439,8 +1439,8 @@ public class LetvHttpApi {
 	 */
 	public static <T extends LetvBaseBean, D> LetvDataHull<T> useTicket(
 			int updataId, String userId, String channel, String category,
-			String season, String turn, String game,String type, String apisign,
-			LetvMainParser<T, D> parser) {
+			String season, String turn, String game, String type,
+			String apisign, LetvMainParser<T, D> parser) {
 		String baseUrl = getDynamicUrl();
 		Bundle params = new Bundle();
 		params.putString(PUBLIC_PARAMETERS.MOD_KEY,

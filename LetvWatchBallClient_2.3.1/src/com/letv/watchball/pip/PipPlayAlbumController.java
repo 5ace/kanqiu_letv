@@ -298,7 +298,7 @@ public class PipPlayAlbumController implements PipPlayController, android.media.
 	/**
 	 * 播放是否是高清
 	 * */
-	public boolean isHd;
+	public int isHd;
 	/**
 	 * 当前视频是否有高清
 	 * */
@@ -1126,16 +1126,12 @@ public class PipPlayAlbumController implements PipPlayController, android.media.
 		@Override
 		public boolean onPreExecute() {
 			if (mid.equals(mVideo.getMid())) {
-				boolean isHd = PreferencesManager.getInstance().isPlayHd();
-				if (isHd) {
+				int isHd = PreferencesManager.getInstance().isPlayHd();
+				if (isHd!=0) {
 					if (!PlayUtils.isSupportHd(mVideo.getBrList())) {
-						isHd = false;
+						isHd = 0;
 					}
-				} else {
-					if (!PlayUtils.isSupportStandard(mVideo.getBrList())) {
-						isHd = true;
-					}
-				}
+				} 
 				DDUrlsResult ddUrlsResult = PlayUtils.getDDUrls(videoFile, isHd, isDolby);
 				if (ddUrlsResult != null && ddUrlsResult.getDdurls() != null && ddUrlsResult.getDdurls().length > 0) {
 					PipPlayAlbumController.this.isHd = ddUrlsResult.isHd();
@@ -1266,7 +1262,7 @@ public class PipPlayAlbumController implements PipPlayController, android.media.
     
 	public void readArguments(Bundle bundle) {
 		mBundle = bundle;
-		isPlayHd = PreferencesManager.getInstance().isPlayHd();
+		isPlayHd = (PreferencesManager.getInstance().isPlayHd()==1);
 
 		// is3GTip = LetvApplication.getInstance().is3GTip_forPlay();//delete by
 		// zlb
@@ -1762,7 +1758,7 @@ public class PipPlayAlbumController implements PipPlayController, android.media.
 		setVideo(null);
 		hasHd = false;
 		hasStandard = false;
-		isHd = false;
+		isHd = 0;
 		isDolby = false;
 		playRecord = null;
 		merge = 0;

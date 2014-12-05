@@ -16,23 +16,23 @@ public class LetvLogTool {
 			+ "/letvWatchBall/PushLog/";
 
 	private final String FILE_NAME = "push.log";
-//	private final String PUSH_FILE_NAME = "push.log";
+	// private final String PUSH_FILE_NAME = "push.log";
 	private File dir = new File(PATH);
 	private File file = null;
-	
+
 	private final int POOL_SIZE = 3;
 	private int cpuNums = Runtime.getRuntime().availableProcessors();
-	private ExecutorService executor = Executors.newFixedThreadPool(cpuNums * POOL_SIZE); 
-	
-	
+	private ExecutorService executor = Executors.newFixedThreadPool(cpuNums
+			* POOL_SIZE);
+
 	private static LetvLogTool mLetvLogTool = null;
-	
+
 	public synchronized static LetvLogTool getInstance() {
-        if (mLetvLogTool == null) {
-        	mLetvLogTool = new LetvLogTool();
-        }
-        return mLetvLogTool;
-    }
+		if (mLetvLogTool == null) {
+			mLetvLogTool = new LetvLogTool();
+		}
+		return mLetvLogTool;
+	}
 
 	public void log(String data) {
 
@@ -47,7 +47,7 @@ public class LetvLogTool {
 		if (file == null) {
 			file = new File(dir, FILE_NAME);
 		}
-		
+
 		executor.execute(new Handler(data));
 	}
 
@@ -63,17 +63,18 @@ public class LetvLogTool {
 			dir.mkdirs();
 		}
 
-		if (file == null || (file != null && !file.getName().equalsIgnoreCase(fileName))) {
+		if (file == null
+				|| (file != null && !file.getName().equalsIgnoreCase(fileName))) {
 			file = new File(dir, fileName);
 		}
-		
+
 		executor.execute(new Handler(data));
 	}
-	
+
 	class Handler implements Runnable {
-		
+
 		private String data;
-		
+
 		public Handler(String data) {
 			this.data = data;
 		}
@@ -111,6 +112,6 @@ public class LetvLogTool {
 				}
 			}
 		}
-		
+
 	}
 }

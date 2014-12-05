@@ -184,21 +184,21 @@ public class PreferencesManager {
 		return isFirstEnter;
 	}
 
-	public boolean isPlayHd() {
+	public int isPlayHd() {
 
 		SharedPreferences sp = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
 
-		boolean isPlayHd = sp.getBoolean("isPlayHd", false);
+		int isPlayHd = sp.getInt("isPlayHd", 0);
 
 		return isPlayHd;
 
 	}
 
-	public void setIsPlayHd(boolean isPlayHd) {
+	public void setIsPlayHd(int isPlayHd) {
 
 		SharedPreferences sp = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
 
-		sp.edit().putBoolean("isPlayHd", isPlayHd).commit();
+		sp.edit().putInt("isPlayHd", isPlayHd).commit();
 	}
 
 	public boolean isAllowMobileNetwork() {

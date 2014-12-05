@@ -19,18 +19,18 @@ public interface PlayControllerCallBack {
 	public void download();
 
 	public void back();
-	
+
 	public void changeDownLoad(boolean isHd);
 
 	public void share();
-	
+
 	public void forward();
-	
+
 	public void rewind();
-	
+
 	public void openDownload();
 
 	public void closeDownload();
-	
+
 	void toPip();
 }

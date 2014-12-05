@@ -46,10 +46,11 @@ import com.letv.watchball.utils.LetvUtil;
 import com.letv.watchball.utils.UIs;
 import com.letv.watchball.view.RoundImageView;
 
-public class SlidingMenuFragmentRight extends Fragment implements OnClickListener{
+public class SlidingMenuFragmentRight extends Fragment implements
+		OnClickListener {
 	private final int REQUEST_CODE_MYTEAM_MATCH = 0x0010;
 	private final int REQUST_CODE_MYFOCUS = 0x0011;
-	
+
 	/**
 	 * 我的预约
 	 */
@@ -57,99 +58,114 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 	/**
 	 * 我的球队
 	 */
-	private View view ;
+	private View view;
 	private ListView myTeamsList;
 	private RightFragmentLsn mRightFragmentLsn;
 	private boolean isDataLoaded = false;
 	private boolean isLogin = false;
-	public SlidingMenuFragmentRight(){
-		
+
+	public SlidingMenuFragmentRight() {
+
 	}
+
 	public SlidingMenuFragmentRight(RightFragmentLsn mRightFragmentLsn) {
 		this.mRightFragmentLsn = mRightFragmentLsn;
 	}
-	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		
+
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
 		if (view != null) {
-	        ViewGroup parent = (ViewGroup) view.getParent();
-	        if (parent != null)
-	            parent.removeView(view);
-	    }
-	    try {
-	    	view = inflater.inflate(R.layout.fragment_right, container, false);
-	    } catch (InflateException e) {
-	        /* map is already there, just return view as it is */
-	    }
+			ViewGroup parent = (ViewGroup) view.getParent();
+			if (parent != null)
+				parent.removeView(view);
+		}
+		try {
+			view = inflater.inflate(R.layout.fragment_right, container, false);
+		} catch (InflateException e) {
+			/* map is already there, just return view as it is */
+		}
 		return view;
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if(view!=null){
-		myTeamsList = (ListView) getActivity().findViewById(R.id.my_teams);
-		mySubscribesFragment = (GMySubscribeFragment) getFragmentManager().findFragmentById(R.id.my_subscribe_fragment);
-		mySubscribesFragment.setRightFragmentLsn(mRightFragmentLsn);
-		getActivity().findViewById(R.id.settings).setOnClickListener(this);
-		getActivity().findViewById(R.id.btn_head_login).setOnClickListener(this);
-		getActivity().findViewById(R.id.btn_head_loginout).setOnClickListener(this);
-		getActivity().findViewById(R.id.right_mysubscribe).setOnClickListener(this);
-		getActivity().findViewById(R.id.right_myteams).setOnClickListener(this);
-//		getActivity().findViewById(R.id.toggle_manager_my_team).setOnClickListener(this);
-		
-		getActivity().findViewById(R.id.right_mysubscribe).performClick();
-		
-		myTeamsList.setOnItemClickListener(new OnItemClickListener() {
+		if (view != null) {
+			myTeamsList = (ListView) getActivity().findViewById(R.id.my_teams);
+			mySubscribesFragment = (GMySubscribeFragment) getFragmentManager()
+					.findFragmentById(R.id.my_subscribe_fragment);
+			mySubscribesFragment.setRightFragmentLsn(mRightFragmentLsn);
+			getActivity().findViewById(R.id.settings).setOnClickListener(this);
+			getActivity().findViewById(R.id.btn_head_login).setOnClickListener(
+					this);
+			getActivity().findViewById(R.id.btn_head_loginout)
+					.setOnClickListener(this);
+			getActivity().findViewById(R.id.right_mysubscribe)
+					.setOnClickListener(this);
+			getActivity().findViewById(R.id.right_myteams).setOnClickListener(
+					this);
+			// getActivity().findViewById(R.id.toggle_manager_my_team).setOnClickListener(this);
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if(position == 0){
-					//添加球队
-					startActivityForResult(new Intent(getActivity(), MyFocusManagerActivity.class), 0);
-					return;
-				
+			getActivity().findViewById(R.id.right_mysubscribe).performClick();
+
+			myTeamsList.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					if (position == 0) {
+						// 添加球队
+						startActivityForResult(new Intent(getActivity(),
+								MyFocusManagerActivity.class), 0);
+						return;
+
+					}
+					MyTeams.Body body = (Body) myTeamsList.getAdapter()
+							.getItem(position);
+					if (null != body) {
+						Bundle bundle = new Bundle();
+						bundle.putString("name", body.name);
+						bundle.putString("teamId", body.teamId + "");
+						bundle.putString("level", body.level);
+						bundle.putString("focused", body.focused);
+						Intent intent = new Intent(getActivity(),
+								MyTeamMatchActivity.class);
+						intent.putExtras(bundle);
+						startActivityForResult(intent,
+								REQUEST_CODE_MYTEAM_MATCH);
+					}
 				}
-				MyTeams.Body body = (Body) myTeamsList.getAdapter().getItem(position);
-				if(null != body){
-					Bundle bundle = new Bundle();
-					bundle.putString("name", body.name);
-					bundle.putString("teamId", body.teamId+"");
-					bundle.putString("level", body.level);
-					bundle.putString("focused", body.focused);
-					Intent intent = new Intent(getActivity(), MyTeamMatchActivity.class);
-					intent.putExtras(bundle);
-					startActivityForResult(intent, REQUEST_CODE_MYTEAM_MATCH);
-				}
-			}
-			
-		});
-		initLoginStatus();
+
+			});
+			initLoginStatus();
 		}
 	}
-	
-	public void reflashUI(){
+
+	public void reflashUI() {
 		initLoginStatus();
-		if(null != mySubscribesFragment)
+		if (null != mySubscribesFragment)
 			mySubscribesFragment.reflashUI();
 	}
-	
 
 	@Override
 	public void onClick(View v) {
-		View lineMyTeams = getView().findViewById(R.id.right_myteams_bottom_line);
-		View lineMySubscribe = getView().findViewById(R.id.right_mysubscribe_bottom_line);
-		LayoutParams lineMyTeamsParams = lineMyTeams.getLayoutParams(); 
-		LayoutParams lineMySubscribeParams = lineMySubscribe.getLayoutParams(); 
+		View lineMyTeams = getView().findViewById(
+				R.id.right_myteams_bottom_line);
+		View lineMySubscribe = getView().findViewById(
+				R.id.right_mysubscribe_bottom_line);
+		LayoutParams lineMyTeamsParams = lineMyTeams.getLayoutParams();
+		LayoutParams lineMySubscribeParams = lineMySubscribe.getLayoutParams();
 		switch (v.getId()) {
 		case R.id.settings:
-			//设置
+			// 设置
 			startActivity(new Intent(getActivity(), SettingsActivity.class));
 			break;
 		case R.id.btn_head_login:
 			// 用户头像点击事件
 			if (isLogin) {
-//				SettingCenterFragmentActivity.launch(mActivity, From.PersonalInfo.getInt());
+				// SettingCenterFragmentActivity.launch(mActivity,
+				// From.PersonalInfo.getInt());
 			} else {
 				LoginMainActivity.launch(this);
 			}
@@ -157,12 +173,15 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 		case R.id.btn_head_loginout:
 			// 注销
 			doLogout();
-			
-			//登录成功 上报统计 modified by zengsonghai 20131112
-			DataStatistics.getInstance().sendLoginInfo(getActivity(), "0", "0", LetvUtil.getUID(), "-", "-", System.currentTimeMillis()/1000 +"", LetvUtil.getPcode(),1);
+
+			// 登录成功 上报统计 modified by zengsonghai 20131112
+			DataStatistics.getInstance().sendLoginInfo(getActivity(), "0", "0",
+					LetvUtil.getUID(), "-", "-",
+					System.currentTimeMillis() / 1000 + "",
+					LetvUtil.getPcode(), 1);
 			break;
 		case R.id.right_mysubscribe:
-			//我的预约
+			// 我的预约
 			lineMyTeamsParams.height = UIs.dipToPx(1);
 			lineMySubscribeParams.height = UIs.dipToPx(3);
 			lineMyTeams.requestLayout();
@@ -172,22 +191,23 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 			myTeamsList.setVisibility(View.GONE);
 			loadRightFragmentData();
 			break;
-			
+
 		case R.id.right_myteams:
-			//我的球队
+			// 我的球队
 			lineMyTeamsParams.height = UIs.dipToPx(3);
 			lineMySubscribeParams.height = UIs.dipToPx(1);
 			lineMyTeams.requestLayout();
 			lineMySubscribe.requestLayout();
-			
+
 			mySubscribesFragment.getView().setVisibility(View.GONE);
 			myTeamsList.setVisibility(View.VISIBLE);
 			loadRightFragmentData();
 			break;
-//		case R.id.toggle_manager_my_team:
-//			//添加球队
-//			startActivityForResult(new Intent(getActivity(), MyFocusManagerActivity.class), 0);
-//			break;	
+		// case R.id.toggle_manager_my_team:
+		// //添加球队
+		// startActivityForResult(new Intent(getActivity(),
+		// MyFocusManagerActivity.class), 0);
+		// break;
 		default:
 			break;
 		}
@@ -198,48 +218,60 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 		isLogin = PreferencesManager.getInstance().isLogin();
 		if (isLogin) {
 			// 用户已登录,请求用户信息(头像,昵称,VIP)
-			getView().findViewById(R.id.textv_nickname_hint).setVisibility(View.GONE);
-			getView().findViewById(R.id.btn_head_loginout).setVisibility(View.VISIBLE);
+			getView().findViewById(R.id.textv_nickname_hint).setVisibility(
+					View.GONE);
+			getView().findViewById(R.id.btn_head_loginout).setVisibility(
+					View.VISIBLE);
 			String tk = PreferencesManager.getInstance().getSso_tk();
 			String userName = PreferencesManager.getInstance().getUserName();
 			new RequestLoginTask(getActivity(), tk, userName).start();
 			this.mRightFragmentLsn.resetMainFragment();
 		} else {
 			// 用户注销登录
-			getView().findViewById(R.id.textv_nickname_hint).setVisibility(View.VISIBLE);
-			getView().findViewById(R.id.btn_head_loginout).setVisibility(View.GONE);
-			//刷新直播
-			
+			getView().findViewById(R.id.textv_nickname_hint).setVisibility(
+					View.VISIBLE);
+			getView().findViewById(R.id.btn_head_loginout).setVisibility(
+					View.GONE);
+			// 刷新直播
+
 			this.mRightFragmentLsn.resetMainFragment();
 		}
 	}
-	
+
 	/**
 	 * 退出登录
 	 */
 	private void doLogout() {
-		UIs.call(getActivity(), R.string.personal_center_activity_logout, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				//2013-10-30 by ljnalex delete start 退出登录删除本地播放记录需求不合理
-		    	//DBManager.getInstance().getPlayTrace().clearAll();
-		    	//2013-10-30 by ljnalex delete end
-				
-				PreferencesManager.getInstance().logoutUser();
-				isLogin = false;
-				updateUI(0, null);
-				// 用户退出登录数据统计
-//				DataStatistics.getInstance().sendUserInfo(getActivity(), LetvUtil.getUID(), LetvUtil.getPcode(), LetvUtil.getSource(), "1",
-//						(System.currentTimeMillis() - LetvApplication.getInstance().getLogInTime()) / 1000 + "");
-				//注销登录 上报统计 modified by zengsonghai 20131112
-//				DataStatistics.getInstance().sendLoginInfo(getActivity(), "0", "0", LetvUtil.getUID(), "-", "-", System.currentTimeMillis()/1000 +"", LetvUtil.getPcode(), 1);
-				
-//				getActivity().finish();
-			}
+		UIs.call(getActivity(), R.string.personal_center_activity_logout,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// 2013-10-30 by ljnalex delete start 退出登录删除本地播放记录需求不合理
+						// DBManager.getInstance().getPlayTrace().clearAll();
+						// 2013-10-30 by ljnalex delete end
 
-		}, null);
+						PreferencesManager.getInstance().logoutUser();
+						isLogin = false;
+						updateUI(0, null);
+						// 用户退出登录数据统计
+						// DataStatistics.getInstance().sendUserInfo(getActivity(),
+						// LetvUtil.getUID(), LetvUtil.getPcode(),
+						// LetvUtil.getSource(), "1",
+						// (System.currentTimeMillis() -
+						// LetvApplication.getInstance().getLogInTime()) / 1000
+						// + "");
+						// 注销登录 上报统计 modified by zengsonghai 20131112
+						// DataStatistics.getInstance().sendLoginInfo(getActivity(),
+						// "0", "0", LetvUtil.getUID(), "-", "-",
+						// System.currentTimeMillis()/1000 +"",
+						// LetvUtil.getPcode(), 1);
+
+						// getActivity().finish();
+					}
+
+				}, null);
 	}
-	
+
 	/**
 	 * @param updateId
 	 * @param object
@@ -248,95 +280,106 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 		if (object != null) {
 			User user = (User) object[0];
 
-			String userName = TextUtils.isEmpty(user.getNickname()) ? user.getUsername() : user.getNickname();
-			getActivity().findViewById(R.id.textv_nickname_hint).setVisibility(View.INVISIBLE);
-			getView().findViewById(R.id.btn_head_loginout).setVisibility(View.VISIBLE);
-			TextView textv_nick = (TextView) getActivity().findViewById(R.id.textv_nickname);
+			String userName = TextUtils.isEmpty(user.getNickname()) ? user
+					.getUsername() : user.getNickname();
+			getActivity().findViewById(R.id.textv_nickname_hint).setVisibility(
+					View.INVISIBLE);
+			getView().findViewById(R.id.btn_head_loginout).setVisibility(
+					View.VISIBLE);
+			TextView textv_nick = (TextView) getActivity().findViewById(
+					R.id.textv_nickname);
 			textv_nick.setText(userName);
-			//Log.e("gongmeng", "username:"+userName);
+			// Log.e("gongmeng", "username:"+userName);
 			PreferencesManager.getInstance().setNickUserName(userName);
 			// 添加头像k
-			RoundImageView roundHead = (RoundImageView) getActivity().findViewById(R.id.btn_head_login);
+			RoundImageView roundHead = (RoundImageView) getActivity()
+					.findViewById(R.id.btn_head_login);
 			String icon = user.getPicture();
 			roundHead.setImageResource(R.drawable.btn_head);
 			LetvCacheMannager.getInstance().loadImage(icon, roundHead);
-		}else{
-			getActivity().findViewById(R.id.textv_nickname_hint).setVisibility(View.VISIBLE);
-			getView().findViewById(R.id.btn_head_loginout).setVisibility(View.INVISIBLE);
-			TextView textv_nick = (TextView) getActivity().findViewById(R.id.textv_nickname);
+		} else {
+			getActivity().findViewById(R.id.textv_nickname_hint).setVisibility(
+					View.VISIBLE);
+			getView().findViewById(R.id.btn_head_loginout).setVisibility(
+					View.INVISIBLE);
+			TextView textv_nick = (TextView) getActivity().findViewById(
+					R.id.textv_nickname);
 			textv_nick.setText(R.string.user_not_login);
 
 			// 添加头像k
-			RoundImageView roundHead = (RoundImageView) getActivity().findViewById(R.id.btn_head_login);
+			RoundImageView roundHead = (RoundImageView) getActivity()
+					.findViewById(R.id.btn_head_login);
 			roundHead.setImageResource(R.drawable.btn_head);
 		}
 	}
-	
+
 	public void loadRightFragmentData() {
-		if(mySubscribesFragment.getView().getVisibility() == View.VISIBLE){
+		if (mySubscribesFragment.getView().getVisibility() == View.VISIBLE) {
 			mySubscribesFragment.loadMySubscribe();
-		
-		}else{
-			if(isDataLoaded)
-				return ;
+
+		} else {
+			if (isDataLoaded)
+				return;
 			isDataLoaded = true;
 			new RequestMyTeams(getActivity()).start();
 		}
 	}
 
 	public void loadloadMySubscribetData() {
-			if(mySubscribesFragment!=null){
-            mySubscribesFragment.reflashUI();
-			}
+		if (mySubscribesFragment != null) {
+			mySubscribesFragment.reflashUI();
+		}
 	}
 
-      public void loadMyTeamData(){
-            Log.d("smy", "loadRightFragmentData");
-            new RequestMyTeams(getActivity()).start();
-      }
-
-
-
-	public void addSubscribe(Game game,String date) {
-		mySubscribesFragment.addSubscribe(game,date);
+	public void loadMyTeamData() {
+		Log.d("smy", "loadRightFragmentData");
+		new RequestMyTeams(getActivity()).start();
 	}
+
+	public void addSubscribe(Game game, String date) {
+		mySubscribesFragment.addSubscribe(game, date);
+	}
+
 	public void removeSubscribe(String id) {
 		mySubscribesFragment.removeSubscribe(id);
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-//		isLogin();
-	
+		// isLogin();
+
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
 			isDataLoaded = false;
 			loadRightFragmentData();
-//			new RequestMyTeams(getActivity());
+			// new RequestMyTeams(getActivity());
 		}
-		//登录返回
-		if(requestCode == LoginMainActivity.LOGIN){
+		// 登录返回
+		if (requestCode == LoginMainActivity.LOGIN) {
 			initLoginStatus();
 		}
 	}
-	
+
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
 		/**
 		 * frament 销毁时，移除此fragment
 		 */
-		Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment_right);
-		FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-		if(null != fragment&&!ft.isEmpty()){
+		Fragment fragment = getFragmentManager().findFragmentById(
+				R.id.fragment_right);
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		if (null != fragment && !ft.isEmpty()) {
 			ft.remove(fragment).commitAllowingStateLoss();
 		}
-		
+
 	}
+
 	/* ========================= 网络请求 =================================== */
 
 	private class RequestLoginTask extends LetvHttpAsyncTask<User> {
@@ -349,19 +392,24 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 			super(context);
 			this.tk = tk;
 			this.userName = userName;
-			//Log.e("gongmeng", "get nickname");
+			// Log.e("gongmeng", "get nickname");
 		}
 
 		@Override
 		public LetvDataHull<User> doInBackground() {
-			LetvDataHull<User> dataHull = LetvHttpApi.requestUserInfoByTk(0, tk, new UserParser());
-//			if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-//				LetvDataHull<LeDian> ldh = LetvHttpApi.queryRecord(0, userName, "", "", "02", "0", "", "", "",
-//						new LeDianParser());
-//				if (ldh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-//					dataHull.getDataEntity().setPoint(ldh.getDataEntity().getBalance() + "");
-//				}
-//			}
+			LetvDataHull<User> dataHull = LetvHttpApi.requestUserInfoByTk(0,
+					tk, new UserParser());
+			// if (dataHull.getDataType() ==
+			// LetvDataHull.DataType.DATA_IS_INTEGRITY) {
+			// LetvDataHull<LeDian> ldh = LetvHttpApi.queryRecord(0, userName,
+			// "", "", "02", "0", "", "", "",
+			// new LeDianParser());
+			// if (ldh.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY)
+			// {
+			// dataHull.getDataEntity().setPoint(ldh.getDataEntity().getBalance()
+			// + "");
+			// }
+			// }
 			return dataHull;
 		}
 
@@ -370,51 +418,53 @@ public class SlidingMenuFragmentRight extends Fragment implements OnClickListene
 			updateUI(0, result);
 		}
 	}
-	
+
 	/**
 	 * http请求
 	 * */
-	private class RequestMyTeams extends LetvHttpAsyncTask<MyTeams>{
+	private class RequestMyTeams extends LetvHttpAsyncTask<MyTeams> {
 
 		public RequestMyTeams(Context context) {
-			super(context,true);
-			
+			super(context, true);
+
 		}
 
 		@Override
 		public LetvDataHull<MyTeams> doInBackground() {
-			return LetvHttpApi.requestMyTeams(new LetvGsonParser<MyTeams>(0, MyTeams.class));
+			return LetvHttpApi.requestMyTeams(new LetvGsonParser<MyTeams>(0,
+					MyTeams.class));
 		}
 
 		@Override
 		public void onPostExecute(int updateId, MyTeams result) {
-			//解析关注列表数据
+			// 解析关注列表数据
 			ArrayList<Body> teamList = new ArrayList<Body>();
-			if(result.body.length >0){
+			if (result.body.length > 0) {
 				for (MyTeams.Body body : result.body) {
 					body.focused = 1 + "";
 					teamList.add(body);
 				}
 			}
-			MyTeamsAdapter myTeamAdapte = new MyTeamsAdapter(getActivity(),teamList);
+			MyTeamsAdapter myTeamAdapte = new MyTeamsAdapter(getActivity(),
+					teamList);
 			myTeamsList.setAdapter(myTeamAdapte);
-			
+
 		}
-		
+
 		@Override
 		public void netNull() {
 			isDataLoaded = false;
 		}
-		
+
 		@Override
 		public void netErr(int updateId, String errMsg) {
 			isDataLoaded = false;
 		}
-		
+
 		@Override
-		public void dataNull(int updateId , String errMsg) {
+		public void dataNull(int updateId, String errMsg) {
 			isDataLoaded = false;
 		}
 	}
-	
+
 }

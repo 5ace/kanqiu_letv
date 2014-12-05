@@ -3,10 +3,9 @@ package com.letv.watchball.ui;
 import com.letv.watchball.bean.AlbumNew;
 import com.letv.watchball.bean.Video;
 
-
 public abstract class BasePlayController {
-	
-	private boolean isShow ;
+
+	private boolean isShow;
 
 	protected PlayControllerCallBack callBack;
 
@@ -21,7 +20,7 @@ public abstract class BasePlayController {
 	/**
 	 * 当视频对象变化
 	 * */
-	public abstract void videoChange(AlbumNew album , Video video);
+	public abstract void videoChange(AlbumNew album, Video video);
 
 	/**
 	 * 隐藏控制栏
@@ -32,14 +31,14 @@ public abstract class BasePlayController {
 	 * 显示控制栏
 	 * */
 	public abstract void show();
-	
+
 	/**
-	 * 单击显示或者隐藏  true 代表显示    false 代表隐藏
+	 * 单击显示或者隐藏 true 代表显示 false 代表隐藏
 	 * */
 	public abstract boolean clickShowAndHide();
-	
+
 	/**
-	 * 单击显示或者隐藏  true 代表显示    false 代表隐藏
+	 * 单击显示或者隐藏 true 代表显示 false 代表隐藏
 	 * */
 	public abstract void clickShowAndHide(boolean isShow);
 
@@ -97,11 +96,11 @@ public abstract class BasePlayController {
 	 * 声音改变
 	 * */
 	public abstract void onVolumeChange(int mar, int progress);
-	
+
 	/**
 	 * 设置title
 	 * */
-	public abstract void setTitle (String title);
+	public abstract void setTitle(String title);
 
 	public boolean isShow() {
 		return isShow;

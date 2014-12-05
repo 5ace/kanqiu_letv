@@ -9,14 +9,14 @@ import android.widget.Toast;
 
 import com.letv.watchball.R;
 
-public class LetvToast extends Toast{
+public class LetvToast extends Toast {
 
-	private View view ;
-	
-	private TextView msgView ;
-	
-	private ImageView iconView ;
-	
+	private View view;
+
+	private TextView msgView;
+
+	private ImageView iconView;
+
 	public LetvToast(Context context) {
 		super(context);
 
@@ -26,8 +26,8 @@ public class LetvToast extends Toast{
 		setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 		setView(view);
 	}
-	
-	public LetvToast(Context context , String msg) {
+
+	public LetvToast(Context context, String msg) {
 		super(context);
 
 		view = UIs.inflate(context, R.layout.ok_toast_layout, null, false);
@@ -37,8 +37,8 @@ public class LetvToast extends Toast{
 		setView(view);
 		setMsg(msg);
 	}
-	
-	public LetvToast(Context context , int msg) {
+
+	public LetvToast(Context context, int msg) {
 		super(context);
 
 		view = UIs.inflate(context, R.layout.ok_toast_layout, null, false);
@@ -48,23 +48,23 @@ public class LetvToast extends Toast{
 		setView(view);
 		setMsg(msg);
 	}
-	
-	public void setMsg(String msg){
+
+	public void setMsg(String msg) {
 		msgView.setText(msg);
 	}
-	
-	public void setMsg(int msg){
+
+	public void setMsg(int msg) {
 		msgView.setText(msg);
 	}
-	
-	public void setErr(boolean isErr){
-		if(isErr){
+
+	public void setErr(boolean isErr) {
+		if (isErr) {
 			iconView.setImageResource(R.drawable.err_toast_icon);
-		}else{
+		} else {
 			iconView.setImageResource(R.drawable.tosat_icon);
 		}
 	}
-	
+
 	@Override
 	public void show() {
 		super.show();

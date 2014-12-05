@@ -150,17 +150,17 @@ public class UserParser extends LetvMainParser<User, JSONObject> {
 			}
 		}
 
-//		if (User.ISVIP_YES.equals(letvUser.getIsvip())) {
-//			PreferencesManager.getInstance().setVip(true);
-//			if (letvUser.getVipInfo() != null) {
-//				PreferencesManager.getInstance().setVipCancelTime(letvUser.getVipInfo().getCanceltime());
-//				PreferencesManager.getInstance().setVipLevel(letvUser.getVipInfo().getVipType());
-//			}
-//		} else {
-//			PreferencesManager.getInstance().setVip(false);
-//			PreferencesManager.getInstance().setVipCancelTime(0);
-//			PreferencesManager.getInstance().setVipLevel(0);
-//		}
+		// if (User.ISVIP_YES.equals(letvUser.getIsvip())) {
+		// PreferencesManager.getInstance().setVip(true);
+		// if (letvUser.getVipInfo() != null) {
+		// PreferencesManager.getInstance().setVipCancelTime(letvUser.getVipInfo().getCanceltime());
+		// PreferencesManager.getInstance().setVipLevel(letvUser.getVipInfo().getVipType());
+		// }
+		// } else {
+		// PreferencesManager.getInstance().setVip(false);
+		// PreferencesManager.getInstance().setVipCancelTime(0);
+		// PreferencesManager.getInstance().setVipLevel(0);
+		// }
 
 		/**
 		 * 用户头像url解析，所有分辨率的头像，通过string拼接返回 各分辨率之间“，”隔开，目前使用的头像分辨率：200x200

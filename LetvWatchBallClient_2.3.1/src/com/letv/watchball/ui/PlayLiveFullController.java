@@ -89,6 +89,7 @@ public class PlayLiveFullController extends BaseLivePlayController {
 	private View fullPlayControllerLowOrHigh;
 	private TextView fullPlayControllerLowText;
 	private TextView fullPlayControllerHighText;
+	private TextView fullPlayController1080p;
 	private TextView fullPlayControllerHd;
 
 	public PlayLiveFullController(PlayLiveController mController, View root) {
@@ -115,6 +116,8 @@ public class PlayLiveFullController extends BaseLivePlayController {
 				.findViewById(R.id.full_low_text);
 		fullPlayControllerHighText = (TextView) root
 				.findViewById(R.id.full_high_text);
+		fullPlayController1080p = (TextView) root
+				.findViewById(R.id.full_1080_text);
 		fullPlayControllerHd = (TextView) root.findViewById(R.id.full_hd);
 
 		fullPlayControllerPlay = (ImageView) root.findViewById(R.id.full_play);
@@ -146,10 +149,21 @@ public class PlayLiveFullController extends BaseLivePlayController {
 		fullPlayControllerLowOrHigh.measure(0, 0);
 		fullLayout.measure(0, 0);
 		fullPlayControllerSoundLayout.measure(0, 0);
+		switch (mController.isHd) {
 
-		fullPlayControllerHd.setText(mController.isHd ? PreferencesManager
-				.getInstance().getPlayNormal_zh() : PreferencesManager
-				.getInstance().getPlayLow_zh());
+		case 0:
+			fullPlayControllerHd.setText(PreferencesManager.getInstance()
+					.getPlayLow_zh());
+			break;
+		case 1:
+			fullPlayControllerHd.setText(PreferencesManager.getInstance()
+					.getPlayNormal_zh());
+			break;
+		default:
+			fullPlayControllerHd.setText(PreferencesManager.getInstance()
+					.getPlayHigh_zh());
+		}
+
 		fullPlayControllerHd.setVisibility(View.VISIBLE);
 
 	}
@@ -170,18 +184,29 @@ public class PlayLiveFullController extends BaseLivePlayController {
 	void initHighOrLow() {
 		boolean hasHigh = mController.hasHd;
 		boolean hasStandard = mController.hasStandard;
-		boolean isHd = PreferencesManager.getInstance().isPlayHd();
+		int isHd = PreferencesManager.getInstance().isPlayHd();
 		String hdName = PreferencesManager.getInstance().getPlayNormal_zh();
 		String lowName = PreferencesManager.getInstance().getPlayLow_zh();
-		fullPlayControllerHd.setText(isHd ? hdName : lowName);
+		String highName = PreferencesManager.getInstance().getPlayHigh_zh();
+		switch (isHd) {
+		case 0:
+			fullPlayControllerHd.setText(lowName);
+			break;
+		case 1:
+			fullPlayControllerHd.setText(hdName);
+			break;
+		default:
+			fullPlayControllerHd.setText(highName);
+		}
 
 		if (hasHigh && hasStandard) {
 			fullPlayControllerHd.setEnabled(true);
 
 			fullPlayControllerHd.setOnClickListener(lowOrHighClick);
+			fullPlayController1080p.setText(highName);
 			fullPlayControllerHighText.setText(hdName);
 			fullPlayControllerLowText.setText(lowName);
-			if (isHd) {
+			if (isHd == 1) {
 				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
 				fullPlayControllerHighText.setTextColor(mController
 						.getActivity().getResources()
@@ -189,7 +214,9 @@ public class PlayLiveFullController extends BaseLivePlayController {
 				fullPlayControllerLowText.setTextColor(mController
 						.getActivity().getResources()
 						.getColor(R.color.letv_color_ffadadad));
-			} else {
+				fullPlayController1080p.setTextColor(mController.getActivity()
+						.getResources().getColor(R.color.letv_color_ffadadad));
+			} else if (isHd == 0) {
 				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_low_bg);
 				fullPlayControllerLowText.setTextColor(mController
 						.getActivity().getResources()
@@ -197,9 +224,22 @@ public class PlayLiveFullController extends BaseLivePlayController {
 				fullPlayControllerHighText.setTextColor(mController
 						.getActivity().getResources()
 						.getColor(R.color.letv_color_ffadadad));
+				fullPlayController1080p.setTextColor(mController.getActivity()
+						.getResources().getColor(R.color.letv_color_ffadadad));
+			} else {
+				fullPlayController1080p.setTextColor(mController.getActivity()
+						.getResources().getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerHighText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayControllerLowText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
 			}
+
 			fullPlayControllerLowText.setOnClickListener(play_low_listener);
 			fullPlayControllerHighText.setOnClickListener(play_high_listener);
+			fullPlayController1080p.setOnClickListener(play_1080p_listener);
 		} else {
 			fullPlayControllerHd.setEnabled(false);
 		}
@@ -217,9 +257,9 @@ public class PlayLiveFullController extends BaseLivePlayController {
 			if (null != fullLayout) {
 				fullLayout.setVisibility(View.GONE);
 			}
-			if (mController.isHd) {
-				mController.isHd = false;
-				PreferencesManager.getInstance().setIsPlayHd(false);
+			if (mController.isHd != 0) {
+				mController.isHd = 0;
+				PreferencesManager.getInstance().setIsPlayHd(0);
 				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_low_bg);
 				fullPlayControllerLowText.setTextColor(mController
 						.getActivity().getResources()
@@ -227,6 +267,8 @@ public class PlayLiveFullController extends BaseLivePlayController {
 				fullPlayControllerHighText.setTextColor(mController
 						.getActivity().getResources()
 						.getColor(R.color.letv_color_ffadadad));
+				fullPlayController1080p.setTextColor(mController.getActivity()
+						.getResources().getColor(R.color.letv_color_ffadadad));
 				fullPlayControllerHd.setText(fullPlayControllerLowText
 						.getText());
 				if (!mController.game.pay.equalsIgnoreCase("1"))
@@ -242,6 +284,39 @@ public class PlayLiveFullController extends BaseLivePlayController {
 	};
 
 	/**
+	 * 1080按钮点击
+	 * */
+	private View.OnClickListener play_1080p_listener = new View.OnClickListener() {
+		public void onClick(View v) {
+			if (null != fullLayout) {
+				fullLayout.setVisibility(View.GONE);
+			}
+			if (mController.isHd != 2) {
+				mController.isHd = 2;
+				PreferencesManager.getInstance().setIsPlayHd(2);
+				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
+				fullPlayController1080p.setTextColor(mController.getActivity()
+						.getResources().getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerLowText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayControllerHighText.setTextColor(mController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayControllerHd.setText(fullPlayController1080p.getText());
+				if (!mController.game.pay.equalsIgnoreCase("1"))
+					mController.playUrl(mController.game.live_1300.streamId,
+							mController.game.live_1300.liveUrl);
+				else
+					mController.playLivePayUrl(
+							mController.game.live_1300.streamId,
+							mController.game.live_1300.liveUrl, 350);
+
+			}
+		}
+	};
+
+	/**
 	 * 高清按钮点击
 	 * */
 	private View.OnClickListener play_high_listener = new View.OnClickListener() {
@@ -249,9 +324,9 @@ public class PlayLiveFullController extends BaseLivePlayController {
 			if (null != fullLayout) {
 				fullLayout.setVisibility(View.GONE);
 			}
-			if (!mController.isHd) {
-				mController.isHd = true;
-				PreferencesManager.getInstance().setIsPlayHd(true);
+			if (mController.isHd != 1) {
+				mController.isHd = 1;
+				PreferencesManager.getInstance().setIsPlayHd(1);
 				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
 				fullPlayControllerHighText.setTextColor(mController
 						.getActivity().getResources()
@@ -259,6 +334,8 @@ public class PlayLiveFullController extends BaseLivePlayController {
 				fullPlayControllerLowText.setTextColor(mController
 						.getActivity().getResources()
 						.getColor(R.color.letv_color_ffadadad));
+				fullPlayController1080p.setTextColor(mController.getActivity()
+						.getResources().getColor(R.color.letv_color_ffadadad));
 				fullPlayControllerHd.setText(fullPlayControllerHighText
 						.getText());
 				if (!mController.game.pay.equalsIgnoreCase("1"))
@@ -267,7 +344,7 @@ public class PlayLiveFullController extends BaseLivePlayController {
 				else
 					mController.playLivePayUrl(
 							mController.game.live_800.streamId,
-							mController.game.live_800.liveUrl, 800);
+							mController.game.live_800.liveUrl, 350);
 
 			}
 		}

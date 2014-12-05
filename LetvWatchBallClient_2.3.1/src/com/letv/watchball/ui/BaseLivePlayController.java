@@ -1,6 +1,5 @@
 package com.letv.watchball.ui;
 
-
 public abstract class BaseLivePlayController {
 	protected PlayLiveControllerCallBack callBack;
 	private boolean isShow;
@@ -22,18 +21,19 @@ public abstract class BaseLivePlayController {
 	 * 显示控制栏
 	 * */
 	public abstract void show();
-	
+
 	/**
-	 * 单击显示或者隐藏  true 代表显示    false 代表隐藏
+	 * 单击显示或者隐藏 true 代表显示 false 代表隐藏
 	 * */
-	public boolean clickShowAndHide(){
+	public boolean clickShowAndHide() {
 		return true;
 	};
-	
+
 	/**
-	 * 单击显示或者隐藏  true 代表显示    false 代表隐藏
+	 * 单击显示或者隐藏 true 代表显示 false 代表隐藏
 	 * */
-	public void clickShowAndHide(boolean isShow){};
+	public void clickShowAndHide(boolean isShow) {
+	};
 
 	/**
 	 * 切换到播放状态
@@ -69,14 +69,14 @@ public abstract class BaseLivePlayController {
 	 * 声音改变
 	 * */
 	public abstract void onVolumeChange(int mar, int progress);
-	
-	public abstract void onVolumeChange(int mar, int progress,boolean isUp);
+
+	public abstract void onVolumeChange(int mar, int progress, boolean isUp);
+
 	/**
 	 * 切换到不可操作
 	 * */
 	public abstract void Inoperable();
-	
-	
+
 	public boolean isShow() {
 		return isShow;
 	}
@@ -87,9 +87,10 @@ public abstract class BaseLivePlayController {
 
 	/**
 	 * 设置标题
+	 * 
 	 * @param title
 	 */
-	public void setTitle(String title){};
-	
-	
+	public void setTitle(String title) {
+	};
+
 }

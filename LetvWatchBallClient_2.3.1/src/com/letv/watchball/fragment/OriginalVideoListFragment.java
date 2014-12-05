@@ -74,7 +74,8 @@ public class OriginalVideoListFragment extends ListFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
@@ -83,11 +84,12 @@ public class OriginalVideoListFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		// 初始化ListView
 		mListView = getListView();
-		mListView.setDivider(new ColorDrawable(getResources().getColor(R.color.letv_list_divider)));
+		mListView.setDivider(new ColorDrawable(getResources().getColor(
+				R.color.letv_list_divider)));
 		mListView.setDividerHeight(1);
 		mListView.setCacheColorHint(0);
 		mListView.setFadingEdgeLength(0);
-//		mListView.setSelector(android.R.color.transparent);
+		// mListView.setSelector(android.R.color.transparent);
 		adapter = new OriginalVideoAdapter(getActivity());
 		mListView.setOnScrollListener(new OnScrollListener() {
 
@@ -101,22 +103,26 @@ public class OriginalVideoListFragment extends ListFragment {
 			}
 
 			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
 				_start = firstVisibleItem;
 				_end = firstVisibleItem + visibleItemCount;
 				if (firstVisibleItem == 0) {
 					notityListImage();
 				}
 
-				if (firstVisibleItem + visibleItemCount >= adapter.getOriginalVideos().body.total && 0 != adapter.getOriginalVideos().body.total) {
+				if (firstVisibleItem + visibleItemCount >= adapter
+						.getOriginalVideos().body.total
+						&& 0 != adapter.getOriginalVideos().body.total) {
 					notityListImage();
 					if (mListView.getFooterViewsCount() > 0) {
 						mListView.removeFooterView(footerView);
 					}
 					return;
 				}
-//				System.err.println("startPos:"+startPos+",hopePos:"+hopePos);
-				if (firstVisibleItem + visibleItemCount >= totalItemCount && startPos > hopePos) {
+				// System.err.println("startPos:"+startPos+",hopePos:"+hopePos);
+				if (firstVisibleItem + visibleItemCount >= totalItemCount
+						&& startPos > hopePos) {
 					// LHY hopePos 和 startPos 相差很大
 					hopePos += num;
 					requsetData(false);
@@ -143,19 +149,20 @@ public class OriginalVideoListFragment extends ListFragment {
 		setListAdapter(adapter);
 
 	}
-	
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		long pid;
 		Video data = adapter.getOriginalVideos().body.videos[position];
-//		LetvPlayFunction.playVideo(getActivity(), Integer.parseInt(data.vid), null, null, false, 0);
-		if(data.pid!=null){
-			pid=Long.parseLong(data.pid);
-		}else{
-			 pid=0;
+		// LetvPlayFunction.playVideo(getActivity(), Integer.parseInt(data.vid),
+		// null, null, false, 0);
+		if (data.pid != null) {
+			pid = Long.parseLong(data.pid);
+		} else {
+			pid = 0;
 		}
-		BasePlayActivity.launch(getActivity(), pid,Long.parseLong(data.vid));
+		BasePlayActivity.launch(getActivity(), pid, Long.parseLong(data.vid));
 	}
 
 	@Override
@@ -164,7 +171,8 @@ public class OriginalVideoListFragment extends ListFragment {
 	}
 
 	public void setOriginalColumn(OriginalColumn originalColumn) {
-		if (null != this.originalColumn && originalColumn.id == this.originalColumn.id) {
+		if (null != this.originalColumn
+				&& originalColumn.id == this.originalColumn.id) {
 			return;
 		}
 		this.originalColumn = originalColumn;
@@ -189,7 +197,8 @@ public class OriginalVideoListFragment extends ListFragment {
 		if (null != requestVrsVideosListThread) {
 			requestVrsVideosListThread.cancel(true);
 		}
-		requestVrsVideosListThread = new RequestVrsVideosList(getActivity(), isNew);
+		requestVrsVideosListThread = new RequestVrsVideosList(getActivity(),
+				isNew);
 		requestVrsVideosListThread.start();
 	}
 
@@ -225,11 +234,12 @@ public class OriginalVideoListFragment extends ListFragment {
 			// startPos, num, new LetvGsonParser<OriginalVideo>(0,
 			// OriginalVideo.class));
 
-			dataHull = LetvHttpApi.requestOriginalVideo(String.valueOf(originalColumn.id), startPos, num, new LetvGsonParser<OriginalVideo>(0,
-					OriginalVideo.class));
-//			if (null != footerView) {
-//				footerView.showLoading();
-//			}
+			dataHull = LetvHttpApi.requestOriginalVideo(
+					String.valueOf(originalColumn.id), startPos, num,
+					new LetvGsonParser<OriginalVideo>(0, OriginalVideo.class));
+			// if (null != footerView) {
+			// footerView.showLoading();
+			// }
 			return dataHull;
 		}
 
@@ -239,7 +249,10 @@ public class OriginalVideoListFragment extends ListFragment {
 				if (isNew || null == adapter.getOriginalVideos()) {
 					adapter.setOriginalVideos(result);
 				} else {
-					adapter.getOriginalVideos().body.videos = (Video[]) LetvUtil.addAllArrays(adapter.getOriginalVideos().body.videos, result.body.videos);
+					adapter.getOriginalVideos().body.videos = (Video[]) LetvUtil
+							.addAllArrays(
+									adapter.getOriginalVideos().body.videos,
+									result.body.videos);
 					adapter.getOriginalVideos().body.total = result.body.total;
 				}
 				startPos += num;
@@ -278,16 +291,18 @@ public class OriginalVideoListFragment extends ListFragment {
 		}
 
 	}
-	
+
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
 		/**
 		 * frament 销毁时，移除此fragment
 		 */
-		Fragment fragment = getFragmentManager().findFragmentById(mListView.getId());
-		FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-		if(null != fragment){
+		Fragment fragment = getFragmentManager().findFragmentById(
+				mListView.getId());
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		if (null != fragment) {
 			ft.remove(fragment).commitAllowingStateLoss();
 		}
 	}

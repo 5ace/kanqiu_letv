@@ -36,7 +36,8 @@ public class LetvGalleryFocusView extends RelativeLayout {
 		public void showFocusView();//
 	}
 
-	public LetvGalleryFocusView(Context context, AttributeSet attrs, int defStyle) {
+	public LetvGalleryFocusView(Context context, AttributeSet attrs,
+			int defStyle) {
 		super(context, attrs, defStyle);
 		this.context = context;
 		init();
@@ -85,8 +86,10 @@ public class LetvGalleryFocusView extends RelativeLayout {
 			}
 		}
 	}
+
 	/**
 	 * 设置更新数据
+	 * 
 	 * @param list
 	 */
 	public void setFocusInitData(List<?> list) {
@@ -100,7 +103,7 @@ public class LetvGalleryFocusView extends RelativeLayout {
 			}
 		}
 	}
-	
+
 	/**
 	 * 为了拦截viewPager左右滑动事件，设置当前viewPager
 	 * 
@@ -118,7 +121,7 @@ public class LetvGalleryFocusView extends RelativeLayout {
 	 */
 	public void setListView(ListView listView) {
 		this.listView = listView;
-//		gallery.setListView(listView);
+		// gallery.setListView(listView);
 	}
 
 	/**
@@ -164,11 +167,12 @@ public class LetvGalleryFocusView extends RelativeLayout {
 	public void setFocusHeight(int height) {
 		LetvGallery gallery = (LetvGallery) findViewById(R.id.top_gallery);
 		ViewGroup group = (ViewGroup) gallery.getParent();
-//		View frameLayout = findViewById(R.id.channel_framelayout);
-		FrameLayout.LayoutParams flp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+		// View frameLayout = findViewById(R.id.channel_framelayout);
+		FrameLayout.LayoutParams flp = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
-		RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-				UIs.dipToPx(height));
+		RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT, UIs.dipToPx(height));
 		group.setLayoutParams(rlp);
 		gallery.setLayoutParams(flp);
 	}
@@ -183,37 +187,37 @@ public class LetvGalleryFocusView extends RelativeLayout {
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(true);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(true);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(true);
+			// }
 			break;
 		case MotionEvent.ACTION_UP:
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(false);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(false);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(false);
+			// }
 			break;
 		case MotionEvent.ACTION_CANCEL:
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(false);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(false);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(false);
+			// }
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(true);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(true);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(true);
+			// }
 			break;
 		}
 
-		return super.onInterceptTouchEvent(ev);//gallery.onInterceptTouchEvent(ev);
+		return super.onInterceptTouchEvent(ev);// gallery.onInterceptTouchEvent(ev);
 	}
 
 	@Override
@@ -221,43 +225,43 @@ public class LetvGalleryFocusView extends RelativeLayout {
 		// 屏蔽viewpager、listView页面切换
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			CustomViewAbove.mEnabled=false;//控制焦点图滑动不移动大空间
+			CustomViewAbove.mEnabled = false;// 控制焦点图滑动不移动大空间
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(true);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(true);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(true);
+			// }
 			break;
 		case MotionEvent.ACTION_UP:
-			CustomViewAbove.mEnabled=true;//控制焦点图滑动不移动大空间
+			CustomViewAbove.mEnabled = true;// 控制焦点图滑动不移动大空间
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(false);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(false);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(false);
+			// }
 			break;
 		case MotionEvent.ACTION_CANCEL:
-			CustomViewAbove.mEnabled=true;//控制焦点图滑动不移动大空间
+			CustomViewAbove.mEnabled = true;// 控制焦点图滑动不移动大空间
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(false);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(false);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(false);
+			// }
 			break;
 		case MotionEvent.ACTION_MOVE:
-			CustomViewAbove.mEnabled=false;//控制焦点图滑动不移动大空间
+			CustomViewAbove.mEnabled = false;// 控制焦点图滑动不移动大空间
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(true);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(true);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(true);
+			// }
 			break;
 		}
-		return super.onTouchEvent(ev);//gallery.onTouchEvent(ev);
+		return super.onTouchEvent(ev);// gallery.onTouchEvent(ev);
 	}
 
 	@Override
@@ -265,43 +269,43 @@ public class LetvGalleryFocusView extends RelativeLayout {
 		// 屏蔽viewpager、listView页面切换
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			CustomViewAbove.mEnabled=false;//控制焦点图滑动不移动大空间
+			CustomViewAbove.mEnabled = false;// 控制焦点图滑动不移动大空间
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(true);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(true);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(true);
+			// }
 			break;
 		case MotionEvent.ACTION_UP:
-			CustomViewAbove.mEnabled=true;//控制焦点图滑动不移动大空间
+			CustomViewAbove.mEnabled = true;// 控制焦点图滑动不移动大空间
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(false);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(false);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(false);
+			// }
 			break;
 		case MotionEvent.ACTION_CANCEL:
-			CustomViewAbove.mEnabled=true;//控制焦点图滑动不移动大空间
+			CustomViewAbove.mEnabled = true;// 控制焦点图滑动不移动大空间
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(false);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(false);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(false);
+			// }
 			break;
 		case MotionEvent.ACTION_MOVE:
-			CustomViewAbove.mEnabled=false;//控制焦点图滑动不移动大空间
+			CustomViewAbove.mEnabled = false;// 控制焦点图滑动不移动大空间
 			if (null != pager) {
 				pager.requestDisallowInterceptTouchEvent(true);
 			}
-//			if (null != listView) {
-//				listView.requestDisallowInterceptTouchEvent(true);
-//			}
+			// if (null != listView) {
+			// listView.requestDisallowInterceptTouchEvent(true);
+			// }
 			break;
 		}
-		return super.dispatchTouchEvent(ev);//gallery.dispatchTouchEvent(ev);
+		return super.dispatchTouchEvent(ev);// gallery.dispatchTouchEvent(ev);
 	}
 
 	protected void findView() {

@@ -19,14 +19,14 @@ public class LetvBaseActivity extends FragmentActivity {
 		// 注册友盟统计的crash事件统计
 		MobclickAgent.onError(this);
 		MobclickAgent.setDebugMode(true);
-	
+
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
-		
+
 	}
 
 	@Override
@@ -40,5 +40,5 @@ public class LetvBaseActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		super.onNewIntent(intent);
 	}
-	
+
 }

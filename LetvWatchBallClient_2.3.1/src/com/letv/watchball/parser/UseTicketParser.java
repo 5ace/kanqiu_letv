@@ -2,8 +2,6 @@ package com.letv.watchball.parser;
 
 import org.json.JSONObject;
 
-
-
 import com.letv.http.parse.LetvMainParser;
 import com.letv.watchball.bean.UseTicket;
 
@@ -16,9 +14,9 @@ public class UseTicketParser extends LetvMainParser<UseTicket, JSONObject> {
 			JSONObject result = body.getJSONObject("result");
 			bean.status = result.getString("status");
 		} catch (Exception e) {
-			bean.status="0";
+			bean.status = "0";
 			return bean;
-			
+
 		}
 		return bean;
 	}

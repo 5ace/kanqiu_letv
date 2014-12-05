@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 
+import com.letv.watchball.R;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -61,8 +62,14 @@ public class LetvWeixinShare {
 				videoObject.videoUrl = playUrl;
 				// WXTextObject textObj = new WXTextObject();
 				// textObj.text = caption;
-
+				InputStream is = context.getResources().openRawResource(
+						R.drawable.icon);
+				bmp = BitmapFactory.decodeStream(is);
+				Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 60, 80, true);
+				bmp.recycle();
 				WXMediaMessage msg = new WXMediaMessage();
+				msg.thumbData = bmpToByteArray(thumbBmp, true);
+				msg.title = "看球";
 				msg.mediaObject = videoObject;
 				msg.description = caption;
 

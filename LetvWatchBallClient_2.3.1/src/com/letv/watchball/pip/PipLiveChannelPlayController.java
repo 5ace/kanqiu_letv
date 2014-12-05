@@ -35,8 +35,11 @@ import com.letv.watchball.view.PipPlayerView;
 import com.letv.watchball.view.PlayLoadLayout;
 import com.media.NativeInfos;
 
-public class PipLiveChannelPlayController implements PipPlayController, android.media.MediaPlayer.OnErrorListener,
-		android.media.MediaPlayer.OnPreparedListener, android.media.MediaPlayer.OnCompletionListener, com.media.NativePlayer.OnLoadingPerListener {
+public class PipLiveChannelPlayController implements PipPlayController,
+		android.media.MediaPlayer.OnErrorListener,
+		android.media.MediaPlayer.OnPreparedListener,
+		android.media.MediaPlayer.OnCompletionListener,
+		com.media.NativePlayer.OnLoadingPerListener {
 
 	protected PipPlayerView activity;
 	protected PipMediaController mediaController;
@@ -51,7 +54,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	 * */
 	private PlayLoadLayout loadLayout;
 	public int today = 0;// 今天
-	
+
 	/**
 	 * 是否首次进入本页面
 	 */
@@ -71,7 +74,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	protected String programName = null;
 
 	protected String mUrl = null;
-	
+
 	protected String mStreamId = null;
 
 	protected String mCode = null;
@@ -81,9 +84,9 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	protected boolean is3GTipShowing = false;
 
 	protected String realUrl = null;
-      private Game game;
+	private Game game;
 
-      public PipLiveChannelPlayController(Activity activity) {
+	public PipLiveChannelPlayController(Activity activity) {
 		// super(activity);
 	}
 
@@ -105,7 +108,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 		videoContainer.addView(videoView);
 		dialogView = activity.findViewById(R.id.play_loading_dialog);
 		loading_video = (TextView) activity.findViewById(R.id.loading_video);
-		
+
 		// 断网重试或其他获取数据错误的layout
 		loadLayout = new PlayLoadLayout(getContext());
 		loadLayout.setCallBack(this);
@@ -138,17 +141,20 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	}
 
 	protected void showIs3GTipMessage(String url, String title) {
-		UIs.notifyLong(activity.getContext(), R.string.dialog_messge_pip_mobilenet);
+		UIs.notifyLong(activity.getContext(),
+				R.string.dialog_messge_pip_mobilenet);
 		startPlay(url, title);
 	}
 
 	protected void showNotAllowMobileNetworkMessage() {
-		UIs.notifyLong(activity.getContext(), R.string.dialog_messge_setmobilenet);
+		UIs.notifyLong(activity.getContext(),
+				R.string.dialog_messge_setmobilenet);
 		finish();
 	}
 
 	protected void createMediaController() {
-		mediaController = (PipMediaController) activity.findViewById(R.id.pip_pipMediaController);
+		mediaController = (PipMediaController) activity
+				.findViewById(R.id.pip_pipMediaController);
 		mediaController.setVisibility(View.VISIBLE);
 		// activity.findViewById(R.id.pip_pipLocalplayerMediaController).setVisibility(View.GONE);
 		// // 隐藏本地播放器Controller
@@ -163,7 +169,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	}
 
 	protected void applyWindowFullScreen() {
-		
+
 	}
 
 	protected void noDataNotify() {
@@ -196,7 +202,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 		mUrl = bundle.getString(PlayLiveController.LIVE_URL);
 		mStreamId = bundle.getString(PlayLiveController.LIVE_STREAMID);
 		mCode = bundle.getString(PlayLiveController.LIVE_CODE);
-        game = (Game) bundle.getSerializable(PlayLiveController.GAME);
+		game = (Game) bundle.getSerializable(PlayLiveController.GAME);
 		initView();
 		showLoadingInfo();
 	}
@@ -241,7 +247,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -285,11 +291,11 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 		// TODO Auto-generated method stub
 	}
 
-//	@Override
-//	public ShackVideoInfo getVideoInfo() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	// @Override
+	// public ShackVideoInfo getVideoInfo() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
 
 	@Override
 	public boolean isPlayingAd() {
@@ -400,7 +406,6 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 		}
 	}
 
-
 	public String getCode() {
 		// TODO Auto-generated method stub
 		return mCode;
@@ -409,7 +414,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	@Override
 	public void onLoadingPer(MediaPlayer mp, int per) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -438,7 +443,8 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-			NetworkInfo networkInfo = NetWorkTypeUtils.getAvailableNetWorkInfo();
+			NetworkInfo networkInfo = NetWorkTypeUtils
+					.getAvailableNetWorkInfo();
 
 			if (networkInfo != null) {
 
@@ -456,23 +462,21 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 		}
 	};
 
+	// protected boolean preparePlay() {
+	// if (!TextUtils.isEmpty(mRealUrl)) {
+	// return true;
+	// }
+	// return false;
+	// }
 
-
-//	protected boolean preparePlay() {
-//		if (!TextUtils.isEmpty(mRealUrl)) {
-//			return true;
-//		}
-//		return false;
-//	}
-
-//	protected void doPlay() {
-//		if (!preparePlay()) {
-//			noDataNotify();
-//			return;
-//		}
-//
-//		play(mRealUrl, getTitleName());
-//	}
+	// protected void doPlay() {
+	// if (!preparePlay()) {
+	// noDataNotify();
+	// return;
+	// }
+	//
+	// play(mRealUrl, getTitleName());
+	// }
 
 	/**
 	 * 显示loading信息
@@ -505,40 +509,40 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	public void onDemandErr() {
 
 	}
-	
-	
+
 	/**
 	 * 请求直播地址
 	 */
 	public void playUrl(String streamId, String url) {
-		if(TextUtils.isEmpty(url)) {
+		if (TextUtils.isEmpty(url)) {
 			UIs.showToast("播放地址为空");
 			finish();
 			LetvPipPlayFunction.closePipView(getContext());
 		}
-		if(TextUtils.isEmpty(streamId)) {
+		if (TextUtils.isEmpty(streamId)) {
 			play(url, getTitleName());
 		} else {
 			new RequestRealLink(getContext(), streamId, url).start();
 		}
 	}
-	
+
 	boolean hasInitExpireTime = false;
-	
+
 	public String replaceTm(String tm, String url) {
-		if(TextUtils.isEmpty(url)) {
+		if (TextUtils.isEmpty(url)) {
 			return null;
 		}
 		int posT = url.indexOf("tm=");
-		/****add by zlb on 2013-12-09 没有tm则在尾部追加****/
+		/**** add by zlb on 2013-12-09 没有tm则在尾部追加 ****/
 		if (posT == -1) {
 			return url + "&tm=" + tm;
 		}
-		/****end by zlb on 2013-12-09 ****/
-		int posE = url.indexOf("&", posT) == -1 ? url.length() : url.indexOf("&", posT);
+		/**** end by zlb on 2013-12-09 ****/
+		int posE = url.indexOf("&", posT) == -1 ? url.length() : url.indexOf(
+				"&", posT);
 		return url.replace(url.substring(posT, posE), "tm=" + tm);
 	}
-	
+
 	/**
 	 * 请求真实的播放地址
 	 * 
@@ -548,6 +552,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	protected class RequestRealLink extends LetvHttpAsyncTask<RealLink> {
 		String url = null;
 		String streamId = null;
+
 		public RequestRealLink(Context context, String streamId, String url) {
 			super(context);
 			this.url = url;
@@ -558,18 +563,21 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 		@Override
 		public LetvDataHull<RealLink> doInBackground() {
 			// TODO Auto-generated method stub
-			 LetvDataHull<ExpireTimeBean> hull = null;
-			if(!hasInitExpireTime) {//更新过期时间
-				hull = LetvHttpApi.getExpireTimestamp(0, new ExpireTimeParser());
+			LetvDataHull<ExpireTimeBean> hull = null;
+			if (!hasInitExpireTime) {// 更新过期时间
+				hull = LetvHttpApi
+						.getExpireTimestamp(0, new ExpireTimeParser());
 				hasInitExpireTime = hull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY;
 			}
 			String tm = null;
-			if(hasInitExpireTime) {
-				tm =String.valueOf( ExpireTimeBean.getTm().getCurServerTime());
+			if (hasInitExpireTime) {
+				tm = String.valueOf(ExpireTimeBean.getTm().getCurServerTime());
 			}
 			String newUrl = replaceTm(tm, url);
-			String encryptUrl = newUrl + "&key=" + LetvTools.generateLiveEncryptKey(streamId, tm);
-			LetvDataHull<RealLink> result = LetvHttpApi.requestRealLink(0, encryptUrl, new LiveRealParser());
+			String encryptUrl = newUrl + "&key="
+					+ LetvTools.generateLiveEncryptKey(streamId, tm);
+			LetvDataHull<RealLink> result = LetvHttpApi.requestRealLink(0,
+					encryptUrl, new LiveRealParser());
 			return result;
 		}
 
@@ -577,7 +585,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 		public void onPostExecute(int updateId, RealLink result) {
 			// TODO Auto-generated method stub
 			if (result != null) {
-//				mRealLink = result.getLocation();
+				// mRealLink = result.getLocation();
 				play(result.getLocation(), getTitleName());
 			}
 		}
@@ -600,7 +608,7 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 			loadLayout.requestError();
 		}
 	}
-	
+
 	protected boolean preparePlay() {
 		if (!TextUtils.isEmpty(realUrl)) {
 			return true;
@@ -620,6 +628,6 @@ public class PipLiveChannelPlayController implements PipPlayController, android.
 	@Override
 	public void onPlayFailed() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

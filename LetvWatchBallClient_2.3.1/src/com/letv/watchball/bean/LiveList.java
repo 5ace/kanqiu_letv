@@ -1,6 +1,5 @@
 package com.letv.watchball.bean;
 
-
 /**
  * 直播列表
  * 
@@ -25,6 +24,6 @@ public class LiveList extends Base {
 		 * 直播列表
 		 */
 		public Game[] live_infos;
-		
+
 	}
 }

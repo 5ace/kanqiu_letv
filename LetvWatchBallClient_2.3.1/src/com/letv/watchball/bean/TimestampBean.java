@@ -30,7 +30,7 @@ public class TimestampBean implements LetvBaseBean {
 		/**
 		 * 同时更新下载包的时间戳
 		 * */
-//		com.letv.watchball.loader.db.TimestampBean.getTm().updateTimestamp(newTimestamp);
+		// com.letv.watchball.loader.db.TimestampBean.getTm().updateTimestamp(newTimestamp);
 	}
 
 	/**

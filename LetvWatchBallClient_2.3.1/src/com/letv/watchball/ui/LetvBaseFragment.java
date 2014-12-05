@@ -2,11 +2,11 @@ package com.letv.watchball.ui;
 
 import android.support.v4.app.Fragment;
 
-public class LetvBaseFragment extends Fragment{
+public class LetvBaseFragment extends Fragment {
 
 	@Override
 	public void onDestroy() {
-//		LetvCacheMannager.getInstance().clearCacheBitmap();
+		// LetvCacheMannager.getInstance().clearCacheBitmap();
 		super.onDestroy();
 	}
 }

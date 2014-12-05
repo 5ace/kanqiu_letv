@@ -39,10 +39,11 @@ import com.letv.watchball.utils.UIs;
 /**
  * 画中画，播放下载视频，三屏，网络视频所用到的Controller
  * 
- * @author 
+ * @author
  * 
  */
-public class PipMediaController extends RelativeLayout implements BaseMediaController {
+public class PipMediaController extends RelativeLayout implements
+		BaseMediaController {
 
 	private MediaPlayerControl player;
 	public PipPlayController mPlayController = null;
@@ -63,17 +64,19 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	 */
 	private TextView titleTextView;
 	private String title;
+
 	/**
 	 * 设置视频标题
+	 * 
 	 * @param title
 	 */
 	public void setTitle(String title) {
 		this.title = title;
-		if(titleTextView != null) {
+		if (titleTextView != null) {
 			titleTextView.setText(title);
 		}
 	}
-	
+
 	public Video getmVideo() {
 		return mVideo;
 	}
@@ -103,7 +106,7 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	private boolean playNet;// 是否播放在线视频
 
 	private AlbumNew album; // 专辑数据
-//	private Episode episode;// 播放视频
+	// private Episode episode;// 播放视频
 	private Video mVideo;// 播放视频
 	private String realUrl;
 	private String filePath;
@@ -119,7 +122,7 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	private LinearLayout pip_video_play_controller_finish_layout;
 	public ImageView pip_video_play_controller_fullScreen;
 	public LinearLayout pip_video_play_controller_fullScreen_layout;
-//	private ImageView play_right = null;// 快进按钮
+	// private ImageView play_right = null;// 快进按钮
 	private ImageView play_skip_begin = null;// 片头节点
 	private ImageView play_skip_end = null;// 片尾节点
 
@@ -128,7 +131,7 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	private boolean isLive = false;
 
 	private boolean isWebPlay = false;
-	
+
 	public int total;
 
 	public int getTotal() {
@@ -215,14 +218,16 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 
 	public void initControllerView() {
 
-		titleTextView = (TextView) this.findViewById(R.id.pip_video_play_controller_title);
+		titleTextView = (TextView) this
+				.findViewById(R.id.pip_video_play_controller_title);
 		if (titleTextView != null) {
-			String title = mPlayController == null || mPlayController.getVideoTitle() == null ? ""
+			String title = mPlayController == null
+					|| mPlayController.getVideoTitle() == null ? ""
 					: mPlayController.getVideoTitle();
 			titleTextView.setText(title);
 		}
 
-//		topControllerView = this.findViewById(R.id.play_controller_top);
+		// topControllerView = this.findViewById(R.id.play_controller_top);
 
 		pip_video_play_controller_finish = (ImageView) this
 				.findViewById(R.id.pip_video_play_controller_finish);
@@ -233,19 +238,22 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 		pip_video_play_controller_finish_layout = (LinearLayout) this
 				.findViewById(R.id.pip_video_play_controller_finish_layout);
 		if (pip_video_play_controller_finish_layout != null) {
-			pip_video_play_controller_finish_layout.setOnClickListener(closeListener);
+			pip_video_play_controller_finish_layout
+					.setOnClickListener(closeListener);
 		}
 
 		pip_video_play_controller_fullScreen = (ImageView) this
 				.findViewById(R.id.pip_video_play_controller_fullScreen);
 		if (null != pip_video_play_controller_fullScreen) {
-			pip_video_play_controller_fullScreen.setOnClickListener(pipToMainPlayerListener);
+			pip_video_play_controller_fullScreen
+					.setOnClickListener(pipToMainPlayerListener);
 		}
 
 		pip_video_play_controller_fullScreen_layout = (LinearLayout) this
 				.findViewById(R.id.pip_video_play_controller_fullScreen_layout);
 		if (null != pip_video_play_controller_fullScreen_layout) {
-			pip_video_play_controller_fullScreen_layout.setOnClickListener(pipToMainPlayerListener);
+			pip_video_play_controller_fullScreen_layout
+					.setOnClickListener(pipToMainPlayerListener);
 		}
 
 		pip_video_play_controller_bottomLayout = (RelativeLayout) this
@@ -257,22 +265,23 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 			pauseButton.setOnClickListener(pauseListener);
 		}
 
-//		play_right = (ImageView) this.findViewById(R.id.play_right);
-//		if (play_right != null) {
-//			play_right.setOnClickListener(forwardListener);
-//		}
-		
-//		int num = 0;
-//		if(album != null) {
-//			int merge = LetvFunction.getMerge(album.getStyle());
-//			num = (merge == 1 ? album.getPlatformVideoNum() : album.getPlatformVideoInfo());
-//		}
-//		if (album != null && num > 1 && !isWebPlay) {
-//			hasNext = true;
-//			enableNextBtn();
-//		} else {
-//			disableNextBtn();
-//		}
+		// play_right = (ImageView) this.findViewById(R.id.play_right);
+		// if (play_right != null) {
+		// play_right.setOnClickListener(forwardListener);
+		// }
+
+		// int num = 0;
+		// if(album != null) {
+		// int merge = LetvFunction.getMerge(album.getStyle());
+		// num = (merge == 1 ? album.getPlatformVideoNum() :
+		// album.getPlatformVideoInfo());
+		// }
+		// if (album != null && num > 1 && !isWebPlay) {
+		// hasNext = true;
+		// enableNextBtn();
+		// } else {
+		// disableNextBtn();
+		// }
 
 		mProgressBar = (ProgressBar) this.findViewById(R.id.play_seekbar);
 		if (mProgressBar != null) {
@@ -288,70 +297,78 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 
 		formatBuilder = new StringBuilder();
 		formatter = new Formatter(formatBuilder, Locale.getDefault());
-		
-		pip_video_play_controller_bottomLayout.setOnTouchListener(new OnTouchListener() {
-			float x = 0;
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(mPlayController.getPlayBundle().getBoolean("isLive", false)) {
-					return false;
-				}
-				switch(event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					x = event.getRawX();
-					if(null != mHandler) {
-						mHandler.removeMessages(FADE_OUT);
-					}
-					return true;
 
-				case MotionEvent.ACTION_MOVE:
-					if(mProgressTime.getVisibility() != View.VISIBLE) {
-						mProgressTime.setVisibility(View.VISIBLE);
+		pip_video_play_controller_bottomLayout
+				.setOnTouchListener(new OnTouchListener() {
+					float x = 0;
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (mPlayController.getPlayBundle().getBoolean(
+								"isLive", false)) {
+							return false;
+						}
+						switch (event.getAction()) {
+						case MotionEvent.ACTION_DOWN:
+							x = event.getRawX();
+							if (null != mHandler) {
+								mHandler.removeMessages(FADE_OUT);
+							}
+							return true;
+
+						case MotionEvent.ACTION_MOVE:
+							if (mProgressTime.getVisibility() != View.VISIBLE) {
+								mProgressTime.setVisibility(View.VISIBLE);
+							}
+							moveProgress(event.getRawX() - x);
+							x = event.getRawX();
+							break;
+						case MotionEvent.ACTION_UP:
+							mHandler.sendEmptyMessageDelayed(FADE_OUT,
+									sDefaultTimeout);
+							mProgressTime.setVisibility(View.GONE);
+							break;
+						}
+						return false;
 					}
-					moveProgress(event.getRawX() - x);
-					x = event.getRawX();
-					break;
-				case MotionEvent.ACTION_UP:
-					mHandler.sendEmptyMessageDelayed(FADE_OUT, sDefaultTimeout);
-					mProgressTime.setVisibility(View.GONE);
-					break;
-				}
-				return false;
-			}
-		});
+				});
 	}
-	
-//	private boolean hasNext = false;
-	
+
+	// private boolean hasNext = false;
+
 	/**
 	 * 显示下一集按钮
 	 */
 	public void enableNextBtn() {
-//		hasNext = true;
-//		play_right.setEnabled(true);
-//		play_right.setImageResource(R.drawable.pip_controller_next_selector);
+		// hasNext = true;
+		// play_right.setEnabled(true);
+		// play_right.setImageResource(R.drawable.pip_controller_next_selector);
 	}
+
 	/**
 	 * 隐藏下一集按钮
 	 */
 	public void disableNextBtn() {
-//		hasNext = false;
-//		play_right.setEnabled(false);
-//		play_right.setImageResource(R.drawable.pip_controller_next_03);
+		// hasNext = false;
+		// play_right.setEnabled(false);
+		// play_right.setImageResource(R.drawable.pip_controller_next_03);
 	}
+
 	/**
 	 * 非直播，可以触摸进度条下方区域手势调整进度
+	 * 
 	 * @param offset
 	 */
 	public void moveProgress(float offset) {
 		double temp = 1d * offset / UIs.getScreenWidth();
 		int duration = player.getDuration();
-		int position = player.getCurrentPosition() + (int)(duration * temp);
-		if(position < 0) {
+		int position = player.getCurrentPosition() + (int) (duration * temp);
+		if (position < 0) {
 			position = 0;
 		}
 		player.seekTo(position);
-		mProgressTime.setText(LetvUtil.stringForTime(position) + "/" + LetvUtil.stringForTime(duration));
+		mProgressTime.setText(LetvUtil.stringForTime(position) + "/"
+				+ LetvUtil.stringForTime(duration));
 		long pos = 1000L * position / duration;
 		mProgressBar.setProgress((int) pos);
 	}
@@ -414,17 +431,17 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 			/**
 			 * 影片来源:1(1:专辑;3:视频)
 			 */
-//			if (album != null && total > 1 && !isWebPlay && hasNext) {
-//				// 显示下一集按钮
-//				play_right.setEnabled(true);
-//				play_right.setImageResource(R.drawable.pip_controller_next_selector);
-//			} else {
-//				// 隐藏下一集按钮
-//				play_right.setEnabled(false);
-//				play_right.setImageResource(R.drawable.pip_controller_next_03);
-//			}
+			// if (album != null && total > 1 && !isWebPlay && hasNext) {
+			// // 显示下一集按钮
+			// play_right.setEnabled(true);
+			// play_right.setImageResource(R.drawable.pip_controller_next_selector);
+			// } else {
+			// // 隐藏下一集按钮
+			// play_right.setEnabled(false);
+			// play_right.setImageResource(R.drawable.pip_controller_next_03);
+			// }
 		} catch (IncompatibleClassChangeError ex) {
-			
+
 		}
 	}
 
@@ -459,13 +476,13 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	}
 
 	public void showControllerInAnim() {
-		pip_video_play_controller_bottomLayout.startAnimation(AnimationUtils.loadAnimation(
-				getContext(), R.anim.pip_pushup_in));
+		pip_video_play_controller_bottomLayout.startAnimation(AnimationUtils
+				.loadAnimation(getContext(), R.anim.pip_pushup_in));
 	}
 
 	public void showControllerOutAnim() {
-		pip_video_play_controller_bottomLayout.startAnimation(AnimationUtils.loadAnimation(
-				getContext(), R.anim.pip_pushdown_out));
+		pip_video_play_controller_bottomLayout.startAnimation(AnimationUtils
+				.loadAnimation(getContext(), R.anim.pip_pushdown_out));
 	}
 
 	public boolean isShowing() {
@@ -529,7 +546,8 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 		if (hours <= 0) {
 			return formatter.format("%02d:%02d", minutes, seconds).toString();
 		} else {
-			return formatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
+			return formatter.format("%d:%02d:%02d", hours, minutes, seconds)
+					.toString();
 		}
 	}
 
@@ -570,10 +588,12 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 				updatePausePlay();
 			}
 			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN
+				|| keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 			// don't show the controls for volume adjustment
 			return super.dispatchKeyEvent(event);
-		} else if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
+		} else if (keyCode == KeyEvent.KEYCODE_BACK
+				|| keyCode == KeyEvent.KEYCODE_MENU) {
 			hide();
 
 			return true;
@@ -593,19 +613,22 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 				mPlayController.updateVideoPosition();
 			}
 			if (mPlayController instanceof PipPlayAlbumController) {
-				boolean isDownloadFile = ((PipPlayAlbumController)mPlayController).getIsLocalFile();
-				LetvPipPlayFunction.pipToMainPlayer(context, mPlayController.getPlayBundle(), isDownloadFile);
+				boolean isDownloadFile = ((PipPlayAlbumController) mPlayController)
+						.getIsLocalFile();
+				LetvPipPlayFunction.pipToMainPlayer(context,
+						mPlayController.getPlayBundle(), isDownloadFile);
 			} else {
-				LetvPipPlayFunction.pipToMainPlayer(context, mPlayController.getPlayBundle(), false);
+				LetvPipPlayFunction.pipToMainPlayer(context,
+						mPlayController.getPlayBundle(), false);
 			}
-			
+
 			if (null != mPlayController) {
 				mPlayController.updateVideoPosition();
 				mPlayController.onFinish();
 			}
-			
-				LetvPipPlayFunction.closePipView(getContext());
-			
+
+			LetvPipPlayFunction.closePipView(getContext());
+
 		}
 	};
 
@@ -624,7 +647,8 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	};
 
 	public void exitPipPlayer() {
-		Animation endAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.pip_end_alpha);
+		Animation endAnimation = AnimationUtils.loadAnimation(getContext(),
+				R.anim.pip_end_alpha);
 		endAnimation.setAnimationListener(new Animation.AnimationListener() {
 
 			@Override
@@ -675,17 +699,18 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	private void doPauseResume() {
 		if (player.isPlaying()) {
 			player.pause();
-//			LetvUtil.ireTrackerEventEnd(context, realUrl, filePath);
-			
+			// LetvUtil.ireTrackerEventEnd(context, realUrl, filePath);
+
 			// Remove 3.8 播放器模块暂停动作
 			// DataStatistics.getInstance().sendActionCode(getContext(),
 			// DataConstant.ACTION.PLAYER.PAUSE, null, LetvUtil.getUID(),
 			// LetvUtil.getPcode());
 		} else {
 			player.start();
-//			if(context != null) {
-//				LetvUtil.ireTrackerEventStart(context, album, mVideo, realUrl, filePath);
-//			}
+			// if(context != null) {
+			// LetvUtil.ireTrackerEventStart(context, album, mVideo, realUrl,
+			// filePath);
+			// }
 
 			// Remove 3.8 播放器模块播放动作
 			// DataStatistics.getInstance().sendActionCode(getContext(),
@@ -724,7 +749,8 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 			mHandler.removeMessages(SHOW_PROGRESS);
 		}
 
-		public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
+		public void onProgressChanged(SeekBar bar, int progress,
+				boolean fromuser) {
 			if (!fromuser) {
 				// We're not interested in programmatically generated changes to
 				// the progress bar's position.
@@ -760,9 +786,9 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 			pauseButton.setEnabled(enabled);
 		}
 
-//		if (play_right != null) {
-//			play_right.setEnabled(enabled);
-//		}
+		// if (play_right != null) {
+		// play_right.setEnabled(enabled);
+		// }
 
 		if (mProgressBar != null) {
 			mProgressBar.setEnabled(enabled);
@@ -775,29 +801,31 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	 * 下一集单击事件
 	 */
 	private View.OnClickListener forwardListener = new View.OnClickListener() {
-		
+
 		public void onClick(View v) {
 			mPlayController.next();
 		}
 	};
 
 	private Episode getEpisode() {
-		//delete by zlb
-//		if (album == null) {
-//			return null;
-//		}
-//
-//		if (album.getEpsiodes() == null) {
-//			return null;
-//		}
-//		int pageNum = order / PageData.PAGE_REQUEST_COUNT;
-//		if (album.getEpsiodes().size() <= order - pageNum * PageData.PAGE_REQUEST_COUNT) {
-//			return null;
-//		}
-//
-//		return album.getEpsiodes().get(order - pageNum * PageData.PAGE_REQUEST_COUNT);
+		// delete by zlb
+		// if (album == null) {
+		// return null;
+		// }
+		//
+		// if (album.getEpsiodes() == null) {
+		// return null;
+		// }
+		// int pageNum = order / PageData.PAGE_REQUEST_COUNT;
+		// if (album.getEpsiodes().size() <= order - pageNum *
+		// PageData.PAGE_REQUEST_COUNT) {
+		// return null;
+		// }
+		//
+		// return album.getEpsiodes().get(order - pageNum *
+		// PageData.PAGE_REQUEST_COUNT);
 		return null;
-		//end by zlb
+		// end by zlb
 	}
 
 	private void finishActivity(Context context) {
@@ -841,11 +869,12 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 
 	public void updateSkipState() {
 		if (play_skip_begin != null && play_skip_end != null) {
-			if (album != null && getEpisode() != null && PreferencesManager.getInstance().isSkip()) {
+			if (album != null && getEpisode() != null
+					&& PreferencesManager.getInstance().isSkip()) {
 				if (getEpisode().getBtime() > 0) {
 					int totalWidth = getWidth();
-					int position = (int) (getEpisode().getBtime() * totalWidth * 1.0 * 1000 / player
-							.getDuration());
+					int position = (int) (getEpisode().getBtime() * totalWidth
+							* 1.0 * 1000 / player.getDuration());
 					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) play_skip_begin
 							.getLayoutParams();
 					params.leftMargin = position;
@@ -856,8 +885,8 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 				}
 				if (getEpisode().getEtime() > 0) {
 					int totalWidth = getWidth();
-					int position = (int) (getEpisode().getEtime() * totalWidth * 1.0 * 1000 / player
-							.getDuration());
+					int position = (int) (getEpisode().getEtime() * totalWidth
+							* 1.0 * 1000 / player.getDuration());
 					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) play_skip_end
 							.getLayoutParams();
 					params.leftMargin = position;
@@ -941,10 +970,10 @@ public class PipMediaController extends RelativeLayout implements BaseMediaContr
 	public void setPlayController(PipPlayController playController) {
 		mPlayController = playController;
 	}
-	
+
 	public void initNextBtn(int num) {
 		total = num;
-		if(num > 1) {
+		if (num > 1) {
 			enableNextBtn();
 		} else {
 			disableNextBtn();

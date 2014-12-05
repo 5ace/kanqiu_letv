@@ -72,29 +72,30 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	 */
 	@Override
 	public void uncaughtException(Thread thread, Throwable throwable) {
-		
-		StringBuilder crashInfoStringBuilder=new StringBuilder(); 
-        Context context = this.mContext;
-        this.handleException(throwable);
-     
-        //获取导致Crash的时间  
-        String uncaughtException=getUncaughtException(throwable); 
-        crashInfoStringBuilder.append(uncaughtException+"/n"); 
-        crashInfoStringBuilder.append("------------------"+"/n"); 
-         
-        System.out.println("crashInfo如下:"+"/n"+crashInfoStringBuilder.toString()); 
-         
-    
+
+		StringBuilder crashInfoStringBuilder = new StringBuilder();
+		Context context = this.mContext;
+		this.handleException(throwable);
+
+		// 获取导致Crash的时间
+		String uncaughtException = getUncaughtException(throwable);
+		crashInfoStringBuilder.append(uncaughtException + "/n");
+		crashInfoStringBuilder.append("------------------" + "/n");
+
+		System.out.println("crashInfo如下:" + "/n"
+				+ crashInfoStringBuilder.toString());
+
 	}
-    public static String getUncaughtException(Throwable throwable){ 
-        StringWriter stringWriter = new StringWriter(); 
-        PrintWriter printWriter = new PrintWriter(stringWriter); 
-        throwable.printStackTrace(printWriter); 
-        printWriter.close(); 
-        String uncaughtException=stringWriter.toString(); 
-        return uncaughtException; 
- 
-    } 
+
+	public static String getUncaughtException(Throwable throwable) {
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+		throwable.printStackTrace(printWriter);
+		printWriter.close();
+		String uncaughtException = stringWriter.toString();
+		return uncaughtException;
+
+	}
 
 	/**
 	 * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成. 开发者可以根据自己的情况来自定义异常处理逻辑
@@ -112,14 +113,13 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			@Override
 			public void run() {
 				Looper.prepare();
-				Toast.makeText(mContext, "程序出错啦!", Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(mContext, "程序出错啦!", Toast.LENGTH_LONG).show();
 				Looper.myLooper().loop();
 			}
 
 		}.start();
-		if(DEBUG){
-			Log.e(TAG,ex.getLocalizedMessage());
+		if (DEBUG) {
+			Log.e(TAG, ex.getLocalizedMessage());
 		}
 		// 收集设备信息
 		collectCrashDeviceInfo(mContext);
@@ -127,7 +127,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		Log.e("gongmeng", "crash");
 		saveCrashInfoToFile(ex);
 		// 发送错误报告到服务器
-		//sendCrashReportsToServer(mContext);
+		// sendCrashReportsToServer(mContext);
 		return true;
 	}
 
@@ -135,7 +135,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	 * 在程序启动时候, 可以调用该函数来发送以前没有发送的报告
 	 */
 	public void sendPreviousReportsToServer() {
-//		sendCrashReportsToServer(mContext);
+		// sendCrashReportsToServer(mContext);
 	}
 
 	/**

@@ -26,7 +26,7 @@ public class LetvConstant {
 	/**
 	 * 发送短信找回密码 手机号
 	 */
-	public static final String retrievePwdPhoneNum = "95131292121";//"10690159292121";
+	public static final String retrievePwdPhoneNum = "95131292121";// "10690159292121";
 	/**
 	 * webactivity加载网页的type
 	 */
@@ -61,7 +61,7 @@ public class LetvConstant {
 	public static final boolean USE_SDCARD = true;
 
 	public static final boolean USE_MEMORY = true;
-	
+
 	/**
 	 * 艾瑞的AppKey
 	 */
@@ -109,7 +109,7 @@ public class LetvConstant {
 	/**
 	 * 直播加密密钥
 	 */
-//	public static final String MIYUE = "a2915e518ba60169f77";
+	// public static final String MIYUE = "a2915e518ba60169f77";
 	public static final String MIYUE = "c75653c78894c0be38b59db89f02e6b7";
 
 	/**
@@ -137,12 +137,13 @@ public class LetvConstant {
 		public static final String PCODE = LetvTools.getPcode();
 
 		public static final String VERSION = LetvTools.getClientVersionName();
-		
+
 		public static final String ASIGN_KEY = "Tl34Ees0S9tsKY213";
 
 		public static final int VERSION_CODE = LetvTools.getClientVersionCode();
 
-		public static final DisplayMetrics displayMetrics = LetvApplication.getInstance().getResources().getDisplayMetrics();
+		public static final DisplayMetrics displayMetrics = LetvApplication
+				.getInstance().getResources().getDisplayMetrics();
 
 		public static final int screenWidth = UIs.getScreenWidth();
 
@@ -201,21 +202,18 @@ public class LetvConstant {
 				 */
 				public static final String status = "status";
 				/**
-				 * 是否已经发出开赛通知 
-				 * 0：未通知，1：已通知
+				 * 是否已经发出开赛通知 0：未通知，1：已通知
 				 */
 				public static final String isNotify = "isNotify";
-				
+
 				/**
-				 * 是否已经赛果提醒 
-				 * 0：未提醒，1：已提醒
+				 * 是否已经赛果提醒 0：未提醒，1：已提醒
 				 */
 				public static final String isPushResult = "isPushResult";
 
 			}
-			
+
 		}
-		
 
 		/**
 		 * 搜索记录表
@@ -580,7 +578,7 @@ public class LetvConstant {
 				 * 是否推送过
 				 */
 				public static final String IS_NOTIFY = "is_notify";
-				
+
 				public static final String LAUNCH_MODE = "launch_mode";
 
 			}
@@ -638,7 +636,7 @@ public class LetvConstant {
 				public static final String ORDER = "orderk";
 			}
 		}
-		
+
 		/**
 		 * 顶级频道记录
 		 */
@@ -785,17 +783,16 @@ public class LetvConstant {
 		 * */
 		public static String downloadHighName = "超清";
 	}
-	
+
 	/**
-	 * @author Liuheyuan
-	 *	视频新闻排序类型
+	 * @author Liuheyuan 视频新闻排序类型
 	 */
-	public interface VideoNewsOrderBy{
+	public interface VideoNewsOrderBy {
 		/**
 		 * 最新
 		 */
 		public static final String DATE = "1";
-		
+
 		/**
 		 * 最热
 		 */

@@ -78,6 +78,10 @@ public class PlayAlbumFullController extends BasePlayController {
 	private TextView fullPlayControllerHighText;
 
 	/**
+	 * 全屏超清文案
+	 */
+	private TextView fullPlayController1080p;
+	/**
 	 * 全屏清晰度切换 布局
 	 * */
 	private View fullLayout;
@@ -154,7 +158,8 @@ public class PlayAlbumFullController extends BasePlayController {
 		}
 	});
 
-	public PlayAlbumFullController(PlayAlbumController playAlbumController, View root) {
+	public PlayAlbumFullController(PlayAlbumController playAlbumController,
+			View root) {
 		this.playAlbumController = playAlbumController;
 		findFullView(root);
 	}
@@ -163,27 +168,37 @@ public class PlayAlbumFullController extends BasePlayController {
 	 * 初始化全屏播放器控件
 	 * */
 	private void findFullView(View root) {
-		fullPlayControllerLayoutt = root.findViewById(R.id.detailplay_full_controller);
+		fullPlayControllerLayoutt = root
+				.findViewById(R.id.detailplay_full_controller);
 		fullPlayControllerBack = root.findViewById(R.id.full_back);
 		fullPlayControllerTitle = (TextView) root.findViewById(R.id.full_title);
 		fullPlayControllerNet = (ImageView) root.findViewById(R.id.full_net);
-		fullPlayControllerBattery = (ImageView) root.findViewById(R.id.full_battery);
+		fullPlayControllerBattery = (ImageView) root
+				.findViewById(R.id.full_battery);
 		fullPlayControllerTime = (TextView) root.findViewById(R.id.full_time);
 		fullPlayControllerLowOrHigh = root.findViewById(R.id.full_loworhigh);
-		fullPlayControllerLowText = (TextView) root.findViewById(R.id.full_low_text);
-		fullPlayControllerHighText = (TextView) root.findViewById(R.id.full_high_text);
+		fullPlayControllerLowText = (TextView) root
+				.findViewById(R.id.full_low_text);
+		fullPlayControllerHighText = (TextView) root
+				.findViewById(R.id.full_high_text);
+		fullPlayController1080p = (TextView) root.findViewById(R.id.full_1080);
 		fullPlayControllerHd = (TextView) root.findViewById(R.id.full_hd);
 		fullLayout = root.findViewById(R.id.full_layout);
 		fullPlayControllerForward = root.findViewById(R.id.full_forward);
 		fullPlayControllerRewind = root.findViewById(R.id.full_rewind);
 		fullPlayControllerPlay = (ImageView) root.findViewById(R.id.full_play);
-		fullPlayControllerSeekbar = (SeekBar) root.findViewById(R.id.full_play_seekbar);
+		fullPlayControllerSeekbar = (SeekBar) root
+				.findViewById(R.id.full_play_seekbar);
 		fullPlayControllerBegin = root.findViewById(R.id.full_play_skip_begin);
 		fullPlayControllerEnd = root.findViewById(R.id.full_play_skip_end);
-		fullPlayControllerSoundLayout = root.findViewById(R.id.full_sound_layout);
-		fullPlayControllerSoundIcon = (ImageView) root.findViewById(R.id.full_sound_icon);
-		fullPlayControllerSoundSeekbar = (SeekBar) root.findViewById(R.id.full_sound_seekbar);
-		fullPlayControllerProgressText = (TextView) root.findViewById(R.id.full_progress_text);
+		fullPlayControllerSoundLayout = root
+				.findViewById(R.id.full_sound_layout);
+		fullPlayControllerSoundIcon = (ImageView) root
+				.findViewById(R.id.full_sound_icon);
+		fullPlayControllerSoundSeekbar = (SeekBar) root
+				.findViewById(R.id.full_sound_seekbar);
+		fullPlayControllerProgressText = (TextView) root
+				.findViewById(R.id.full_progress_text);
 		fullPlayControllerBottom = root.findViewById(R.id.full_bottom);
 		toPip = root.findViewById(R.id.play_pip);
 		halfView = root.findViewById(R.id.full_half_icon);
@@ -201,12 +216,23 @@ public class PlayAlbumFullController extends BasePlayController {
 			fullPlayControllerLowOrHigh.measure(0, 0);
 			fullLayout.measure(0, 0);
 			fullPlayControllerSoundLayout.measure(0, 0);
-
-			fullPlayControllerHd.setText(playAlbumController.isHd ? PreferencesManager.getInstance().getPlayNormal_zh() : PreferencesManager.getInstance()
-					.getPlayLow_zh());
+			switch (playAlbumController.isHd) {
+			case 1:
+				fullPlayControllerHd.setText(PreferencesManager.getInstance()
+						.getPlayNormal_zh());
+				break;
+			case 0:
+				fullPlayControllerHd.setText(PreferencesManager.getInstance()
+						.getPlayLow_zh());
+				break;
+			case 2:
+				fullPlayControllerHd.setText(PreferencesManager.getInstance()
+						.getPlayHigh_zh());
+			}
 			fullPlayControllerHd.setVisibility(View.VISIBLE);
-                  fullPlayControllerBack.setOnClickListener(fullClick);
-			fullPlayControllerSoundSeekbar.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
+			fullPlayControllerBack.setOnClickListener(fullClick);
+			fullPlayControllerSoundSeekbar
+					.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
 			fullLayout.setOnTouchListener(shieldTouchListener);
 			fullPlayControllerBottom.setOnTouchListener(shieldTouchListener);
 			fullPlayControllerSeekbar.setEnabled(false);
@@ -214,20 +240,32 @@ public class PlayAlbumFullController extends BasePlayController {
 			fullPlayControllerSoundIcon.setOnClickListener(vloumeIconClick);
 			break;
 		case PlayController.PLAY_VIDEO:
-			
+
 			halfView.setVisibility(View.GONE);
 			fullPlayControllerBack.setOnClickListener(fullClick);
-//			fullPlayControllerBack.setOnClickListener(backClick);
+			// fullPlayControllerBack.setOnClickListener(backClick);
 			fullLayout.setOnTouchListener(shieldTouchListener);
 			fullPlayControllerLowOrHigh.measure(0, 0);
 			fullLayout.measure(0, 0);
 			fullPlayControllerSoundLayout.measure(0, 0);
+			switch (playAlbumController.isHd) {
+			case 1:
+				fullPlayControllerHd.setText(PreferencesManager.getInstance()
+						.getPlayNormal_zh());
+				break;
+			case 0:
+				fullPlayControllerHd.setText(PreferencesManager.getInstance()
+						.getPlayLow_zh());
+				break;
+			case 2:
+				fullPlayControllerHd.setText(PreferencesManager.getInstance()
+						.getPlayHigh_zh());
+			}
 
-			fullPlayControllerHd.setText(playAlbumController.isHd ? PreferencesManager.getInstance().getPlayNormal_zh() : PreferencesManager.getInstance()
-					.getPlayLow_zh());
 			fullPlayControllerHd.setVisibility(View.VISIBLE);
 
-			fullPlayControllerSoundSeekbar.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
+			fullPlayControllerSoundSeekbar
+					.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
 			fullLayout.setOnTouchListener(shieldTouchListener);
 			fullPlayControllerBottom.setOnTouchListener(shieldTouchListener);
 			fullPlayControllerSeekbar.setEnabled(false);
@@ -238,14 +276,15 @@ public class PlayAlbumFullController extends BasePlayController {
 			fullPlayControllerHd.setVisibility(View.GONE);
 			halfView.setVisibility(View.GONE);
 			fullPlayControllerBack.setOnClickListener(backClick);
-			fullPlayControllerSoundSeekbar.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
+			fullPlayControllerSoundSeekbar
+					.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
 			fullPlayControllerBottom.setOnTouchListener(shieldTouchListener);
 			fullPlayControllerSeekbar.setEnabled(false);
 			toPip.setOnClickListener(pipClick);
 			fullPlayControllerSoundIcon.setOnClickListener(vloumeIconClick);
 			break;
 		}
-	
+
 	}
 
 	@Override
@@ -277,9 +316,6 @@ public class PlayAlbumFullController extends BasePlayController {
 			fullPlayControllerSoundLayout.setVisibility(View.GONE);
 		}
 	}
-
-
-
 
 	@Override
 	public boolean clickShowAndHide() {
@@ -318,12 +354,16 @@ public class PlayAlbumFullController extends BasePlayController {
 		fullPlayControllerSeekbar.setMax(max);
 		fullPlayControllerSeekbar.setProgress(progress);
 		fullPlayControllerSeekbar.setSecondaryProgress(buffer);
-		fullPlayControllerProgressText.setText(LetvUtil.stringForTime(progress * 1000) + " / " + LetvUtil.stringForTime(max * 1000));
+		fullPlayControllerProgressText.setText(LetvUtil
+				.stringForTime(progress * 1000)
+				+ " / "
+				+ LetvUtil.stringForTime(max * 1000));
 
 		updateSkipState();
 		initHighOrLow();
 
-		fullPlayControllerSeekbar.setOnSeekBarChangeListener(playSeekBarChangeListener);
+		fullPlayControllerSeekbar
+				.setOnSeekBarChangeListener(playSeekBarChangeListener);
 
 		fullPlayControllerSeekbar.setEnabled(true);
 	}
@@ -336,7 +376,8 @@ public class PlayAlbumFullController extends BasePlayController {
 
 	@Override
 	public void star() {
-		fullPlayControllerPlay.setImageResource(R.drawable.play_controller_pause_btn);
+		fullPlayControllerPlay
+				.setImageResource(R.drawable.play_controller_pause_btn);
 		fullPlayControllerPlay.setOnClickListener(pauseClick);
 		fullPlayControllerForward.setOnClickListener(forwardClick);
 		fullPlayControllerRewind.setOnClickListener(rewindClick);
@@ -344,7 +385,8 @@ public class PlayAlbumFullController extends BasePlayController {
 
 	@Override
 	public void pause() {
-		fullPlayControllerPlay.setImageResource(R.drawable.play_controller_play_btn);
+		fullPlayControllerPlay
+				.setImageResource(R.drawable.play_controller_play_btn);
 		fullPlayControllerPlay.setOnClickListener(playClick);
 	}
 
@@ -354,7 +396,8 @@ public class PlayAlbumFullController extends BasePlayController {
 	@Override
 	public void Inoperable() {
 		fullPlayControllerPlay.setOnClickListener(null);
-		fullPlayControllerPlay.setImageResource(R.drawable.play_controller_play_btn_selected);
+		fullPlayControllerPlay
+				.setImageResource(R.drawable.play_controller_play_btn_selected);
 		fullPlayControllerForward.setOnClickListener(null);
 		fullPlayControllerRewind.setOnClickListener(null);
 		fullPlayControllerBegin.setVisibility(View.GONE);
@@ -401,23 +444,31 @@ public class PlayAlbumFullController extends BasePlayController {
 		}
 
 		@Override
-		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-			fullPlayControllerProgressText.setText(LetvUtil.stringForTime(progress * 1000) + " / " + LetvUtil.stringForTime(seekBar.getMax() * 1000));
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
+			fullPlayControllerProgressText.setText(LetvUtil
+					.stringForTime(progress * 1000)
+					+ " / "
+					+ LetvUtil.stringForTime(seekBar.getMax() * 1000));
 		}
 	};
-	public void soundshow(){
+
+	public void soundshow() {
 		int[] locations = new int[2];
 		fullPlayControllerSoundIcon.getLocationOnScreen(locations);
 		int x = locations[0];// 获取组件当前位置的横坐标
 		int y = locations[1];// 获取组件当前位置的纵坐标
-		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullPlayControllerSoundLayout.getLayoutParams();
-		params.leftMargin = x ;
-		params.topMargin = y - fullPlayControllerSoundLayout.getMeasuredHeight();
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullPlayControllerSoundLayout
+				.getLayoutParams();
+		params.leftMargin = x;
+		params.topMargin = y
+				- fullPlayControllerSoundLayout.getMeasuredHeight();
 
 		fullPlayControllerSoundLayout.setLayoutParams(params);
 		fullPlayControllerSoundLayout.requestLayout();
 		fullPlayControllerSoundLayout.setVisibility(View.VISIBLE);
 	}
+
 	/**
 	 * 声音进度条变化的监听
 	 * */
@@ -427,13 +478,15 @@ public class PlayAlbumFullController extends BasePlayController {
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			startHandlerHide();
 		}
+
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			stopHandlerHide();
 		}
 
 		@Override
-		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
 			startHandlerHide();
 			int max = seekBar.getMax();
 			int volumeMax = playAlbumController.setSoundVolume(progress, false);
@@ -446,9 +499,9 @@ public class PlayAlbumFullController extends BasePlayController {
 				}
 
 			}
-			//把看球音量控制bug修复了
-//			show();
-//			soundshow();
+			// 把看球音量控制bug修复了
+			// show();
+			// soundshow();
 		}
 	};
 
@@ -482,16 +535,16 @@ public class PlayAlbumFullController extends BasePlayController {
 	private OnClickListener fullClick = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-            if (callBack != null){
-                if (UIs.isLandscape(playAlbumController.getActivity()) && playAlbumController.getLaunchMode() == playAlbumController.PLAY_ALBUM) {
-                    callBack.half();
-                } else {
-                    callBack.back();
-                }
-            }
+			if (callBack != null) {
+				if (UIs.isLandscape(playAlbumController.getActivity())
+						&& playAlbumController.getLaunchMode() == playAlbumController.PLAY_ALBUM) {
+					callBack.half();
+				} else {
+					callBack.back();
+				}
+			}
 		}
 	};
-
 
 	/**
 	 * 点击下载的监听
@@ -500,8 +553,8 @@ public class PlayAlbumFullController extends BasePlayController {
 		@Override
 		public void onClick(View v) {
 			// startHandlerHide();
-            if (callBack != null)
-                callBack.half();
+			if (callBack != null)
+				callBack.half();
 		}
 	};
 
@@ -543,9 +596,11 @@ public class PlayAlbumFullController extends BasePlayController {
 				fullPlayControllerHd.getLocationOnScreen(locations);
 				int x = locations[0];// 获取组件当前位置的横坐标
 				int y = locations[1];// 获取组件当前位置的纵坐标
-				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullLayout.getLayoutParams();
+				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullLayout
+						.getLayoutParams();
 				params.leftMargin = x;
-				params.topMargin = y - fullLayout.getMeasuredHeight() - UIs.dipToPx(5);
+				params.topMargin = y - fullLayout.getMeasuredHeight()
+						- UIs.dipToPx(5);
 
 				fullLayout.setLayoutParams(params);
 				fullLayout.requestLayout();
@@ -554,7 +609,6 @@ public class PlayAlbumFullController extends BasePlayController {
 			}
 		}
 	};
-
 
 	@Override
 	public void initIntroduction() {
@@ -572,7 +626,7 @@ public class PlayAlbumFullController extends BasePlayController {
 	 * 清除视频列表数据
 	 * */
 	public void clearVideos() {
-		
+
 	}
 
 	/**
@@ -586,8 +640,10 @@ public class PlayAlbumFullController extends BasePlayController {
 
 				if (btime > 0) {
 					int totalWidth = UIs.getScreenWidth();
-					int position = (int) (btime * totalWidth * 1.0 / playAlbumController.playRecord.getTotalDuration());
-					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullPlayControllerBegin.getLayoutParams();
+					int position = (int) (btime * totalWidth * 1.0 / playAlbumController.playRecord
+							.getTotalDuration());
+					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullPlayControllerBegin
+							.getLayoutParams();
 					params.leftMargin = position;
 					fullPlayControllerBegin.setLayoutParams(params);
 					fullPlayControllerBegin.setVisibility(View.VISIBLE);
@@ -596,8 +652,10 @@ public class PlayAlbumFullController extends BasePlayController {
 				}
 				if (etime > 0) {
 					int totalWidth = UIs.getScreenWidth();
-					int position = (int) (etime * totalWidth * 1.0 / playAlbumController.playRecord.getTotalDuration());
-					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullPlayControllerEnd.getLayoutParams();
+					int position = (int) (etime * totalWidth * 1.0 / playAlbumController.playRecord
+							.getTotalDuration());
+					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fullPlayControllerEnd
+							.getLayoutParams();
 					params.leftMargin = position;
 					fullPlayControllerEnd.setLayoutParams(params);
 					fullPlayControllerEnd.setVisibility(View.VISIBLE);
@@ -619,13 +677,22 @@ public class PlayAlbumFullController extends BasePlayController {
 			if (null != fullLayout) {
 				fullLayout.setVisibility(View.GONE);
 			}
-			if (playAlbumController.isHd) {
-				playAlbumController.isHd = false;
-				PreferencesManager.getInstance().setIsPlayHd(false);
+			if (playAlbumController.isHd != 0) {
+				playAlbumController.isHd = 0;
+				PreferencesManager.getInstance().setIsPlayHd(0);
 				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_low_bg);
-				fullPlayControllerLowText.setTextColor(playAlbumController.getActivity().getResources().getColor(R.color.letv_color_ff00a0e9));
-				fullPlayControllerHighText.setTextColor(playAlbumController.getActivity().getResources().getColor(R.color.letv_color_ffadadad));
-				fullPlayControllerHd.setText(fullPlayControllerLowText.getText());
+				fullPlayControllerLowText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerHighText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayController1080p.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+
+				fullPlayControllerHd.setText(fullPlayControllerLowText
+						.getText());
 
 				playAlbumController.play();
 			}
@@ -640,19 +707,57 @@ public class PlayAlbumFullController extends BasePlayController {
 			if (null != fullLayout) {
 				fullLayout.setVisibility(View.GONE);
 			}
-			if (!playAlbumController.isHd) {
-				playAlbumController.isHd = true;
-				PreferencesManager.getInstance().setIsPlayHd(true);
+			if (playAlbumController.isHd != 1) {
+				playAlbumController.isHd = 1;
+				PreferencesManager.getInstance().setIsPlayHd(1);
 				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
-				fullPlayControllerHighText.setTextColor(playAlbumController.getActivity().getResources().getColor(R.color.letv_color_ff00a0e9));
-				fullPlayControllerLowText.setTextColor(playAlbumController.getActivity().getResources().getColor(R.color.letv_color_ffadadad));
-				fullPlayControllerHd.setText(fullPlayControllerHighText.getText());
+				fullPlayControllerHighText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerLowText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayController1080p.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+
+				fullPlayControllerHd.setText(fullPlayControllerHighText
+						.getText());
 
 				playAlbumController.play();
 			}
 		}
 	};
 
+	/**
+	 * 超清按钮点击
+	 * */
+	private View.OnClickListener play_1080p_listener = new View.OnClickListener() {
+		public void onClick(View v) {
+			if (null != fullLayout) {
+				fullLayout.setVisibility(View.GONE);
+			}
+			if (playAlbumController.isHd != 2) {
+				playAlbumController.isHd = 2;
+				PreferencesManager.getInstance().setIsPlayHd(2);
+				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
+				fullPlayController1080p.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerLowText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayControllerHighText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+
+				fullPlayControllerHd.setText(fullPlayControllerHighText
+						.getText());
+
+				playAlbumController.play();
+			}
+		}
+	};
 	/**
 	 * 点击全屏的监听
 	 * */
@@ -697,10 +802,20 @@ public class PlayAlbumFullController extends BasePlayController {
 	private void initHighOrLow() {
 		boolean hasHigh = playAlbumController.hasHd;
 		boolean hasStandard = playAlbumController.hasStandard;
-		boolean isHd = playAlbumController.isHd;
+		int isHd = playAlbumController.isHd;
 		String hdName = PreferencesManager.getInstance().getPlayNormal_zh();
 		String lowName = PreferencesManager.getInstance().getPlayLow_zh();
-		fullPlayControllerHd.setText(isHd ? hdName : lowName);
+		String highName = PreferencesManager.getInstance().getPlayHigh_zh();
+		switch (isHd) {
+		case 0:
+			fullPlayControllerHd.setText(lowName);
+			break;
+		case 1:
+			fullPlayControllerHd.setText(hdName);
+			break;
+		case 2:
+			fullPlayControllerHd.setText(highName);
+		}
 
 		if (hasHigh && hasStandard) {
 			fullPlayControllerHd.setEnabled(true);
@@ -708,17 +823,45 @@ public class PlayAlbumFullController extends BasePlayController {
 			fullPlayControllerHd.setOnClickListener(lowOrHighClick);
 			fullPlayControllerHighText.setText(hdName);
 			fullPlayControllerLowText.setText(lowName);
-			if (isHd) {
+			switch (isHd) {
+			case 1:
 				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_high_bg);
-				fullPlayControllerHighText.setTextColor(playAlbumController.getActivity().getResources().getColor(R.color.letv_color_ff00a0e9));
-				fullPlayControllerLowText.setTextColor(playAlbumController.getActivity().getResources().getColor(R.color.letv_color_ffadadad));
-			} else {
+				fullPlayControllerHighText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerLowText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayController1080p.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				break;
+			case 0:
 				// fullPlayControllerLowOrHigh.setBackgroundResource(R.drawable.player_low_bg);
-				fullPlayControllerLowText.setTextColor(playAlbumController.getActivity().getResources().getColor(R.color.letv_color_ff00a0e9));
-				fullPlayControllerHighText.setTextColor(playAlbumController.getActivity().getResources().getColor(R.color.letv_color_ffadadad));
+				fullPlayControllerLowText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
+				fullPlayControllerHighText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayController1080p.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				break;
+			case 2:
+				fullPlayControllerLowText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayControllerHighText.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ffadadad));
+				fullPlayController1080p.setTextColor(playAlbumController
+						.getActivity().getResources()
+						.getColor(R.color.letv_color_ff00a0e9));
 			}
 			fullPlayControllerLowText.setOnClickListener(play_low_listener);
 			fullPlayControllerHighText.setOnClickListener(play_high_listener);
+			fullPlayController1080p.setOnClickListener(play_1080p_listener);
 		} else {
 			fullPlayControllerHd.setEnabled(false);
 		}
@@ -737,7 +880,10 @@ public class PlayAlbumFullController extends BasePlayController {
 		mCalendar.setTimeInMillis(System.currentTimeMillis());
 		int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
 		int minite = mCalendar.get(Calendar.MINUTE);
-		fullPlayControllerTime.setText(LetvUtil.getStringTwo(String.valueOf(hour)) + ":" + LetvUtil.getStringTwo(String.valueOf(minite)));
+		fullPlayControllerTime.setText(LetvUtil.getStringTwo(String
+				.valueOf(hour))
+				+ ":"
+				+ LetvUtil.getStringTwo(String.valueOf(minite)));
 	}
 
 	@Override
@@ -790,7 +936,8 @@ public class PlayAlbumFullController extends BasePlayController {
 		}
 
 		if (isCharging) {
-			fullPlayControllerBattery.setImageResource(R.drawable.battery_charge);
+			fullPlayControllerBattery
+					.setImageResource(R.drawable.battery_charge);
 		} else {
 			if (curPower >= 80) {
 				fullPlayControllerBattery.setImageResource(R.drawable.battery5);
@@ -812,17 +959,20 @@ public class PlayAlbumFullController extends BasePlayController {
 	public void changeSoundState(int value, int maxValue) {
 		if (fullPlayControllerSoundIcon != null) {
 			if (value >= maxValue / 3 * 2) {
-				fullPlayControllerSoundIcon.setImageResource(R.drawable.sound_three);
+				fullPlayControllerSoundIcon
+						.setImageResource(R.drawable.sound_three);
 			} else if (value >= maxValue / 3) {
-				fullPlayControllerSoundIcon.setImageResource(R.drawable.sound_two);
+				fullPlayControllerSoundIcon
+						.setImageResource(R.drawable.sound_two);
 			} else if (value > 0) {
-				fullPlayControllerSoundIcon.setImageResource(R.drawable.sound_one);
+				fullPlayControllerSoundIcon
+						.setImageResource(R.drawable.sound_one);
 			} else {
-				fullPlayControllerSoundIcon.setImageResource(R.drawable.sound_zero);
+				fullPlayControllerSoundIcon
+						.setImageResource(R.drawable.sound_zero);
 			}
 		}
 	}
-
 
 	@Override
 	public void onVolumeChange(int max, int progress) {
@@ -830,25 +980,27 @@ public class PlayAlbumFullController extends BasePlayController {
 		fullPlayControllerSoundSeekbar.setProgress(progress);
 		changeSoundState(progress, max);
 	}
+
 	public void onVolumeChange(int max, int progress, boolean isUp) {
 		fullPlayControllerSoundSeekbar.setMax(max);
 		int pTmp = fullPlayControllerSoundSeekbar.getProgress();
 		if (isUp) {
-			if(pTmp == progress){
+			if (pTmp == progress) {
 				progress += 1;
-			} else if(pTmp > progress){
-				progress = pTmp +1;
-			} 
+			} else if (pTmp > progress) {
+				progress = pTmp + 1;
+			}
 		} else {
-			if(pTmp == progress){
+			if (pTmp == progress) {
 				progress -= 1;
-			} else if(pTmp < progress){
-				progress = pTmp +1;
-			} 
+			} else if (pTmp < progress) {
+				progress = pTmp + 1;
+			}
 		}
 		fullPlayControllerSoundSeekbar.setProgress(progress);
 		changeSoundState(progress, max);
 	}
+
 	private void startHandlerHide() {
 		if (isShow()) {
 			handler.removeMessages(1);

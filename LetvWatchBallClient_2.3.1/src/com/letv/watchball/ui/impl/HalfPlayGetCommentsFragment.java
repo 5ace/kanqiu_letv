@@ -36,7 +36,8 @@ import com.letv.watchball.ui.PlayController;
 import com.letv.watchball.utils.UIs;
 import com.letv.watchball.view.PublicLoadLayout;
 
-public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnItemClickListener, PlayAlbumControllerCallBack {
+public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements
+		OnItemClickListener, PlayAlbumControllerCallBack {
 	private PlayController playController;
 	private PublicLoadLayout root;
 	private ListView gridview;
@@ -65,13 +66,15 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 	 * pageSize
 	 */
 	private int ps = Integer.MAX_VALUE;
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		Log.d("lhz", "HalfPlayGetCommentsFragment.onCreateView()");
 		root = UIs.createPage(getActivity(), R.layout.detailplay_half_comments);
 		root.setPadding(1, 0, 1, 0);
@@ -81,7 +84,8 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 	}
 
 	private void findView() {
-		gridview = (ListView) root.findViewById(R.id.detailplay_half_related_gridview);
+		gridview = (ListView) root
+				.findViewById(R.id.detailplay_half_related_gridview);
 	}
 
 	@Override
@@ -89,13 +93,13 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 		super.onActivityCreated(savedInstanceState);
 		playController = ((BasePlayActivity) getActivity()).mPlayController;
 		playController.getCommentsCallBack = this;
-	
+
 		adapter = new DetailCommentsListViewAdapter(getActivity());
 		adapter.setList(mComments);
 		gridview.setAdapter(adapter);
 		gridview.setOnItemClickListener(this);
 		Log.d("lhz", "HalfPlayGetCommentsFragment.onActivityCreated()");
-		
+
 		handlerData(playController.getCommentsCallBackState);
 	}
 
@@ -120,14 +124,15 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 	 * 
 	 */
 	List<Data> asList = new ArrayList<Data>();
+
 	private class RequestRecommendTask extends LetvHttpAsyncTask<Comments> {
 
-            public RequestRecommendTask(Context context) {
-                  super(context);
-                  if (root != null) {
-                        root.loading(false);
-                  }
-            }
+		public RequestRecommendTask(Context context) {
+			super(context);
+			if (root != null) {
+				root.loading(false);
+			}
+		}
 
 		@Override
 		public LetvDataHull<Comments> doInBackground() {
@@ -137,32 +142,43 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 			int vid = (int) playController.vid;
 			int id = (int) playController.id;
 			Video video = playController.getVideo();
-			if(((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE||((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE_FULL){
-				requestDetailRecommendInfo = LetvHttpApi.requestGetComment(0, new LetvGsonParser<Comments>(0, Comments.class), id+"", pn+"", ps+"");
-			}else{
-				requestDetailRecommendInfo = LetvHttpApi.requestGetComment(0, new LetvGsonParser<Comments>(0, Comments.class), vid+"", pn+"", ps+"");
+			if (((BasePlayActivity) getActivity()).mPlayController
+					.getLaunchMode() == LAUNCH_MODE_LIVE
+					|| ((BasePlayActivity) getActivity()).mPlayController
+							.getLaunchMode() == LAUNCH_MODE_LIVE_FULL) {
+				requestDetailRecommendInfo = LetvHttpApi.requestGetComment(0,
+						new LetvGsonParser<Comments>(0, Comments.class), id
+								+ "", pn + "", ps + "");
+			} else {
+				requestDetailRecommendInfo = LetvHttpApi.requestGetComment(0,
+						new LetvGsonParser<Comments>(0, Comments.class), vid
+								+ "", pn + "", ps + "");
 			}
 			return requestDetailRecommendInfo;
 		}
 
 		@Override
 		public void onPostExecute(int updateId, Comments result) {
-			System.out.println("result ="+result);
+			System.out.println("result =" + result);
 			mComments.clear();
 			asList.clear();
 			// 这个判断条件有错
-			if (result != null && null != result.body&&null != result.body.comments&&null !=result.body.comments.data&&result.body.comments.data.length > 0) {
-				
-				for(int i=0;i<result.body.comments.data.length;i++){
+			if (result != null && null != result.body
+					&& null != result.body.comments
+					&& null != result.body.comments.data
+					&& result.body.comments.data.length > 0) {
+
+				for (int i = 0; i < result.body.comments.data.length; i++) {
 					asList.add(result.body.comments.data[i]);
 				}
-				if(!TextUtils.isEmpty(playController.content)){
-				
+				if (!TextUtils.isEmpty(playController.content)) {
+
 					asList.add(0, new Comments().newData());
-					asList.get(0).user=new Comments().newUser();
-					asList.get(0).user.username=PreferencesManager.getInstance().getNickUserName();
-					asList.get(0).content=playController.content;
-//					mComments.addAll(asList);
+					asList.get(0).user = new Comments().newUser();
+					asList.get(0).user.username = PreferencesManager
+							.getInstance().getNickUserName();
+					asList.get(0).content = playController.content;
+					// mComments.addAll(asList);
 				}
 
 				mComments.addAll(asList);
@@ -170,29 +186,30 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 				if (root != null) {
 					root.finish();
 				}
-			}else{
-					if(playController!=null&&playController.content!=null){
-						for(int i=0;i<result.body.comments.data.length;i++){
-							asList.add(result.body.comments.data[i]);
-						}
-						asList.add(0, new Comments().newData());
-						asList.get(0).user=new Comments().newUser();
-						asList.get(0).user.username=PreferencesManager.getInstance().getNickUserName();
-						asList.get(0).content=playController.content;
-						asList.get(0).vtime="刚刚";
-						mComments.addAll(asList);
-						updateUI();
-						if (root != null) {
-							root.finish();
-						}
-					}else{
-						if(null != root){
-							root.error("暂无评论!");
-						}
+			} else {
+				if (playController != null && playController.content != null) {
+					for (int i = 0; i < result.body.comments.data.length; i++) {
+						asList.add(result.body.comments.data[i]);
+					}
+					asList.add(0, new Comments().newData());
+					asList.get(0).user = new Comments().newUser();
+					asList.get(0).user.username = PreferencesManager
+							.getInstance().getNickUserName();
+					asList.get(0).content = playController.content;
+					asList.get(0).vtime = "刚刚";
+					mComments.addAll(asList);
+					updateUI();
+					if (root != null) {
+						root.finish();
+					}
+				} else {
+					if (null != root) {
+						root.error("暂无评论!");
 					}
 				}
-			if(asList.size()==0){
-				if(null != root){
+			}
+			if (asList.size() == 0) {
+				if (null != root) {
 					root.error("暂无评论!");
 				}
 			}
@@ -232,16 +249,19 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		if (playAlbumController != null) {
-//			Recommend tmp = mComments.get(position);
-//			if (tmp.type == 1) {
-//				BasePlayActivity.launch(getActivity(), tmp.id, 0, BasePlayActivity.LAUNCH_FROM_RELATED);
-//			} else {
-//				BasePlayActivity.launch(getActivity(), 0, tmp.id, BasePlayActivity.LAUNCH_FROM_RELATED);
-//			}
-//		}
-//		new RequestRecommendTask(getActivity()).start();
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// if (playAlbumController != null) {
+		// Recommend tmp = mComments.get(position);
+		// if (tmp.type == 1) {
+		// BasePlayActivity.launch(getActivity(), tmp.id, 0,
+		// BasePlayActivity.LAUNCH_FROM_RELATED);
+		// } else {
+		// BasePlayActivity.launch(getActivity(), 0, tmp.id,
+		// BasePlayActivity.LAUNCH_FROM_RELATED);
+		// }
+		// }
+		// new RequestRecommendTask(getActivity()).start();
 	}
 
 	/**
@@ -250,7 +270,7 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 	private void handlerData(int state) {
 		if (playController != null) {
 			switch (state) {
-		
+
 			case PlayAlbumControllerCallBack.STATE_RUNNING:
 				if (root != null) {
 					root.loading(true);
@@ -258,29 +278,31 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 				break;
 			case PlayAlbumControllerCallBack.STATE_FINISH:
 				if (root != null) {
-//					if (mComments == null || mComments.size() <= 0 || isError) {
-					if (mComments != null&&mComments.size() > 0) {
+					// if (mComments == null || mComments.size() <= 0 ||
+					// isError) {
+					if (mComments != null && mComments.size() > 0) {
 						mComments.clear();
-					}	
-					if(mComments != null&&mComments.size()==0){
+					}
+					if (mComments != null && mComments.size() == 0) {
 						new RequestRecommendTask(getActivity()).start();
 					}
-				
-//					}
+
+					// }
 				}
 				break;
 			case PlayAlbumControllerCallBack.STATE_RETRY:
 				if (root != null) {
-				
-//					if (mComments == null || mComments.size() <= 0 || isError) {
-					if (mComments != null&&mComments.size() > 0) {
+
+					// if (mComments == null || mComments.size() <= 0 ||
+					// isError) {
+					if (mComments != null && mComments.size() > 0) {
 						mComments.clear();
 						asList.clear();
 					}
-					if(mComments != null&&mComments.size()==0){
+					if (mComments != null && mComments.size() == 0) {
 						new RequestRecommendTask(getActivity()).start();
 					}
-					
+
 				}
 				break;
 			case PlayAlbumControllerCallBack.STATE_NET_NULL:
@@ -310,12 +332,12 @@ public class HalfPlayGetCommentsFragment extends LetvBaseFragment implements OnI
 
 	@Override
 	public void requestDetails(long cid, String vid) {
-		
+
 	}
 
 	@Override
 	public void setCurPage(int curPage) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

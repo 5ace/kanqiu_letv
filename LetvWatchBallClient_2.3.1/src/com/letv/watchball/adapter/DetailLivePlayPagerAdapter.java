@@ -7,16 +7,16 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.letv.watchball.ui.DetailLivePlayFragmentMannager;
 import com.letv.watchball.ui.DetailPlayFragmentMannager;
 
-public class DetailLivePlayPagerAdapter extends FragmentStatePagerAdapter{
+public class DetailLivePlayPagerAdapter extends FragmentStatePagerAdapter {
 
-	private DetailLivePlayFragmentMannager fragmentMannager ;
-	
-	private FragmentManager fm ;
-	
+	private DetailLivePlayFragmentMannager fragmentMannager;
+
+	private FragmentManager fm;
+
 	public DetailLivePlayPagerAdapter(FragmentManager fm) {
 		super(fm);
-		this.fm = fm ;
-		fragmentMannager = new DetailLivePlayFragmentMannager() ;
+		this.fm = fm;
+		fragmentMannager = new DetailLivePlayFragmentMannager();
 	}
 
 	@Override
@@ -28,9 +28,9 @@ public class DetailLivePlayPagerAdapter extends FragmentStatePagerAdapter{
 	public int getCount() {
 		return 4;
 	}
-	
-	public void format(){
+
+	public void format() {
 		fragmentMannager.destroy(fm);
-		fragmentMannager = null ;
+		fragmentMannager = null;
 	}
 }

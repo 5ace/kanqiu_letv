@@ -29,8 +29,8 @@ public class LetvNumberFormat {
 		String intValue;
 		String decValue = "";
 		if (numString.indexOf(".") != -1) {
-			intValue = numString.substring(0, numString.indexOf(".")-1);
-			decValue = numString.substring(numString.indexOf(".")+1);
+			intValue = numString.substring(0, numString.indexOf(".") - 1);
+			decValue = numString.substring(numString.indexOf(".") + 1);
 		} else {
 			intValue = String.valueOf(num);
 		}
@@ -72,7 +72,7 @@ public class LetvNumberFormat {
 			}
 			unit = unit * perUnit;
 		}
-		if(numTmp<20 && numTmp >=10){
+		if (numTmp < 20 && numTmp >= 10) {
 			return sb.substring(1);
 		}
 		return sb;
@@ -97,7 +97,8 @@ public class LetvNumberFormat {
 		// System.out.println(sb.toString().replaceAll("[零]+",
 		// "零").replaceAll("^零", "").replaceAll("零$", ""));
 		// 先将连续的零联合为一个零，再去掉头部和末尾的零
-		return sb.toString().replaceAll("[零]+", "零").replaceAll("^零", "").replaceAll("零$", "");
+		return sb.toString().replaceAll("[零]+", "零").replaceAll("^零", "")
+				.replaceAll("零$", "");
 	}
 
 	public static String formatDecnum(String num) {
@@ -109,13 +110,13 @@ public class LetvNumberFormat {
 
 		return sBuffer.toString();
 	}
-//
-//	public static void main(String[] args) {
-//		// NumberFormat.formatInteger(1000);
-//		System.out.println(NumberFormat.format(123+""));
-//		System.out.println(NumberFormat.format("101"));
-//		System.out.println(NumberFormat.format("1001"));
-//		System.out.println(NumberFormat.format("10100"));
-//		System.out.println(NumberFormat.format("1000000001.123"));
-//	}
+	//
+	// public static void main(String[] args) {
+	// // NumberFormat.formatInteger(1000);
+	// System.out.println(NumberFormat.format(123+""));
+	// System.out.println(NumberFormat.format("101"));
+	// System.out.println(NumberFormat.format("1001"));
+	// System.out.println(NumberFormat.format("10100"));
+	// System.out.println(NumberFormat.format("1000000001.123"));
+	// }
 }

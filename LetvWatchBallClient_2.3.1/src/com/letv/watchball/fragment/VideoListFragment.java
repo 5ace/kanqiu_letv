@@ -77,11 +77,11 @@ public class VideoListFragment extends ListFragment {
 	 * 是否焦点图已经加载
 	 */
 	private boolean hasFocusPicLoaded = false;
-	
-	private boolean update = false;
-      private boolean vrsLock = true;
 
-      public VideoListFragment() {
+	private boolean update = false;
+	private boolean vrsLock = true;
+
+	public VideoListFragment() {
 
 	}
 
@@ -91,7 +91,8 @@ public class VideoListFragment extends ListFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
@@ -100,7 +101,8 @@ public class VideoListFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		// 初始化ListView
 		mListView = getListView();
-		mListView.setDivider(new ColorDrawable(getResources().getColor(R.color.letv_list_divider)));
+		mListView.setDivider(new ColorDrawable(getResources().getColor(
+				R.color.letv_list_divider)));
 		mListView.setDividerHeight(1);
 		mListView.setCacheColorHint(0);
 		mListView.setFadingEdgeLength(0);
@@ -111,32 +113,35 @@ public class VideoListFragment extends ListFragment {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				if (scrollState == SCROLL_STATE_IDLE) {
-					if(refresh!=null){
+					if (refresh != null) {
 						refresh.setAlpha(255);
 					}
-				}else{
-					if(refresh!=null){
+				} else {
+					if (refresh != null) {
 						refresh.setAlpha(100);
 					}
 				}
 			}
 
 			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				Log.d("lhz", "firstVisibleItem:"+firstVisibleItem+" ,visibleItemCount:"+visibleItemCount+",totalItemCount:"+totalItemCount);
-				Log.d("lhz", "startPos:"+startPos);
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				Log.d("lhz", "firstVisibleItem:" + firstVisibleItem
+						+ " ,visibleItemCount:" + visibleItemCount
+						+ ",totalItemCount:" + totalItemCount);
+				Log.d("lhz", "startPos:" + startPos);
 				startPos = firstVisibleItem;
-				type=0;//其他页面刷新初始化
-				if (firstVisibleItem + visibleItemCount >= totalItemCount ) {
-			
+				type = 0;// 其他页面刷新初始化
+				if (firstVisibleItem + visibleItemCount >= totalItemCount) {
+
 					if (null != footerView) {
 						footerView.showLoading();
 					}
 
-                              if (vrsLock){
-                                    requsetData(false);
-                                    vrsLock = false;
-                              }
+					if (vrsLock) {
+						requsetData(false);
+						vrsLock = false;
+					}
 
 				}
 			}
@@ -153,16 +158,16 @@ public class VideoListFragment extends ListFragment {
 		});
 		mListView.addFooterView(footerView);
 		footerView.hide();
-		if(null == mGalleryFocusView){
+		if (null == mGalleryFocusView) {
 			mGalleryFocusView = new LetvGalleryFocusView(getActivity());
-		
+
 		}
 		getListView().addHeaderView(mGalleryFocusView);
-		
+
 		setListAdapter(adapter);
 
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -182,20 +187,21 @@ public class VideoListFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		if(null == getListView()){
+		if (null == getListView()) {
 			return;
 		}
 		position -= getListView().getHeaderViewsCount();
-		if(position < 0){
+		if (position < 0) {
 			return;
 		}
 		Data data = adapter.getVrsVieoList().body.data[position];
-		if(!data.aid.equals("")&&!data.vid.equals("")){
-			BasePlayActivity.launch(getActivity(), Long.parseLong(data.aid), Long.parseLong(data.vid));
-		}else{ //做个容错
+		if (!data.aid.equals("") && !data.vid.equals("")) {
+			BasePlayActivity.launch(getActivity(), Long.parseLong(data.aid),
+					Long.parseLong(data.vid));
+		} else { // 做个容错
 			BasePlayActivity.launch(getActivity(), 0, 0);
 		}
-		}
+	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
@@ -208,19 +214,21 @@ public class VideoListFragment extends ListFragment {
 	 * @param itemId
 	 */
 	public void setItemId(String itemId) {
-		if (itemId.equals(this.itemId) && null != adapter.getVrsVieoList() && null != adapter.getVrsVieoList().body
-				&& null != adapter.getVrsVieoList().body.data && adapter.getVrsVieoList().body.data.length > 0) {
+		if (itemId.equals(this.itemId) && null != adapter.getVrsVieoList()
+				&& null != adapter.getVrsVieoList().body
+				&& null != adapter.getVrsVieoList().body.data
+				&& adapter.getVrsVieoList().body.data.length > 0) {
 			return;
 		}
 		this.itemId = itemId;
-//		if (mListView.getFooterViewsCount() > 0) {
-//			mListView.removeFooterView(footerView);
-//		}
-//		mListView.addFooterView(footerView);
-//		setListAdapter(adapter);
-		//赛事切换时，先清空之前数据
+		// if (mListView.getFooterViewsCount() > 0) {
+		// mListView.removeFooterView(footerView);
+		// }
+		// mListView.addFooterView(footerView);
+		// setListAdapter(adapter);
+		// 赛事切换时，先清空之前数据
 		adapter.setVrsVieoList(new ListVideo());
-		
+
 		requsetData(true);
 		refrashListView();
 	}
@@ -231,17 +239,20 @@ public class VideoListFragment extends ListFragment {
 	 * @param currentOrderBy
 	 */
 	public void setCurrentOrderBy(String currentOrderBy) {
-		if (currentOrderBy.equals(this.currentOrderBy) && null != adapter.getVrsVieoList() && null != adapter.getVrsVieoList().body
-				&& null != adapter.getVrsVieoList().body.data && adapter.getVrsVieoList().body.data.length > 0) {
+		if (currentOrderBy.equals(this.currentOrderBy)
+				&& null != adapter.getVrsVieoList()
+				&& null != adapter.getVrsVieoList().body
+				&& null != adapter.getVrsVieoList().body.data
+				&& adapter.getVrsVieoList().body.data.length > 0) {
 			return;
 		}
 		this.currentOrderBy = currentOrderBy;
-//		if (mListView.getFooterViewsCount() > 0) {
-//			mListView.removeFooterView(footerView);
-//		}
-//		mListView.addFooterView(footerView);
-//		setListAdapter(adapter);
-		//赛事切换时，先清空之前数据
+		// if (mListView.getFooterViewsCount() > 0) {
+		// mListView.removeFooterView(footerView);
+		// }
+		// mListView.addFooterView(footerView);
+		// setListAdapter(adapter);
+		// 赛事切换时，先清空之前数据
 		adapter.setVrsVieoList(new ListVideo());
 		refrashListView();
 		requsetData(true);
@@ -250,49 +261,56 @@ public class VideoListFragment extends ListFragment {
 	/**
 	 * 设置赛事id，排序类型，请求数据，在赛程里面调用
 	 */
-	public void setCurrentOrderBy_itemId_requestData(String itemId, String currentOrderBy) {
-		if (itemId.equals(this.itemId) && currentOrderBy.equals(this.currentOrderBy)&& null != adapter.getVrsVieoList() && null != adapter.getVrsVieoList().body
-				&& null != adapter.getVrsVieoList().body.data && adapter.getVrsVieoList().body.data.length > 0) {
+	public void setCurrentOrderBy_itemId_requestData(String itemId,
+			String currentOrderBy) {
+		if (itemId.equals(this.itemId)
+				&& currentOrderBy.equals(this.currentOrderBy)
+				&& null != adapter.getVrsVieoList()
+				&& null != adapter.getVrsVieoList().body
+				&& null != adapter.getVrsVieoList().body.data
+				&& adapter.getVrsVieoList().body.data.length > 0) {
 			return;
 		}
 		this.itemId = itemId;
 		this.currentOrderBy = currentOrderBy;
-		//赛事切换时，先清空之前数据
+		// 赛事切换时，先清空之前数据
 		adapter.setVrsVieoList(new ListVideo());
 		LetvApplication.getInstance().setShowVideoList(true);
 		requsetData(true);
 		refrashListView();
-	
+
 	}
 
 	private RequestVrsVideosList requestVrsVideosListThread;
 
 	public void requsetData(boolean isNew) {
-		
-		if(isNew&&showFocusPic&&!hasFocusPicLoaded){
+
+		if (isNew && showFocusPic && !hasFocusPicLoaded) {
 			new RequestFocusPic(getActivity()).start();
 			LetvApplication.getInstance().setShowVideoList(true);
 		}
-//		if(isNew&LetvApplication.getInstance().isShowVideoList()){
-			if (null != requestVrsVideosListThread) {
-					requestVrsVideosListThread.cancel(true);
-			}
-			requestVrsVideosListThread = new RequestVrsVideosList(getActivity(), isNew);
-			requestVrsVideosListThread.start();
-			requestVrsVideosListThread.cancelDialog();
-			LetvApplication.getInstance().setShowVideoList(false);
-//			}
+		// if(isNew&LetvApplication.getInstance().isShowVideoList()){
+		if (null != requestVrsVideosListThread) {
+			requestVrsVideosListThread.cancel(true);
+		}
+		requestVrsVideosListThread = new RequestVrsVideosList(getActivity(),
+				isNew);
+		requestVrsVideosListThread.start();
+		requestVrsVideosListThread.cancelDialog();
+		LetvApplication.getInstance().setShowVideoList(false);
+		// }
 	}
-	
+
 	public void setImageView(ImageView refresh) {
-		this.refresh=refresh;
-		
-//		notityListImage();
+		this.refresh = refresh;
+
+		// notityListImage();
 	}
+
 	private void refrashListView() {
 		adapter.notifyDataSetChanged();
-		
-//		notityListImage();
+
+		// notityListImage();
 	}
 
 	/**
@@ -310,17 +328,19 @@ public class VideoListFragment extends ListFragment {
 
 			if (isNew) {
 				pageNum = 1;
-//				startPos = 0;
-//				hopePos = 0;
+				// startPos = 0;
+				// hopePos = 0;
 			}
 		}
-		
+
 		@Override
 		public ListVideo loadLocalData() {
-			if(isNew){
+			if (isNew) {
 				try {
-					LocalCacheBean bean = LetvCacheDataHandler.readHomeNewsData(currentOrderBy, itemId);
-					ListVideo result = new LetvGsonParser<ListVideo>(0, ListVideo.class).initialParse(bean.getCacheData());
+					LocalCacheBean bean = LetvCacheDataHandler
+							.readHomeNewsData(currentOrderBy, itemId);
+					ListVideo result = new LetvGsonParser<ListVideo>(0,
+							ListVideo.class).initialParse(bean.getCacheData());
 					return result;
 				} catch (Exception e) {
 
@@ -328,10 +348,10 @@ public class VideoListFragment extends ListFragment {
 			}
 			return null;
 		}
-		
+
 		@Override
 		public boolean loadLocalDataComplete(ListVideo t) {
-			if(null != t){
+			if (null != t) {
 				onPostExecute(0, t);
 				return true;
 			}
@@ -342,14 +362,19 @@ public class VideoListFragment extends ListFragment {
 		public LetvDataHull<ListVideo> doInBackground() {
 			LetvDataHull<ListVideo> dataHull = null;
 
-                  if (isCancel){
-                        return null;
-                  }
+			if (isCancel) {
+				return null;
+			}
 
-			dataHull = LetvHttpApi.requestListVideo(0, itemId, pageNum+"", pageSize+"", currentOrderBy, new LetvGsonParser<ListVideo>(0, ListVideo.class));
-//			dataHull = LetvHttpApi.requestVrsVideos(itemId, currentOrderBy, startPos, num, new LetvGsonParser<ListVideo>(0, ListVideo.class));
-			if(dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY){
-				LetvCacheDataHandler.saveHomeNewsData(dataHull.getSourceData(),currentOrderBy,itemId);
+			dataHull = LetvHttpApi.requestListVideo(0, itemId, pageNum + "",
+					pageSize + "", currentOrderBy,
+					new LetvGsonParser<ListVideo>(0, ListVideo.class));
+			// dataHull = LetvHttpApi.requestVrsVideos(itemId, currentOrderBy,
+			// startPos, num, new LetvGsonParser<ListVideo>(0,
+			// ListVideo.class));
+			if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
+				LetvCacheDataHandler.saveHomeNewsData(dataHull.getSourceData(),
+						currentOrderBy, itemId);
 			}
 			return dataHull;
 		}
@@ -360,31 +385,33 @@ public class VideoListFragment extends ListFragment {
 				if (isNew || null == adapter.getVrsVieoList()) {
 					adapter.setVrsVieoList(result);
 				} else {
-					adapter.getVrsVieoList().body.data = (Data[]) LetvUtil.addAllArrays(adapter.getVrsVieoList().body.data, result.body.data);
+					adapter.getVrsVieoList().body.data = (Data[]) LetvUtil
+							.addAllArrays(adapter.getVrsVieoList().body.data,
+									result.body.data);
 					adapter.getVrsVieoList().body.total = result.body.total;
 				}
 				if (!isNew) {
 					pageNum++;
-				}else{
-					if(type==0){
-						pageNum=2;
+				} else {
+					if (type == 0) {
+						pageNum = 2;
 					}
 				}
-				Log.i("oyys", "type=="+type);
-				
-//				startPos += pageSize;
-				if(null != footerView){
+				Log.i("oyys", "type==" + type);
+
+				// startPos += pageSize;
+				if (null != footerView) {
 					footerView.hide();
 				}
-//				if (null != footerView) {
-//					footerView.showLoading();
-//				}
+				// if (null != footerView) {
+				// footerView.showLoading();
+				// }
 
 				// 通知界面刷新数据
 				refrashListView();
 				this.cancelDialog();
-                        
-                        vrsLock = true;
+
+				vrsLock = true;
 			}
 		}
 
@@ -413,7 +440,7 @@ public class VideoListFragment extends ListFragment {
 		}
 
 	}
-	
+
 	/**
 	 * 请求VrsVideos数据
 	 * 
@@ -426,23 +453,26 @@ public class VideoListFragment extends ListFragment {
 		public RequestFocusPic(Context context) {
 			super(context);
 		}
-		
+
 		@Override
 		public FocusPicInfo loadLocalData() {
-			if(isNew){
+			if (isNew) {
 				try {
-					LocalCacheBean bean = LetvCacheDataHandler.readFocusPicInfo();
-					FocusPicInfo result = new LetvGsonParser<FocusPicInfo>(0, FocusPicInfo.class).initialParse(bean.getCacheData());
+					LocalCacheBean bean = LetvCacheDataHandler
+							.readFocusPicInfo();
+					FocusPicInfo result = new LetvGsonParser<FocusPicInfo>(0,
+							FocusPicInfo.class).initialParse(bean
+							.getCacheData());
 					return result;
 				} catch (Exception e) {
 				}
 			}
 			return null;
 		}
-		
+
 		@Override
 		public boolean loadLocalDataComplete(FocusPicInfo t) {
-			if(null != t){
+			if (null != t) {
 				onPostExecute(0, t);
 				return true;
 			}
@@ -453,9 +483,12 @@ public class VideoListFragment extends ListFragment {
 		public LetvDataHull<FocusPicInfo> doInBackground() {
 			LetvDataHull<FocusPicInfo> dataHull = null;
 
-			dataHull = LetvHttpApi.requestFocusPic(0, new LetvGsonParser<FocusPicInfo>(0, FocusPicInfo.class));
-//			dataHull = LetvHttpApi.requestVrsVideos(itemId, currentOrderBy, startPos, num, new LetvGsonParser<ListVideo>(0, ListVideo.class));
-			if(dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY){
+			dataHull = LetvHttpApi.requestFocusPic(0,
+					new LetvGsonParser<FocusPicInfo>(0, FocusPicInfo.class));
+			// dataHull = LetvHttpApi.requestVrsVideos(itemId, currentOrderBy,
+			// startPos, num, new LetvGsonParser<ListVideo>(0,
+			// ListVideo.class));
+			if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
 				LetvCacheDataHandler.saveFocusPicInfo(dataHull.getSourceData());
 			}
 			return dataHull;
@@ -463,20 +496,23 @@ public class VideoListFragment extends ListFragment {
 
 		@Override
 		public void onPostExecute(int updateId, FocusPicInfo result) {
-			if(!isLocalSucceed()){
+			if (!isLocalSucceed()) {
 				hasFocusPicLoaded = true;
 			}
-			if(null != result && null != result.body && null != result.body.focuspic && result.body.focuspic.length >0){
-				
-				VideoNewsFocusAdapter adapter = new VideoNewsFocusAdapter(getActivity(), null);
+			if (null != result && null != result.body
+					&& null != result.body.focuspic
+					&& result.body.focuspic.length > 0) {
+
+				VideoNewsFocusAdapter adapter = new VideoNewsFocusAdapter(
+						getActivity(), null);
 				ArrayList<FocusPic> list = new ArrayList<FocusPic>();
-			
-			for(FocusPic focuspic:result.body.focuspic){
-				  if(focuspic.getPid()!=-1|focuspic.getVid()!=-1){
-					  list.add(focuspic);
-				  }
-			}
-//				list.addAll(Arrays.asList(result.body.focuspic));
+
+				for (FocusPic focuspic : result.body.focuspic) {
+					if (focuspic.getPid() != -1 | focuspic.getVid() != -1) {
+						list.add(focuspic);
+					}
+				}
+				// list.addAll(Arrays.asList(result.body.focuspic));
 				adapter.setList(list);
 				mGalleryFocusView.setFocusInitData(list, adapter);
 				adapter.notifyDataSetChanged();
@@ -500,16 +536,18 @@ public class VideoListFragment extends ListFragment {
 		}
 
 	}
-	
+
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
 		/**
 		 * frament 销毁时，移除此fragment
 		 */
-		Fragment fragment = getFragmentManager().findFragmentById(mListView.getId());
-		FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-		if(null != fragment){
+		Fragment fragment = getFragmentManager().findFragmentById(
+				mListView.getId());
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		if (null != fragment) {
 			ft.remove(fragment).commitAllowingStateLoss();
 		}
 	}
@@ -521,6 +559,7 @@ public class VideoListFragment extends ListFragment {
 	public void setPageNum(int pageNum) {
 		this.pageNum = pageNum;
 	}
+
 	public void setbuttontype(int type) {
 		this.type = type;
 	}

@@ -1,28 +1,29 @@
 package com.letv.watchball.async;
+
 /**
  * 线程池配置类
  * */
 public class ThreadPoolOptions {
-	
+
 	/**
 	 * 线程池数量
 	 * */
-	private int size ; 
-	
+	private int size;
+
 	/**
 	 * 线程池内线程的级别
 	 * */
-	private int priority ;
-	
+	private int priority;
+
 	/**
 	 * 线程等待时间
 	 * */
-	private int waitPeriod ;
-	
+	private int waitPeriod;
+
 	/**
 	 * 是否重新执行失败的任务
 	 * */
-	private boolean isReplayFailTask ;
+	private boolean isReplayFailTask;
 
 	public int getSize() {
 		return size;

@@ -11,6 +11,7 @@ public class Share implements LetvBaseBean {
 
 	private String albumEnd;
 	private String videoEnd;
+
 	public String getAlbum_url() {
 		return album_url;
 	}

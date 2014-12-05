@@ -51,11 +51,11 @@ public class PipVideoView extends VideoView {
 		setVideoViewScale(mWidth, mHeight);
 
 	}
-	
+
 	@Override
 	protected void setVideoViewScale(int width, int height) {
 		LayoutParams lp = (LayoutParams) this.getLayoutParams();
-    	lp.height = height;
+		lp.height = height;
 		lp.width = width;
 		setLayoutParams(lp);
 	}

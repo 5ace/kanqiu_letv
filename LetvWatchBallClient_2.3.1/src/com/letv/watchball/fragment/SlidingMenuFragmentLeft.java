@@ -33,7 +33,7 @@ import com.letv.watchball.manager.LeftFragmentLsn;
 import com.letv.watchball.utils.LetvCacheDataHandler;
 
 @SuppressLint("ValidFragment")
-public class SlidingMenuFragmentLeft extends Fragment{
+public class SlidingMenuFragmentLeft extends Fragment {
 	/**
 	 * tag parent
 	 */
@@ -52,8 +52,10 @@ public class SlidingMenuFragmentLeft extends Fragment{
 		this.callback = callback;
 	}
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View root = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_left,null, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View root = LayoutInflater.from(getActivity()).inflate(
+				R.layout.fragment_left, null, false);
 		mListView = (ExpandableListView) root.findViewById(R.id.listView1);
 		return root;
 	}
@@ -62,36 +64,38 @@ public class SlidingMenuFragmentLeft extends Fragment{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		String[] tagTop = getResources().getStringArray(R.array.watchball_top);
-		TypedArray tagTopIcon = getResources().obtainTypedArray(R.array.watchball_top_icon);
+		TypedArray tagTopIcon = getResources().obtainTypedArray(
+				R.array.watchball_top_icon);
 		tagParent = getResources().getStringArray(R.array.watchball_tags);
 		adapter = new LeftFragmentAdapter(getActivity());
 		// add tag top
 		for (int i = 0; i < tagTop.length; i++) {
-			LeftFragmentItem topItem = new LeftFragmentItem(tagTop[i], tagTopIcon.getResourceId(i, -1));
+			LeftFragmentItem topItem = new LeftFragmentItem(tagTop[i],
+					tagTopIcon.getResourceId(i, -1));
 			itemsTop.add(topItem);
 		}
 		adapter.groupItemList.add(tagParent[0]);
 		adapter.childItemList.add(itemsTop);
 		mListView.setAdapter(adapter);
-//		mListView.setGroupIndicator(null);
-//		mListView.setCacheColorHint(Color.TRANSPARENT);
-//		mListView.setDivider(getResources().getDrawable(R.drawable.left_item_line_repeate));
+		// mListView.setGroupIndicator(null);
+		// mListView.setCacheColorHint(Color.TRANSPARENT);
+		// mListView.setDivider(getResources().getDrawable(R.drawable.left_item_line_repeate));
 		notifyDateChanged();
 		reloadMatchList();
 	}
-	
-	public void reloadMatchList(){
+
+	public void reloadMatchList() {
 		/**
 		 * 如果之前有加载的赛事列表，直接返回
 		 */
-		if(adapter.groupItemList.size() > 1){
+		if (adapter.groupItemList.size() > 1) {
 			return;
 		}
 		new RequestMatchList(getActivity()).start();
 	}
 
 	public void notifyDateChanged() {
-		 adapter.notifyDataSetChanged();
+		adapter.notifyDataSetChanged();
 		// 展开所有parent
 		for (int i = 0; i < adapter.groupItemList.size(); i++) {
 			mListView.expandGroup(i);
@@ -100,17 +104,19 @@ public class SlidingMenuFragmentLeft extends Fragment{
 		mListView.setOnGroupClickListener(new OnGroupClickListener() {
 
 			@Override
-			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) {
 				return true;
 			}
 		});
-		
-		
+
 		mListView.setOnChildClickListener(new OnChildClickListener() {
 
 			@Override
-			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-				LeftFragmentItem item = adapter.getChild(groupPosition, childPosition);
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				LeftFragmentItem item = adapter.getChild(groupPosition,
+						childPosition);
 				LetvApplication.getInstance().setShowVideoList(true);
 				switch (groupPosition) {
 				case 0:
@@ -123,30 +129,31 @@ public class SlidingMenuFragmentLeft extends Fragment{
 					}
 					break;
 				case 1:
-					//赛事
+					// 赛事
 					if (null != item) {
-                                    if (item.type.equals("310")){
-                                          callback.invoke(LeftFragmentLsn.ACTION_LIVE, "0");
-                                    } else {
-                                          callback.invoke(LeftFragmentLsn.ACTION_EVENTS, item.match);
-                                    }
+						if (item.type.equals("310")) {
+							callback.invoke(LeftFragmentLsn.ACTION_LIVE, "0");
+						} else {
+							callback.invoke(LeftFragmentLsn.ACTION_EVENTS,
+									item.match);
+						}
 
 					}
 					break;
 				case 2:
-					//原创节目
+					// 原创节目
 					if (null != item) {
-						callback.invoke(LeftFragmentLsn.ACTION_ORIGINAL, item.originalColumn);
+						callback.invoke(LeftFragmentLsn.ACTION_ORIGINAL,
+								item.originalColumn);
 					}
 					break;
 				}
-				adapter.onItemClick(groupPosition,childPosition);
+				adapter.onItemClick(groupPosition, childPosition);
 				adapter.notifyDataSetChanged();
 				return true;
 			}
 		});
 	}
-	
 
 	/**
 	 * http请求赛事列表
@@ -162,16 +169,17 @@ public class SlidingMenuFragmentLeft extends Fragment{
 		public MatchList loadLocalData() {
 			try {
 				LocalCacheBean bean = LetvCacheDataHandler.readMatchListData();
-				MatchList result = new LetvGsonParser<MatchList>(0,MatchList.class).initialParse(bean.getCacheData());
+				MatchList result = new LetvGsonParser<MatchList>(0,
+						MatchList.class).initialParse(bean.getCacheData());
 				return result;
 			} catch (Exception e) {
 			}
 			return null;
 		}
-		
+
 		@Override
 		public boolean loadLocalDataComplete(MatchList t) {
-			if(null != t){
+			if (null != t) {
 				onPostExecute(0, t);
 				return true;
 			}
@@ -180,19 +188,22 @@ public class SlidingMenuFragmentLeft extends Fragment{
 
 		@Override
 		public LetvDataHull<MatchList> doInBackground() {
-			LetvDataHull<MatchList> dataHull = LetvHttpApi.requestMatchlist(true, new LetvGsonParser<MatchList>(0, MatchList.class));
+			LetvDataHull<MatchList> dataHull = LetvHttpApi.requestMatchlist(
+					true, new LetvGsonParser<MatchList>(0, MatchList.class));
 			if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-				LetvCacheDataHandler.saveMatchListData(dataHull.getSourceData());
+				LetvCacheDataHandler
+						.saveMatchListData(dataHull.getSourceData());
 			}
 			return dataHull;
-//			return LetvHttpApi.requestMatchlist(true, new LetvGsonParser<MatchList>(0, MatchList.class));
+			// return LetvHttpApi.requestMatchlist(true, new
+			// LetvGsonParser<MatchList>(0, MatchList.class));
 		}
 
 		@Override
 		public void onPostExecute(int updateId, MatchList result) {
-			
-			//先clear之前的数据(缓存)
-			while(adapter.groupItemList.size() > 1) {	
+
+			// 先clear之前的数据(缓存)
+			while (adapter.groupItemList.size() > 1) {
 				adapter.groupItemList.remove(1);
 				adapter.childItemList.remove(1);
 			}
@@ -200,7 +211,8 @@ public class SlidingMenuFragmentLeft extends Fragment{
 			Match[] matchs = result.body.match_list;
 			ArrayList<LeftFragmentItem> itemsMatch = new ArrayList<LeftFragmentItem>();
 			for (int i = 0; i < matchs.length; i++) {
-				LeftFragmentItem sampleItem = new LeftFragmentItem(matchs[i].name, matchs[i].img_url, matchs[i].type);
+				LeftFragmentItem sampleItem = new LeftFragmentItem(
+						matchs[i].name, matchs[i].img_url, matchs[i].type);
 				sampleItem.match = matchs[i];
 				itemsMatch.add(sampleItem);
 			}
@@ -208,9 +220,11 @@ public class SlidingMenuFragmentLeft extends Fragment{
 			adapter.childItemList.add(itemsMatch);
 			// 添加网络加载的 原创节目列表
 			OriginalColumn[] originals = result.body.original_columns;
-			 ArrayList<LeftFragmentItem> itemsOriginal = new ArrayList<LeftFragmentItem>();
+			ArrayList<LeftFragmentItem> itemsOriginal = new ArrayList<LeftFragmentItem>();
 			for (int i = 0; i < originals.length; i++) {
-				LeftFragmentItem sampleItem = new LeftFragmentItem(originals[i].name, originals[i].img_url, originals[i].id + "");
+				LeftFragmentItem sampleItem = new LeftFragmentItem(
+						originals[i].name, originals[i].img_url,
+						originals[i].id + "");
 				sampleItem.originalColumn = originals[i];
 				itemsOriginal.add(sampleItem);
 			}
@@ -226,12 +240,14 @@ public class SlidingMenuFragmentLeft extends Fragment{
 
 		@Override
 		public void netErr(int updateId, String errMsg) {
-			System.err.println("netErr()->" + "updateId:" + updateId + "  ,errMsg:" + errMsg);
+			System.err.println("netErr()->" + "updateId:" + updateId
+					+ "  ,errMsg:" + errMsg);
 		}
 
 		@Override
 		public void dataNull(int updateId, String errMsg) {
-			System.err.println("dataNull()->" + "updateId:" + updateId + "  ,errMsg:" + errMsg);
+			System.err.println("dataNull()->" + "updateId:" + updateId
+					+ "  ,errMsg:" + errMsg);
 		}
 	}
 
@@ -262,10 +278,12 @@ public class SlidingMenuFragmentLeft extends Fragment{
 		/**
 		 * frament 销毁时，移除此fragment
 		 */
-		
-		Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment_left);
-		FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-		if(null != fragment&&!ft.isEmpty()){
+
+		Fragment fragment = getFragmentManager().findFragmentById(
+				R.id.fragment_left);
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		if (null != fragment && !ft.isEmpty()) {
 			ft.remove(fragment).commitAllowingStateLoss();
 		}
 	}

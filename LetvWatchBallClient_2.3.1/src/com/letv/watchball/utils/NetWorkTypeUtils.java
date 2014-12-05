@@ -19,8 +19,8 @@ public class NetWorkTypeUtils {
 	}
 
 	public static boolean isThirdGeneration() {
-		TelephonyManager telephonyManager = (TelephonyManager) LetvApplication.getInstance()
-				.getSystemService(Context.TELEPHONY_SERVICE);
+		TelephonyManager telephonyManager = (TelephonyManager) LetvApplication
+				.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
 		int netWorkType = telephonyManager.getNetworkType();
 		switch (netWorkType) {
 		case TelephonyManager.NETWORK_TYPE_GPRS:
@@ -51,8 +51,9 @@ public class NetWorkTypeUtils {
 	public static NetworkInfo getAvailableNetWorkInfo() {
 		NetworkInfo activeNetInfo = null;
 		try {
-			ConnectivityManager connectivityManager = (ConnectivityManager) LetvApplication.getInstance()
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			ConnectivityManager connectivityManager = (ConnectivityManager) LetvApplication
+					.getInstance().getSystemService(
+							Context.CONNECTIVITY_SERVICE);
 			activeNetInfo = connectivityManager.getActiveNetworkInfo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,8 +76,9 @@ public class NetWorkTypeUtils {
 				netWorkType = "1";
 			} else if (netWorkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
 
-				TelephonyManager telephonyManager = (TelephonyManager) LetvApplication.getInstance()
-						.getSystemService(Context.TELEPHONY_SERVICE);
+				TelephonyManager telephonyManager = (TelephonyManager) LetvApplication
+						.getInstance().getSystemService(
+								Context.TELEPHONY_SERVICE);
 
 				switch (telephonyManager.getNetworkType()) {
 				case TelephonyManager.NETWORK_TYPE_GPRS:
@@ -120,16 +122,17 @@ public class NetWorkTypeUtils {
 
 	public static int getNetType() {
 
-		ConnectivityManager connectivityManager = (ConnectivityManager) LetvApplication.getInstance()
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivityManager = (ConnectivityManager) LetvApplication
+				.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
 		if (networkInfo != null && networkInfo.isAvailable()) {
 			if (ConnectivityManager.TYPE_WIFI == networkInfo.getType()) {
 				return NETTYPE_WIFI;
 			} else {
-				TelephonyManager telephonyManager = (TelephonyManager) LetvApplication.getInstance()
-						.getSystemService(Context.TELEPHONY_SERVICE);
+				TelephonyManager telephonyManager = (TelephonyManager) LetvApplication
+						.getInstance().getSystemService(
+								Context.TELEPHONY_SERVICE);
 
 				switch (telephonyManager.getNetworkType()) {
 				case TelephonyManager.NETWORK_TYPE_GPRS:

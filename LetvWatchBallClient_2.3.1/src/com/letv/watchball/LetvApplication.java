@@ -21,6 +21,7 @@ import com.letv.watchball.db.PreferencesManager;
 import com.letv.watchball.http.api.LetvHttpApi;
 import com.letv.watchball.manager.FragmentManager;
 import com.letv.watchball.push.LetvWbPushService;
+import com.letv.watchball.share.AccessTokenKeeper;
 import com.letv.watchball.utils.CrashHandler;
 import com.letv.watchball.utils.LetvConfiguration;
 import com.letv.watchball.utils.LetvConstant;
@@ -112,7 +113,7 @@ public class LetvApplication extends Application {
 		super.onCreate();
 		instance = this;
 		mApplicationContext = getApplicationContext();
-
+		AccessTokenKeeper.clear(this);
 		setVType();
 		LetvHttpApi.initialize(LetvConstant.Global.PCODE,
 				LetvConstant.Global.VERSION, LetvUtil.generateDeviceId(this));

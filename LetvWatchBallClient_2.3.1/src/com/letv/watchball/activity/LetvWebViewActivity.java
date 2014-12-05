@@ -21,7 +21,8 @@ import android.widget.TextView;
 
 import com.letv.watchball.R;
 
-public class LetvWebViewActivity extends LetvBaseActivity implements OnClickListener {
+public class LetvWebViewActivity extends LetvBaseActivity implements
+		OnClickListener {
 
 	private WebView mWebView;
 
@@ -60,13 +61,13 @@ public class LetvWebViewActivity extends LetvBaseActivity implements OnClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.letv_webview);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+		getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 		loadType = getIntent().getStringExtra("loadType");
-		baseUrl = getIntent().getStringExtra("url");		
-		//Log.e("gongmeng", "URL:" + baseUrl.toString());
+		baseUrl = getIntent().getStringExtra("url");
+		// Log.e("gongmeng", "URL:" + baseUrl.toString());
 		findView();
 	}
-	
 
 	private void findView() {
 		back = (ImageView) findViewById(R.id.back);
@@ -95,8 +96,8 @@ public class LetvWebViewActivity extends LetvBaseActivity implements OnClickList
 		refresh.setOnClickListener(this);
 		titleView.setText(loadType);
 	}
-	
-//	private class LetvWebViewClient extends WebViewClient{
+
+	// private class LetvWebViewClient extends WebViewClient{
 
 	private class LetvWebViewClient extends WebViewClient {
 		@Override
@@ -105,14 +106,17 @@ public class LetvWebViewActivity extends LetvBaseActivity implements OnClickList
 				int index = url.indexOf("?");
 				if (index > 0) {
 					String u = url.substring(0, url.indexOf("?"));
-					if (".mp4".equals(u.substring(u.lastIndexOf("."), u.length())) && url.contains("vtype=mp4")) {
+					if (".mp4".equals(u.substring(u.lastIndexOf("."),
+							u.length()))
+							&& url.contains("vtype=mp4")) {
 						view.stopLoading();
 						if (!isFinish) {
 							Intent intent = new Intent(Intent.ACTION_VIEW);
 							String type = "video/mp4";
 							Uri name = Uri.parse(url);
 							intent.setDataAndType(name, type);
-							intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION,
+							intent.putExtra(
+									MediaStore.EXTRA_SCREEN_ORIENTATION,
 									ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 							LetvWebViewActivity.this.startActivity(intent);
 						}
@@ -171,7 +175,8 @@ public class LetvWebViewActivity extends LetvBaseActivity implements OnClickList
 	protected void onDestroy() {
 		super.onDestroy();
 		try {
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+			getWindow().clearFlags(
+					WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 			isFinish = true;
 			if (mWebView != null) {
 				mWebView.stopLoading();
@@ -185,18 +190,21 @@ public class LetvWebViewActivity extends LetvBaseActivity implements OnClickList
 			e.printStackTrace();
 		}
 	}
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 		callHiddenWebViewMethod("onPause");
 	}
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 		callHiddenWebViewMethod("onResume");
 	}
+
 	private void callHiddenWebViewMethod(String name) {
 		if (mWebView != null) {
 			try {

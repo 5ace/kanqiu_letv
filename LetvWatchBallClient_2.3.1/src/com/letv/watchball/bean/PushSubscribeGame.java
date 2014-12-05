@@ -2,8 +2,8 @@ package com.letv.watchball.bean;
 
 import com.letv.http.bean.LetvBaseBean;
 
-public class PushSubscribeGame implements LetvBaseBean{
-	
+public class PushSubscribeGame implements LetvBaseBean {
+
 	/**
 	 * 比赛id
 	 */
@@ -40,25 +40,19 @@ public class PushSubscribeGame implements LetvBaseBean{
 	 * 是否已经通知
 	 */
 	public int isNotify;
-	
+
 	/**
 	 * 是否已经发送赛果提醒
 	 */
 	public int isPushResult;
 
-      @Override
-      public String toString() {
-            return "PushSubscribeGame{" +
-                    "id='" + id + '\'' +
-                    ", level='" + level + '\'' +
-                    ", home='" + home + '\'' +
-                    ", guest='" + guest + '\'' +
-                    ", playDate='" + playDate + '\'' +
-                    ", playTime='" + playTime + '\'' +
-                    ", playTimeMillisecond=" + playTimeMillisecond +
-                    ", status=" + status +
-                    ", isNotify=" + isNotify +
-                    ", isPushResult=" + isPushResult +
-                    '}';
-      }
+	@Override
+	public String toString() {
+		return "PushSubscribeGame{" + "id='" + id + '\'' + ", level='" + level
+				+ '\'' + ", home='" + home + '\'' + ", guest='" + guest + '\''
+				+ ", playDate='" + playDate + '\'' + ", playTime='" + playTime
+				+ '\'' + ", playTimeMillisecond=" + playTimeMillisecond
+				+ ", status=" + status + ", isNotify=" + isNotify
+				+ ", isPushResult=" + isPushResult + '}';
+	}
 }

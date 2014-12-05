@@ -3,16 +3,16 @@ package com.letv.watchball.bean;
 import android.text.TextUtils;
 import com.letv.http.bean.LetvBaseBean;
 
-public class RealPlayUrlInfo implements LetvBaseBean{
-	
+public class RealPlayUrlInfo implements LetvBaseBean {
+
 	private String ddUrl = null;
-	
+
 	private String realUrl = null;
-	
+
 	private String geo = null;
-	
-	private boolean isIpValid = false ;
-	
+
+	private boolean isIpValid = false;
+
 	private int code;
 
 	public int getCode() {
@@ -45,12 +45,12 @@ public class RealPlayUrlInfo implements LetvBaseBean{
 
 	public void setGeo(String geo) {
 		this.geo = geo;
-		
-		if(!TextUtils.isEmpty(geo)) {
+
+		if (!TextUtils.isEmpty(geo)) {
 			setIpValid(geo.trim().toUpperCase().startsWith("CN"));
 		}
 	}
-	
+
 	public boolean isIpValid() {
 		return isIpValid;
 	}

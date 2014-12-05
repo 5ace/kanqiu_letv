@@ -23,19 +23,20 @@ public class DisplayMetricsUtils {
 	 * 屏幕密度
 	 */
 	private float dip;
-	
+
 	private float densityDpi;
-	
-	public DisplayMetricsUtils(Context mContext){
-		
-    	android.util.DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics(); 
-    	w_px=displayMetrics.widthPixels;
-    	h_px=displayMetrics.heightPixels;
-    	w_dip=displayMetrics.xdpi;
-    	h_dip=displayMetrics.ydpi; 
-    	dip=displayMetrics.density;
-    	densityDpi=displayMetrics.densityDpi;
-		
+
+	public DisplayMetricsUtils(Context mContext) {
+
+		android.util.DisplayMetrics displayMetrics = mContext.getResources()
+				.getDisplayMetrics();
+		w_px = displayMetrics.widthPixels;
+		h_px = displayMetrics.heightPixels;
+		w_dip = displayMetrics.xdpi;
+		h_dip = displayMetrics.ydpi;
+		dip = displayMetrics.density;
+		densityDpi = displayMetrics.densityDpi;
+
 	}
 
 	public int getW_px() {
@@ -61,5 +62,5 @@ public class DisplayMetricsUtils {
 	public float getDensityDpi() {
 		return this.densityDpi;
 	}
-	
+
 }

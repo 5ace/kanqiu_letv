@@ -220,14 +220,14 @@
             <!-- 1080P 电视推广 -->
 
             <TextView
-                android:id="@+id/full_1080_text"
+                android:id="@+id/full_1080"
                 style="@style/letv_text_11_ffadadad"
                 android:layout_width="50dip"
                 android:layout_height="32dip"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="1080P" 
-                android:visibility="gone"/>
+                android:text="超清" 
+                />
 
             <!-- 高清 -->
 

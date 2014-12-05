@@ -7,8 +7,7 @@ import com.letv.http.bean.LetvBaseBean;
  * */
 public class MessageBean implements LetvBaseBean {
 	/**
-	 * title String 标题 
-	 * message String 内容
+	 * title String 标题 message String 内容
 	 */
 	public String msgId;
 	public String title;
@@ -20,15 +19,17 @@ public class MessageBean implements LetvBaseBean {
 
 	@Override
 	public String toString() {
-		return "MessageBean [msgId ="+msgId+"title=" + title + ", message=" + message + "]";
+		return "MessageBean [msgId =" + msgId + "title=" + title + ", message="
+				+ message + "]";
 	}
 
-	public MessageBean(String msgId,String title, String message) {
+	public MessageBean(String msgId, String title, String message) {
 		super();
 		this.msgId = msgId;
 		this.title = title;
 		this.message = message;
 	}
+
 	public MessageBean(String title, String message) {
 		super();
 		this.title = title;

@@ -29,7 +29,8 @@ import com.letv.watchball.utils.LogInfo;
 import com.letv.watchball.utils.UIs;
 import com.letv.watchball.view.PublicLoadLayout;
 
-public class HalfPlayIntroductionFragment extends LetvBaseFragment implements PlayAlbumControllerCallBack,OnItemClickListener{
+public class HalfPlayIntroductionFragment extends LetvBaseFragment implements
+		PlayAlbumControllerCallBack, OnItemClickListener {
 
 	private PlayController playController;
 
@@ -42,32 +43,34 @@ public class HalfPlayIntroductionFragment extends LetvBaseFragment implements Pl
 	 * 直播 全屏直播
 	 */
 	public static final int LAUNCH_MODE_LIVE_FULL = 5;
-	
-	
+
 	private PlayAlbumController playAlbumController;
-	private PlayLiveController  PlayLiveController ;
+	private PlayLiveController PlayLiveController;
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		root = UIs.createPage(getActivity(), R.layout.detailplay_half_introduction);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		root = UIs.createPage(getActivity(),
+				R.layout.detailplay_half_introduction);
 		root.setPadding(1, 0, 1, 0);
 		root.setBackgroundResource(R.color.letv_color_ffdfdfdf);
 		return root;
 	}
 
-	
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if(((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE||((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE_FULL){
+		if (((BasePlayActivity) getActivity()).mPlayController.getLaunchMode() == LAUNCH_MODE_LIVE
+				|| ((BasePlayActivity) getActivity()).mPlayController
+						.getLaunchMode() == LAUNCH_MODE_LIVE_FULL) {
 			PlayLiveController = (PlayLiveController) ((BasePlayActivity) getActivity()).mPlayController;
 			playController = PlayLiveController;
-		}else{
+		} else {
 			playAlbumController = (PlayAlbumController) ((BasePlayActivity) getActivity()).mPlayController;
 			playController = playAlbumController;
 		}
@@ -85,7 +88,7 @@ public class HalfPlayIntroductionFragment extends LetvBaseFragment implements Pl
 
 	@Override
 	public void onDestroyView() {
-//		Log.d("lhz", "HalfPlayIntroductionFragment.onDestroyView");
+		// Log.d("lhz", "HalfPlayIntroductionFragment.onDestroyView");
 		super.onDestroyView();
 		cancel();
 		this.root = null;
@@ -106,15 +109,20 @@ public class HalfPlayIntroductionFragment extends LetvBaseFragment implements Pl
 		case PlayAlbumControllerCallBack.STATE_FINISH:
 			if (root != null) {
 				root.finish();
-				if(((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE||((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE_FULL){
-					IntroductionBuilder.build(playController.getAlbum(), root,PlayLiveController.game);
-				}else{
-					IntroductionBuilder.build(playController.getAlbum(), root,null);
+				if (((BasePlayActivity) getActivity()).mPlayController
+						.getLaunchMode() == LAUNCH_MODE_LIVE
+						|| ((BasePlayActivity) getActivity()).mPlayController
+								.getLaunchMode() == LAUNCH_MODE_LIVE_FULL) {
+					IntroductionBuilder.build(playController.getAlbum(), root,
+							PlayLiveController.game);
+				} else {
+					IntroductionBuilder.build(playController.getAlbum(), root,
+							null);
 				}
 
-				
-				if(null != playController.getVideo()){
-					request(playController.getVideo().getCid(), playController.vid+"");
+				if (null != playController.getVideo()) {
+					request(playController.getVideo().getCid(),
+							playController.vid + "");
 				}
 			}
 			break;
@@ -140,21 +148,22 @@ public class HalfPlayIntroductionFragment extends LetvBaseFragment implements Pl
 	public void notify(int state) {
 		handlerData();
 	}
+
 	@Override
 	public void requestDetails(long cid, String vid) {
 		request(cid, vid);
 	}
 
-      @Override
-      public void setCurPage(int curPage) {
+	@Override
+	public void setCurPage(int curPage) {
 
-      }
+	}
 
-      private RequestVideosDetailTask requestTask;
+	private RequestVideosDetailTask requestTask;
 
 	public void request(long cid, String vid) {
-		LogInfo.log("main", "cid = "+cid + "  vid ="+vid);
-		if (cid == AlbumNew.Channel.TYPE_JOY || cid == AlbumNew.Channel.TYPE_PE) {//娱乐跟体育频道才去请求视频详情
+		LogInfo.log("main", "cid = " + cid + "  vid =" + vid);
+		if (cid == AlbumNew.Channel.TYPE_JOY || cid == AlbumNew.Channel.TYPE_PE) {// 娱乐跟体育频道才去请求视频详情
 			cancel();
 			requestTask = new RequestVideosDetailTask(getActivity(), vid);
 			requestTask.start();
@@ -204,10 +213,15 @@ public class HalfPlayIntroductionFragment extends LetvBaseFragment implements Pl
 		@Override
 		public boolean loadLocalDataComplete(AlbumNew result) {
 			if (result != null) {
-				if(((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE||((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE_FULL){
-					IntroductionBuilder.build(playController.getAlbum(), root,PlayLiveController.game);
-				}else{
-					IntroductionBuilder.build(playController.getAlbum(), root,null);
+				if (((BasePlayActivity) getActivity()).mPlayController
+						.getLaunchMode() == LAUNCH_MODE_LIVE
+						|| ((BasePlayActivity) getActivity()).mPlayController
+								.getLaunchMode() == LAUNCH_MODE_LIVE_FULL) {
+					IntroductionBuilder.build(playController.getAlbum(), root,
+							PlayLiveController.game);
+				} else {
+					IntroductionBuilder.build(playController.getAlbum(), root,
+							null);
 				}
 				return true;
 			}
@@ -222,14 +236,20 @@ public class HalfPlayIntroductionFragment extends LetvBaseFragment implements Pl
 			}
 			AlbumNewParse parser = new AlbumNewParse();
 			int aid = (int) playController.aid;
-			if(((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE||((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE_FULL){
-				dataHull = LetvHttpApi.requestAlbumVideoInfo(0, aid+"", "album", null, parser);
-			}else{
-				dataHull = LetvHttpApi.requestAlbumVideoInfo(0, vid, "video", null, parser);
+			if (((BasePlayActivity) getActivity()).mPlayController
+					.getLaunchMode() == LAUNCH_MODE_LIVE
+					|| ((BasePlayActivity) getActivity()).mPlayController
+							.getLaunchMode() == LAUNCH_MODE_LIVE_FULL) {
+				dataHull = LetvHttpApi.requestAlbumVideoInfo(0, aid + "",
+						"album", null, parser);
+			} else {
+				dataHull = LetvHttpApi.requestAlbumVideoInfo(0, vid, "video",
+						null, parser);
 			}
-			
+
 			if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-				LetvCacheDataHandler.saveDetailData(parser.getMarkId(), dataHull.getSourceData(), vid);
+				LetvCacheDataHandler.saveDetailData(parser.getMarkId(),
+						dataHull.getSourceData(), vid);
 			}
 			return dataHull;
 		}
@@ -237,11 +257,16 @@ public class HalfPlayIntroductionFragment extends LetvBaseFragment implements Pl
 		@Override
 		public void onPostExecute(int updateId, AlbumNew result) {
 			if (result != null) {
-				
-				if(((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE||((BasePlayActivity) getActivity()).mPlayController.getLaunchMode()==LAUNCH_MODE_LIVE_FULL){
-					IntroductionBuilder.build(playController.getAlbum(), root,PlayLiveController.game);
-				}else{
-					IntroductionBuilder.build(playController.getAlbum(), root,null);
+
+				if (((BasePlayActivity) getActivity()).mPlayController
+						.getLaunchMode() == LAUNCH_MODE_LIVE
+						|| ((BasePlayActivity) getActivity()).mPlayController
+								.getLaunchMode() == LAUNCH_MODE_LIVE_FULL) {
+					IntroductionBuilder.build(playController.getAlbum(), root,
+							PlayLiveController.game);
+				} else {
+					IntroductionBuilder.build(playController.getAlbum(), root,
+							null);
 				}
 			}
 			if (root != null) {
@@ -274,6 +299,6 @@ public class HalfPlayIntroductionFragment extends LetvBaseFragment implements Pl
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

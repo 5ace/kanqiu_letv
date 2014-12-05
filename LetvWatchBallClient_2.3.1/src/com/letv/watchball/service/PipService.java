@@ -29,15 +29,17 @@ import com.letv.watchball.view.PipPlayerView;
 
 /**
  * 隐藏/显示底部控制条的调用逻辑也在这个类中
- * @author 
+ * 
+ * @author
  */
 public class PipService extends Service {
-	
+
 	public static final int NOTIFICATION_ID = 109001;
 	private static final Class<?>[] mSetForegroundSignature = new Class[] { boolean.class };
-	private static final Class<?>[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
+	private static final Class<?>[] mStartForegroundSignature = new Class[] {
+			int.class, Notification.class };
 	private static final Class<?>[] mStopForegroundSignature = new Class[] { boolean.class };
-	
+
 	private WindowManager wm = null;
 	private WindowManager.LayoutParams wmParams = null;
 	private PipPlayerView view;
@@ -62,13 +64,13 @@ public class PipService extends Service {
 	private Object[] mStartForegroundArgs = new Object[2];
 	private Object[] mStopForegroundArgs = new Object[1];
 
-	public static void launch(Context context, Bundle bundle){
-		Intent intent = new Intent(context,PipService.class);
-		intent.putExtra(LetvConstant.Intent.Bundle.PLAY,bundle);
+	public static void launch(Context context, Bundle bundle) {
+		Intent intent = new Intent(context, PipService.class);
+		intent.putExtra(LetvConstant.Intent.Bundle.PLAY, bundle);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startService(intent);
+		context.startService(intent);
 	}
-	
+
 	void invokeMethod(Method method, Object[] args) {
 		try {
 			method.invoke(this, args);
@@ -120,12 +122,15 @@ public class PipService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		//初始化艾瑞统计
-//		IRMonitor.getInstance(this).Init(LetvConstant.MAPPTRACKERKEY, LetvUtil.generateDeviceId(this), LetvConfiguration.isDebug());
+		// 初始化艾瑞统计
+		// IRMonitor.getInstance(this).Init(LetvConstant.MAPPTRACKERKEY,
+		// LetvUtil.generateDeviceId(this), LetvConfiguration.isDebug());
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		try {
-			mStartForeground = getClass().getMethod("startForeground", mStartForegroundSignature);
-			mStopForeground = getClass().getMethod("stopForeground", mStopForegroundSignature);
+			mStartForeground = getClass().getMethod("startForeground",
+					mStartForegroundSignature);
+			mStopForeground = getClass().getMethod("stopForeground",
+					mStopForegroundSignature);
 			adjustPermission();
 			return;
 		} catch (NoSuchMethodException e) {
@@ -133,10 +138,12 @@ public class PipService extends Service {
 			mStartForeground = mStopForeground = null;
 		}
 		try {
-			mSetForeground = getClass().getMethod("setForeground", mSetForegroundSignature);
+			mSetForeground = getClass().getMethod("setForeground",
+					mSetForegroundSignature);
 			adjustPermission();
 		} catch (NoSuchMethodException e) {
-			throw new IllegalStateException("OS doesn't have Service.startForeground OR Service.setForeground!");
+			throw new IllegalStateException(
+					"OS doesn't have Service.startForeground OR Service.setForeground!");
 		}
 
 	}
@@ -151,19 +158,25 @@ public class PipService extends Service {
 		//
 		// startForegroundCompat(NOTIFICATION_ID, notification);
 
-		Notification notification = new Notification(R.drawable.notify_icon, TextUtil.getString(R.string.pipservice_title), System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.notify_icon,
+				TextUtil.getString(R.string.pipservice_title),
+				System.currentTimeMillis());
 		Intent notificationIntent = new Intent(this, PipService.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-		notification.setLatestEventInfo(this, TextUtil.getString(R.string.pipservice_title), TextUtil.getString(R.string.pipservice_msg), pendingIntent);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+				notificationIntent, 0);
+		notification.setLatestEventInfo(this,
+				TextUtil.getString(R.string.pipservice_title),
+				TextUtil.getString(R.string.pipservice_msg), pendingIntent);
 		startForegroundCompat(NOTIFICATION_ID, notification);
 	}
+
 	private void createView() {
 		view = new PipPlayerView(this);
 		// 获取WindowManager
 		wm = (WindowManager) getApplicationContext().getSystemService("window");
 		// 设置LayoutParams(全局变量）相关参数
-		
-		if(null == wmParams){
+
+		if (null == wmParams) {
 			wmParams = new WindowManager.LayoutParams();
 			wmParams.type = 2002;
 			wmParams.flags |= 8;
@@ -224,7 +237,8 @@ public class PipService extends Service {
 	public static int MOVE_LENGTH = 15;
 
 	public boolean wannMove() {
-		if (Math.abs(x - StartX) < MOVE_LENGTH && Math.abs(y - StartY) < MOVE_LENGTH) {
+		if (Math.abs(x - StartX) < MOVE_LENGTH
+				&& Math.abs(y - StartY) < MOVE_LENGTH) {
 			return false;
 		}
 		return true;
@@ -232,11 +246,14 @@ public class PipService extends Service {
 
 	/**
 	 * 显示控制条
+	 * 
 	 * @return
 	 */
 	public boolean showControl() {
-		if (Math.abs(x - StartX) < MOVE_LENGTH && Math.abs(y - StartY) < MOVE_LENGTH) {
-			if (null == view || null == view.getPlayController() || null == view.getPlayController().getMediaController()) {
+		if (Math.abs(x - StartX) < MOVE_LENGTH
+				&& Math.abs(y - StartY) < MOVE_LENGTH) {
+			if (null == view || null == view.getPlayController()
+					|| null == view.getPlayController().getMediaController()) {
 				return true;
 			}
 			if (view.getPlayController().getMediaController().isShowing()) {
@@ -263,12 +280,13 @@ public class PipService extends Service {
 			stopSelf();
 			return;
 		}
-		if(null != wm && null != view){
-			try{
+		if (null != wm && null != view) {
+			try {
 				view.finish();
 				wm.removeView(view);
-			}catch (Exception e) {
-				LogInfo.log("zlb", "PipService_onStart_wm.removeView-error = " + e.toString());
+			} catch (Exception e) {
+				LogInfo.log("zlb", "PipService_onStart_wm.removeView-error = "
+						+ e.toString());
 			}
 			view = null;
 		}
@@ -293,6 +311,6 @@ public class PipService extends Service {
 		return null;
 	}
 
-      public static Game game = null;
+	public static Game game = null;
 
 }

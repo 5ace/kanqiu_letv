@@ -7,7 +7,8 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
-public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureListener {
+public class LetvPlayGestureLayout extends RelativeLayout implements
+		OnGestureListener {
 
 	/**
 	 * 无事件
@@ -106,7 +107,8 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 		init();
 	}
 
-	public LetvPlayGestureLayout(Context activity, AttributeSet attrs, int defStyle) {
+	public LetvPlayGestureLayout(Context activity, AttributeSet attrs,
+			int defStyle) {
 		super(activity, attrs, defStyle);
 		init();
 	}
@@ -116,35 +118,36 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 	 * */
 	protected void init() {
 		mGestureDetector = new GestureDetector(this);
-		mGestureDetector.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+		mGestureDetector
+				.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
 
-			/**
-			 * 单击
-			 * */
-			@Override
-			public boolean onSingleTapConfirmed(MotionEvent e) {
-				if (letvPlayGestureCallBack != null) {
-					letvPlayGestureCallBack.onSingleTapUp();
-				}
-				return true;
-			}
+					/**
+					 * 单击
+					 * */
+					@Override
+					public boolean onSingleTapConfirmed(MotionEvent e) {
+						if (letvPlayGestureCallBack != null) {
+							letvPlayGestureCallBack.onSingleTapUp();
+						}
+						return true;
+					}
 
-			/**
-			 * 双击
-			 * */
-			@Override
-			public boolean onDoubleTapEvent(MotionEvent e) {
-				return false;
-			}
+					/**
+					 * 双击
+					 * */
+					@Override
+					public boolean onDoubleTapEvent(MotionEvent e) {
+						return false;
+					}
 
-			/**
-			 * 双击
-			 * */
-			@Override
-			public boolean onDoubleTap(MotionEvent e) {
-				return true;
-			}
-		});
+					/**
+					 * 双击
+					 * */
+					@Override
+					public boolean onDoubleTap(MotionEvent e) {
+						return true;
+					}
+				});
 	}
 
 	/**
@@ -172,7 +175,8 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 				break;
 			case LANDSCAPE_SCROLL_FINISH:
 				if (letvPlayGestureCallBack != null) {
-					letvPlayGestureCallBack.onLandscapeScrollFinish(landscapeProgress);
+					letvPlayGestureCallBack
+							.onLandscapeScrollFinish(landscapeProgress);
 				}
 				break;
 			default:
@@ -194,8 +198,8 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 
 	@Override
 	public boolean onDown(MotionEvent e) {
-		leftProgress = 0 ;
-		rightProgerss = 0 ;
+		leftProgress = 0;
+		rightProgerss = 0;
 		if (letvPlayGestureCallBack != null) {
 			letvPlayGestureCallBack.onDown();
 		}
@@ -216,7 +220,8 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 	 * 完成手势走的调节声音和调节亮度的功能
 	 * */
 	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
 		int s = e2.getPointerCount();
 		if (s == 2) {// 双指滑动
 			offsetY += distanceY;
@@ -234,41 +239,45 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 				}
 			}
 		} else if (s == 1) {// 单指滑动
-			if (Math.abs(distanceY) > portraitLimitSlope * Math.abs(distanceX) && directionalLock != 2) {// 斜率判断，竖划
+			if (Math.abs(distanceY) > portraitLimitSlope * Math.abs(distanceX)
+					&& directionalLock != 2) {// 斜率判断，竖划
 				directionalLock = 1;
 				if (e1.getX() > (1 - bothSidesCuttingValue) * getWidth()) {// 右半屏幕上下滑动
 					rightProgerss += distanceY / getHeight();
-//					if (rightProgerss > 1) {
-//						rightProgerss = 1;
-//					}
+					// if (rightProgerss > 1) {
+					// rightProgerss = 1;
+					// }
 
-//					if (rightProgerss < 0) {
-//						rightProgerss = 0;
-//					}
+					// if (rightProgerss < 0) {
+					// rightProgerss = 0;
+					// }
 					if (letvPlayGestureCallBack != null) {
 						letvPlayGestureCallBack.onRightScroll(rightProgerss);
 					}
 				} else if (e1.getX() < bothSidesCuttingValue * getWidth()) {// 左半屏幕上下滑动
 					leftProgress += distanceY / getHeight();
-//					if (leftProgress > 1) {
-//						leftProgress = 1;
-//					}
+					// if (leftProgress > 1) {
+					// leftProgress = 1;
+					// }
 
-//					if (leftProgress < 0) {
-//						leftProgress = 0;
-//					}
+					// if (leftProgress < 0) {
+					// leftProgress = 0;
+					// }
 					if (letvPlayGestureCallBack != null) {
 						letvPlayGestureCallBack.onLeftScroll(leftProgress);
 					}
 				}
-			} else if (Math.abs(distanceY) < landscapeLimitSlope * Math.abs(distanceX) && directionalLock != 1) {// 斜率判断，横划
+			} else if (Math.abs(distanceY) < landscapeLimitSlope
+					* Math.abs(distanceX)
+					&& directionalLock != 1) {// 斜率判断，横划
 				directionalLock = 2;
 				offsetX -= distanceX;
 
 				landscapeProgress = offsetX / getWidth();
 
 				if (letvPlayGestureCallBack != null) {
-					letvPlayGestureCallBack.onLandscapeScroll(landscapeProgress);
+					letvPlayGestureCallBack
+							.onLandscapeScroll(landscapeProgress);
 				}
 				event = LANDSCAPE_SCROLL_FINISH;
 			}
@@ -278,7 +287,8 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 	}
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
 		return false;
 	}
 
@@ -293,7 +303,8 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 		return letvPlayGestureCallBack;
 	}
 
-	public void setLetvPlayGestureCallBack(LetvPlayGestureCallBack letvPlayGestureCallBack) {
+	public void setLetvPlayGestureCallBack(
+			LetvPlayGestureCallBack letvPlayGestureCallBack) {
 		this.letvPlayGestureCallBack = letvPlayGestureCallBack;
 	}
 
@@ -302,6 +313,7 @@ public class LetvPlayGestureLayout extends RelativeLayout implements OnGestureLi
 		 * 双指下划
 		 * */
 		public void onDown();
+
 		/**
 		 * 双指下划
 		 * */

@@ -22,37 +22,37 @@ import com.letv.watchball.view.LoadingDialog;
 /**
  * 网络请求的异步任务
  * */
-public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
-	   extends LetvBaseTaskImpl implements LetvHttpAsyncTaskInterface<T> {
+public abstract class LetvHttpAsyncTask<T extends LetvBaseBean> extends
+		LetvBaseTaskImpl implements LetvHttpAsyncTaskInterface<T> {
 
 	protected Context context;
 
 	private boolean dialog = false;
 
 	private LoadingDialog loadingDialog;
-	
-	protected boolean isCancel = false ;
-	
-	private Handler handler ;
-	
-	private Timer timer ;
-	
+
+	protected boolean isCancel = false;
+
+	private Handler handler;
+
+	private Timer timer;
+
 	private boolean dialogcancelable = true;
-	
-	private String message ;
+
+	private String message;
 	private boolean isLocalSucceed = false;
 
 	public LetvHttpAsyncTask(Context context) {
 		this.context = context;
-		handler = new Handler(Looper.getMainLooper()) ;
-		timer = new Timer() ;
+		handler = new Handler(Looper.getMainLooper());
+		timer = new Timer();
 	}
 
 	public LetvHttpAsyncTask(Context context, boolean dialog) {
 		this.context = context;
 		this.dialog = dialog;
-		handler = new Handler(Looper.getMainLooper()) ;
-		timer = new Timer() ;
+		handler = new Handler(Looper.getMainLooper());
+		timer = new Timer();
 	}
 
 	public final boolean run() {
@@ -81,9 +81,9 @@ public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
 
 					@Override
 					public void run() {
-//						if (!isLocalSucceed) {
-							netNull();
-//						}
+						// if (!isLocalSucceed) {
+						netNull();
+						// }
 					}
 				});
 
@@ -91,13 +91,13 @@ public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
 			}
 
 			postUI(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					showDialog();
 				}
 			});
-			
+
 			if (!isCancel) {// 加载网络数据
 				final LetvDataHull<T> dataHull = doInBackground();
 
@@ -116,17 +116,21 @@ public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
 									cancel(true);
 									message = dataHull.getMessage();
 									if (dataHull.getDataType() == LetvDataHull.DataType.DATA_IS_INTEGRITY) {
-										onPostExecute(dataHull.getUpdataId(), dataHull.getDataEntity());
-										
+										onPostExecute(dataHull.getUpdataId(),
+												dataHull.getDataEntity());
+
 									} else if (dataHull.getDataType() == LetvDataHull.DataType.DATA_CAN_NOT_PARSE) {
 										if (!isLocalSucceed)
-											dataNull(dataHull.getUpdataId(), message);
-									}/* else if (dataHull.getDataType() == LetvDataHull.DataType.DATA_NO_UPDATE) {
+											dataNull(dataHull.getUpdataId(),
+													message);
+									}/*
+									 * else if (dataHull.getDataType() ==
+									 * LetvDataHull.DataType.DATA_NO_UPDATE) {
+									 * if (!isLocalSucceed) noUpdate(); }
+									 */else {
 										if (!isLocalSucceed)
-											noUpdate();
-									} */else {
-										if (!isLocalSucceed)
-											netErr(dataHull.getUpdataId(), message);
+											netErr(dataHull.getUpdataId(),
+													message);
 									}
 								}
 								cancel();
@@ -150,37 +154,37 @@ public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
 
 		return true;
 	}
-	
-	public void cancel(boolean isCancel){
+
+	public void cancel(boolean isCancel) {
 		cancelDialog();
-		this.isCancel = isCancel ;
-		if(timer != null){
+		this.isCancel = isCancel;
+		if (timer != null) {
 			timer.purge();
 			timer.cancel();
 		}
 	}
-	
-	public boolean isCancelled(){
-		return this.isCancel ;
+
+	public boolean isCancelled() {
+		return this.isCancel;
 	}
 
 	@Override
 	public boolean onPreExecute() {
 		return true;
 	}
-	
-	private void postUI(Runnable runnable){
-		if(Thread.currentThread() != Looper.getMainLooper().getThread()){
+
+	private void postUI(Runnable runnable) {
+		if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
 			handler.post(runnable);
-		}else{
-			runnable.run() ;
+		} else {
+			runnable.run();
 		}
 	}
-	
-	public String getMessage(){
-		return message ;
+
+	public String getMessage() {
+		return message;
 	}
-	
+
 	public final void start() {
 		isCancel = !onPreExecute();
 		if (isCancel) {
@@ -193,23 +197,25 @@ public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
 			});
 		}
 		mThreadPool.addNewTask(this);// 加入线程队列，等待执行
-		
-		if(dialog){
+
+		if (dialog) {
 			timer.schedule(new TimerTask() {
-				
+
 				@Override
 				public void run() {
-					if(!LetvHttpAsyncTask.this.isCancel){
+					if (!LetvHttpAsyncTask.this.isCancel) {
 						handler.post(new Runnable() {
-							
+
 							@Override
 							public void run() {
-								
-								NetworkInfo networkInfo = NetWorkTypeUtils.getAvailableNetWorkInfo();
+
+								NetworkInfo networkInfo = NetWorkTypeUtils
+										.getAvailableNetWorkInfo();
 
 								if (networkInfo == null) {
-									
-									UIs.notifyShortNormal(context, R.string.toast_net_15);
+
+									UIs.notifyShortNormal(context,
+											R.string.toast_net_15);
 								}
 								netErr(0, null);
 							}
@@ -219,37 +225,42 @@ public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
 				}
 			}, 15 * 1000);
 		}
-	
+
 	}
-	
+
 	private void showDialog() {
 		if (dialog) {
 			if (loadingDialog == null || !loadingDialog.isShowing()) {
 				if (context instanceof Activity) {
-					if (!((Activity)context).isFinishing() && !context.isRestricted()) {
+					if (!((Activity) context).isFinishing()
+							&& !context.isRestricted()) {
 						try {
-							loadingDialog = new LoadingDialog(context , R.string.dialog_loading);
+							loadingDialog = new LoadingDialog(context,
+									R.string.dialog_loading);
 							loadingDialog.setCancelable(dialogcancelable);
 							loadingDialog.show();
 							handler.postDelayed(new Runnable() {
-								
+
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
 									loadingDialog.dismiss();
 								}
 							}, 1500);
-							
-							loadingDialog.setOnDismissListener(new OnDismissListener() {
-								@Override
-								public void onDismiss(DialogInterface dialog) {
-									/**
-									 * 取消loading的逻辑修改：数据在加载时，
-									 * 点按物理返回键，只用于返回上一级页面，不用于取消数据加载；
-									 */
-									LetvHttpAsyncTask.this.cancel(false);
-								}
-							});
+
+							loadingDialog
+									.setOnDismissListener(new OnDismissListener() {
+										@Override
+										public void onDismiss(
+												DialogInterface dialog) {
+											/**
+											 * 取消loading的逻辑修改：数据在加载时，
+											 * 点按物理返回键，只用于返回上一级页面，不用于取消数据加载；
+											 */
+											LetvHttpAsyncTask.this
+													.cancel(false);
+										}
+									});
 						} catch (Throwable e) {
 							e.printStackTrace();
 						}
@@ -258,11 +269,11 @@ public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
 			}
 		}
 	}
-	
-	public void cancelDialog(){
-		if(loadingDialog != null && loadingDialog.isShowing()){
+
+	public void cancelDialog() {
+		if (loadingDialog != null && loadingDialog.isShowing()) {
 			postUI(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					try {
@@ -274,29 +285,30 @@ public abstract class LetvHttpAsyncTask<T extends LetvBaseBean>
 			});
 		}
 	}
-	
+
 	/**
 	 * 设置对话框是否可以按返回取消
+	 * 
 	 * @param cancelable
 	 */
-	public void setDialogCancelable(boolean cancelable){
+	public void setDialogCancelable(boolean cancelable) {
 		dialogcancelable = cancelable;
 	}
 
-	public void preFail(){
+	public void preFail() {
 	}
-	
+
 	public void netNull() {
 		UIs.notifyShortNormal(context, R.string.toast_net_null);
 	};
 
 	public void netErr(int updateId, String errMsg) {
-		//UIs.notifyShortNormal(context, R.string.toast_net_err);
+		// UIs.notifyShortNormal(context, R.string.toast_net_err);
 	};
 
 	public void dataNull(int updateId, String errMsg) {
 	};
-	
+
 	/**
 	 * 数据无更新，回调
 	 * */

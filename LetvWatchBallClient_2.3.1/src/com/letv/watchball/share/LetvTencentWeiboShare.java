@@ -31,7 +31,8 @@ public class LetvTencentWeiboShare {
 	 * 登录
 	 * */
 	public static void login(final Activity context, final ShareAlbum album,
-			final int witch, final int order, final int vid, final boolean isLive, final String liveShare) {
+			final int witch, final int order, final int vid,
+			final boolean isLive, final String liveShare) {
 		setAppId();
 		TWeiboNew.getInstance().login(context, new TWeiboListener() {
 
@@ -57,7 +58,8 @@ public class LetvTencentWeiboShare {
 							album.getShare_id(), album.getType(),
 							album.getCid(), album.getYear(),
 							album.getDirector(), album.getActor(),
-							album.getTimeLength(), order, vid, isLive, liveShare);
+							album.getTimeLength(), order, vid, isLive,
+							liveShare);
 				}
 				// }
 			}

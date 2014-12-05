@@ -59,6 +59,7 @@ import com.sina.weibo.sdk.openapi.StatusesAPI;
 import com.sina.weibo.sdk.openapi.models.ErrorInfo;
 import com.sina.weibo.sdk.openapi.models.Status;
 import com.sina.weibo.sdk.openapi.models.StatusList;
+import com.sina.weibo.sdk.utils.LogUtil;
 import com.tencent.weibo.TWeiboNew.TWeiboListener;
 
 public class SharePageActivity extends PimBaseActivity implements
@@ -114,17 +115,16 @@ public class SharePageActivity extends PimBaseActivity implements
 	public static final String CONSUMER_SECRET = "1eea1bdd72eef646052ef6769f75a772";
 
 	public static final String REDIRECTURL = "http://m.letv.com";
-	
 
 	public static final String SCOPE = "email,direct_messages_read,direct_messages_write,"
-            + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
-            + "follow_app_official_microblog," + "invitation_write";
+			+ "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
+			+ "follow_app_official_microblog," + "invitation_write";
 	/**
 	 * sina网是否登录标志位
 	 * */
 	private boolean sinaIsLogin = true;
 	/**
-	 * sina weibo的token 
+	 * sina weibo的token
 	 */
 	private static Oauth2AccessToken accessToken;
 	/**
@@ -259,9 +259,11 @@ public class SharePageActivity extends PimBaseActivity implements
 		switch (from) {
 		case 1:
 			PreferencesManager.getInstance().setSinaIsShare(true);
+			this.sinaIsShare = true;
 			break;
 		case 2:
 			PreferencesManager.getInstance().setTencentIsShare(true);
+			this.tencentIsShare = true;
 			break;
 		case 3:
 			PreferencesManager.getInstance().setQzoneIsShare(true);
@@ -286,35 +288,37 @@ public class SharePageActivity extends PimBaseActivity implements
 
 		pos_cursor = userContent.getEditableText().length();
 		userContent.setSelection(pos_cursor);
-		
+
 		if (intent.getBooleanExtra("sina", false)) {
-			AuthInfo mWeiboAuth = new AuthInfo(this,
-					CONSUMER_KEY,
-					REDIRECTURL, SCOPE);
-			 SsoHandler mSsoHandler = new SsoHandler(this,
-			 mWeiboAuth);
-			mSsoHandler.authorize(new WeiboAuthListener() {
+			AuthInfo mWeiboAuth = new AuthInfo(this, CONSUMER_KEY, REDIRECTURL,
+					SCOPE);
+			SsoHandler mSsoHandler = new SsoHandler(this, mWeiboAuth);
+			Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(this);
+			if (!token.isSessionValid()) {
+				mSsoHandler.authorizeWeb(new WeiboAuthListener() {
+					@Override
+					public void onComplete(Bundle values) {
+						accessToken = Oauth2AccessToken
+								.parseAccessToken(values);
+						
+						if (accessToken.isSessionValid())
+							AccessTokenKeeper.keepAccessToken(
+									SharePageActivity.this, accessToken);
 
-				@Override
-				public void onComplete(Bundle values) {
-					accessToken = Oauth2AccessToken.parseAccessToken(values);
-					Log.e("gongmeng", "Letv Token:" + accessToken.getToken());
-					if (accessToken.isSessionValid()) 
-						AccessTokenKeeper.keepAccessToken(SharePageActivity.this, accessToken);	
-					
-				}
+					}
 
-				@Override
-				public void onWeiboException(WeiboException e) {
-					e.printStackTrace();
-				}
+					@Override
+					public void onWeiboException(WeiboException e) {
+						e.printStackTrace();
+					}
 
-				@Override
-				public void onCancel() {
-					// TODO Auto-generated method stub
-				}
+					@Override
+					public void onCancel() {
+						// TODO Auto-generated method stub
+					}
 
-			});
+				});
+			}
 		}
 	}
 
@@ -464,7 +468,10 @@ public class SharePageActivity extends PimBaseActivity implements
 	}
 
 	public void isBind() {
-		sinaIsLogin = LetvSinaShareOauth.isLogin(SharePageActivity.this);
+		if (AccessTokenKeeper.readAccessToken(this).isSessionValid())
+			sinaIsLogin = true;
+		else
+			sinaIsLogin = false;
 		tencentWeiboIsLogin = LetvTencentWeiboShare
 				.isLogin(SharePageActivity.this) == ShareConstant.BindState.BIND;
 		tencentQzoneIsLogin = LetvTencentQzoneShare
@@ -485,7 +492,9 @@ public class SharePageActivity extends PimBaseActivity implements
 			mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
 		}
 	}
+
 	private static RequestListener mListener = new RequestListener() {
+
 		@Override
 		public void onComplete(String response) {
 			if (!TextUtils.isEmpty(response)) {
@@ -508,33 +517,40 @@ public class SharePageActivity extends PimBaseActivity implements
 
 		@Override
 		public void onWeiboException(WeiboException e) {
-			
+			// LogUtil.e(TAG, e.getMessage());
 			ErrorInfo info = ErrorInfo.parse(e.getMessage());
 			
 		}
 	};
+
 	private class RequestTask extends LetvSimpleAsyncTask<Void> {
 
 		public RequestTask(Context context) {
+
 			super(context, false);
+			
 
 		}
 
 		@Override
 		public Void doInBackground() {
-			if (sinaIsLogin && sinaIsShare) {
 			
+			if (sinaIsLogin && sinaIsShare) {
 				try {
 					accessToken = AccessTokenKeeper.readAccessToken(context);
 					
 					if (accessToken.getToken() != null) {
-						StatusesAPI mStatusesAPI =  new StatusesAPI(SharePageActivity.this, CONSUMER_KEY, accessToken);
-						mStatusesAPI.update(userContent.getText().toString(), null, null, mListener);
+						StatusesAPI mStatusesAPI = new StatusesAPI(
+								SharePageActivity.this, CONSUMER_KEY,
+								accessToken);
+						mStatusesAPI.update(userContent.getText().toString(),
+								null, null, mListener);
 					} else {
-						Toast.makeText(SharePageActivity.this, "分享失败", Toast.LENGTH_LONG);
+						Toast.makeText(SharePageActivity.this, "分享失败",
+								Toast.LENGTH_LONG);
 					}
-				} catch (WeiboException e) {
-					e.printStackTrace();
+				} catch (WeiboException e1) {
+					e1.printStackTrace();
 				}
 			}
 
@@ -856,6 +872,7 @@ public class SharePageActivity extends PimBaseActivity implements
 		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
 		case R.id.top_button_Share:
+
 			if (maxLength < 0) {
 				// UIs.call(this, R.string.shareactivity_text140, null);
 				UIs.callDialogMsgPositiveButton(SharePageActivity.this, -1,
@@ -866,10 +883,12 @@ public class SharePageActivity extends PimBaseActivity implements
 					|| (tencentWeiboIsLogin && tencentIsShare)
 					|| (tencentQzoneIsLogin && qzoomIsShare)
 					|| (renrenIsLogin && renrenIsShare) || (letvStarIsLogin && letvStarIsShare))) {
+				Log.e("gongmeng", "false");
 				// UIs.call(this, R.string.shareactivity_chooce, null);
 				return;
 			}
 			new RequestTask(SharePageActivity.this).start();
+
 			((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
 					.hideSoftInputFromWindow(
 							getCurrentFocus().getWindowToken(),
