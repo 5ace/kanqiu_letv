@@ -20,17 +20,16 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" 
-                
-                >
+                android:layout_weight="1" >
 
                 <TextView
                     android:id="@+id/sina_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/sina_select_icon" />
+                    android:background="@drawable/sina_icon" />
 
-                <TextView
+                <!--
+                    <TextView
                     android:id="@+id/sina_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,21 +38,21 @@
                     android:layout_alignRight="@id/sina_icon"
                     android:layout_alignTop="@id/sina_icon"
                     android:background="@color/letv_color_4c000000"
-                    android:visibility="gone" />
+                    android:visibility="gone" />
+                -->
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:visibility="gone"
-                 >
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/qzone_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/qzone_select_icon" />
+                    android:background="@drawable/qzone_icon" />
 
                 <TextView
                     android:id="@+id/qzone_status"
@@ -71,8 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                 android:visibility="gone"
-                 >
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/renren_icon"
@@ -98,11 +96,35 @@
                 android:layout_weight="1" >
 
                 <TextView
+                    android:id="@+id/friends_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/friends_icon" />
+                <!--
+                <TextView
+                    android:id="@+id/friends_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/friends_icon"
+                    android:layout_alignLeft="@id/friends_icon"
+                    android:layout_alignRight="@id/friends_icon"
+                    android:layout_alignTop="@id/friends_icon"
+                    android:background="@color/letv_color_4c000000"
+                    android:visibility="gone" />
+                -->
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <TextView
                     android:id="@+id/weixin_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/weixin_select_icon" />
-
+                    android:background="@drawable/weixin_icon" />
+                <!--
                 <TextView
                     android:id="@+id/weixin_status"
                     android:layout_width="wrap_content"
@@ -112,10 +134,11 @@
                     android:layout_alignRight="@id/weixin_icon"
                     android:layout_alignTop="@id/weixin_icon"
                     android:background="@color/letv_color_4c000000"
-                    android:visibility="gone" />
+                    android:visibility="gone" />
+                -->
             </RelativeLayout>
-            
-             <RelativeLayout
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" >
@@ -125,8 +148,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/qzone_icon"
-                    android:background="@drawable/tencent_select_icon" />
-
+                    android:background="@drawable/tencent_weibo_icon" />
+                <!--
                 <TextView
                     android:id="@+id/qq_status"
                     android:layout_width="wrap_content"
@@ -136,7 +159,8 @@
                     android:layout_alignRight="@id/qq_icon"
                     android:layout_alignTop="@id/qq_icon"
                     android:background="@color/letv_color_4c000000"
-                    android:visibility="gone" />
+                    android:visibility="gone" />
+                -->
             </RelativeLayout>
         </LinearLayout>
 
@@ -169,8 +193,6 @@
                     android:background="@color/letv_color_4c000000"
                     android:visibility="gone" />
             </RelativeLayout>
-
-           
         </LinearLayout>
     </LinearLayout>
 
@@ -180,7 +202,7 @@
         android:layout_width="fill_parent"
         android:layout_height="30dip"
         android:scaleType="centerCrop"
-        android:visibility="gone" />
+        android:visibility="gone" />
     -->
 
 </LinearLayout>

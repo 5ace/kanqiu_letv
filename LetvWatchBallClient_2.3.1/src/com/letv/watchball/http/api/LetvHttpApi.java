@@ -703,7 +703,7 @@ public class LetvHttpApi {
 	}
 
 	/**
-	 * 2.3.2.视频直播列表接口
+	 * 视频直播列表接口
 	 * 
 	 * */
 	public static <T extends LetvBaseBean, D> LetvDataHull<T> requestLiveinfos(

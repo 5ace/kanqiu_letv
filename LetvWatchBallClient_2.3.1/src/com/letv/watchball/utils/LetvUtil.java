@@ -727,12 +727,12 @@ public class LetvUtil {
 				replace_url = share.getVideo_url().replace("{vid}", vid + "");
 				replace_url = replace_url.replace("{index}", "1");
 				replace_url = replace_url.replace("{aid}", id + "");
-				return TextUtil.getString(R.string.share_msg_album_playforsina, name, replace_url,getClientVersionName());
+				return TextUtil.getString(R.string.share_msg_album_playforsina, name, replace_url);
 			} else if (type == 2) {
 				replace_url = share.getVideo_url().replace("{aid}", id + "");
 				replace_url = replace_url.replace("{index}", "1");
 				replace_url = replace_url.replace("{vid}", vid + "");
-				return TextUtil.getString(R.string.share_msg_album_play, name, replace_url,getClientVersionName());
+				return TextUtil.getString(R.string.share_msg_album_play, name);
 			}
 		}
 		return null;

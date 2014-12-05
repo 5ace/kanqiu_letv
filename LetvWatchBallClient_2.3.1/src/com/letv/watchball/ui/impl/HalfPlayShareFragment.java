@@ -18,6 +18,7 @@ import com.letv.watchball.activity.SharePageActivity;
 import com.letv.watchball.bean.AlbumNew;
 import com.letv.watchball.bean.ShareAlbum;
 import com.letv.watchball.share.AccessTokenKeeper;
+import com.letv.watchball.share.LetvFriendsShare;
 import com.letv.watchball.share.LetvRenrenShare;
 import com.letv.watchball.share.LetvShareControl;
 import com.letv.watchball.share.LetvSinaShareOauth;
@@ -34,7 +35,6 @@ import com.letv.watchball.utils.LetvUtil;
 import com.letv.watchball.utils.UIs;
 import com.letv.watchball.view.PublicLoadLayout;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
-
 
 public class HalfPlayShareFragment extends LetvBaseFragment implements
 		OnClickListener {
@@ -64,9 +64,9 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 	private PlayAlbumController playAlbumController;
 	private PlayLiveController PlayLiveController;
 	private TextView sina_icon, qzone_icon, renren_icon, weixin_icon,
-			lestar_icon, qq_icon;
+			lestar_icon, qq_icon, friends_icon;
 	private TextView sina_status, qzone_status, renren_status, weixin_status,
-			lestar_status, qq_status;
+			lestar_status, qq_status, friends_status;
 	private boolean isLive = false;
 	private String liveShare = "";
 
@@ -104,13 +104,15 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 		weixin_icon = (TextView) root.findViewById(R.id.weixin_icon);
 		lestar_icon = (TextView) root.findViewById(R.id.lestar_icon);
 		qq_icon = (TextView) root.findViewById(R.id.qq_icon);
+		friends_icon = (TextView) root.findViewById(R.id.friends_icon);
 
-		sina_status = (TextView) root.findViewById(R.id.sina_status);
+		// sina_status = (TextView) root.findViewById(R.id.sina_status);
 		qzone_status = (TextView) root.findViewById(R.id.qzone_status);
 		renren_status = (TextView) root.findViewById(R.id.renren_status);
-		weixin_status = (TextView) root.findViewById(R.id.weixin_status);
+		// weixin_status = (TextView) root.findViewById(R.id.weixin_status);
 		lestar_status = (TextView) root.findViewById(R.id.lestar_status);
-		qq_status = (TextView) root.findViewById(R.id.qq_status);
+		// qq_status = (TextView) root.findViewById(R.id.qq_status);
+		friends_status = (TextView) root.findViewById(R.id.status);
 
 	}
 
@@ -121,6 +123,7 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 		weixin_icon.setOnClickListener(this);
 		// lestar_icon.setOnClickListener(this);
 		qq_icon.setOnClickListener(this);
+		friends_icon.setOnClickListener(this);
 	}
 
 	public void initUI() {
@@ -130,8 +133,9 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 		scalview(qzone_icon);
 		scalview(renren_icon);
 		scalview(weixin_icon);
-		// scalview(lestar_icon);
+		//scalview(lestar_icon);
 		scalview(qq_icon);
+		scalview(friends_icon);
 		onFragmentResult = new onFragmentResult() {
 
 			@Override
@@ -178,13 +182,12 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 						Toast.LENGTH_SHORT).show();
 				return;
 			}
-
 			isLive = true;
-			liveShare = PlayLiveController.getShare();
 			LetvShareControl.getInstance().setAblum_att(
 					PlayLiveController.getVideo(),
 					PlayLiveController.getAlbum());
 		} else {
+			isLive = false;
 			if (playAlbumController.getVideo() == null) {
 				Toast.makeText(getActivity(), R.string.share_no_play,
 						Toast.LENGTH_SHORT).show();
@@ -205,6 +208,8 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 		switch (v.getId()) {
 
 		case R.id.sina_icon:// 新浪分享
+			if (isLive)
+				liveShare = PlayLiveController.getSinaShare();
 			LetvShareControl.mShareAlbum.setType(1);
 			onShareSina();
 			break;
@@ -215,28 +220,36 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 			onShareRenren();
 			break;
 		case R.id.weixin_icon:// 微信分享
+			if (isLive)
+				liveShare = PlayLiveController.getWeixinShare();
 			onShareWeixin();
 			break;
 		case R.id.lestar_icon:// 大卡分享
 			onShareLestar();
 			break;
 		case R.id.qq_icon:// qq微博分享
+			if (isLive)
+				liveShare = PlayLiveController.getSinaShare();
 			onShareQQ();
-
+			break;
+		case R.id.friends_icon:
+			if (isLive)
+				liveShare = PlayLiveController.getWeixinShare();
+			onShareFriends();
 			break;
 		}
 	}
 
-	
 	/**
 	 * 新浪分享
 	 */
 	public void onShareSina() {
-		SharePageActivity.launchSina(this.getActivity(), 1, album.getShare_AlbumName(),
-				album.getIcon(), album.getShare_id(), album.getType(),
-				album.getCid(), album.getYear(), album.getDirector(),
-				album.getActor(), album.getTimeLength(), album.getOrder(), album.getShare_vid(), isLive,
-				liveShare);
+		SharePageActivity.launchSina(this.getActivity(), 1,
+				album.getShare_AlbumName(), album.getIcon(),
+				album.getShare_id(), album.getType(), album.getCid(),
+				album.getYear(), album.getDirector(), album.getActor(),
+				album.getTimeLength(), album.getOrder(), album.getShare_vid(),
+				isLive, liveShare);
 		channel = DataConstant.ACTION.SHARE.SHARE_DIALOG_SINA;
 	}
 
@@ -283,26 +296,52 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 	}
 
 	/**
+	 * 朋友圈分享
+	 */
+	public void onShareFriends() {
+		if (LetvUtil.checkBrowser(getActivity(), "com.tencent.mm")) {
+			if (!isLive) {
+				// 录播分享
+				LetvFriendsShare.share(
+						getActivity(),
+						album.getShare_AlbumName(),
+						album.getIcon(),
+						LetvUtil.getSharePlayUrl(album.getType(),
+								album.getShare_id(), album.getOrder(),
+								album.getShare_vid()));
+			} else {
+				// 直播分享
+				if (PlayLiveController != null)
+					LetvFriendsShare.share(getActivity(), liveShare, "",
+							PlayLiveController.getUrl());
+			}
+		} else {
+			UIs.callDialogMsgPositiveButton(getActivity(),
+					R.string.SEVEN_ZERO_SEVEN_CONSTANT_TITLE,
+					R.string.SEVEN_ZERO_SEVEN_CONSTANT_MSG, null);
+		}
+		channel = DataConstant.ACTION.SHARE.SHARE_DIALOG_WEIXIN;
+	}
+
+	/**
 	 * 微信分享
 	 */
 	public void onShareWeixin() {
 		if (LetvUtil.checkBrowser(getActivity(), "com.tencent.mm")) {
-			if(!isLive){
-				//录播分享
-			LetvWeixinShare.share(
-					getActivity(),
-					LetvUtil.getShareHint(album.getShare_AlbumName(),
-							album.getType(), album.getShare_id(),
-							album.getOrder(), album.getShare_vid()),
-					album.getIcon(),
-					LetvUtil.getSharePlayUrl(album.getType(),
-							album.getShare_id(), album.getOrder(),
-							album.getShare_vid()));}
-			else{
-				//直播分享
-				if(PlayLiveController != null)
+			if (!isLive) {
+				// 录播分享
 				LetvWeixinShare.share(
-						getActivity(),liveShare,"",PlayLiveController.getUrl());
+						getActivity(),
+						album.getShare_AlbumName(),
+						album.getIcon(),
+						LetvUtil.getSharePlayUrl(album.getType(),
+								album.getShare_id(), album.getOrder(),
+								album.getShare_vid()));
+			} else {
+				// 直播分享
+				if (PlayLiveController != null)
+					LetvWeixinShare.share(getActivity(), liveShare, "",
+							PlayLiveController.getUrl());
 			}
 		} else {
 			UIs.callDialogMsgPositiveButton(getActivity(),
@@ -356,7 +395,8 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 				LetvTencentWeiboShare.login(getActivity(),
 						LetvShareControl.mShareAlbum, 2,
 						LetvShareControl.mShareAlbum.getShare_id(),
-						LetvShareControl.mShareAlbum.getShare_vid(), isLive, liveShare);
+						LetvShareControl.mShareAlbum.getShare_vid(), isLive,
+						liveShare);
 			} else {
 				Toast.makeText(getActivity(), R.string.toast_net_null,
 						Toast.LENGTH_SHORT).show();
@@ -366,7 +406,8 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 			LetvTencentWeiboShare.login(getActivity(),
 					LetvShareControl.mShareAlbum, 2,
 					LetvShareControl.mShareAlbum.getShare_id(),
-					LetvShareControl.mShareAlbum.getShare_vid(), isLive, liveShare);
+					LetvShareControl.mShareAlbum.getShare_vid(), isLive,
+					liveShare);
 		}
 		channel = DataConstant.ACTION.SHARE.SHARE_DIALOG_QQ_WEIBO;
 	}
@@ -376,7 +417,7 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 	 */
 	public void onUpdateUI() {
 		isBind();
-		updateUI();
+		// updateUI();
 	}
 
 	/**
@@ -398,21 +439,21 @@ public class HalfPlayShareFragment extends LetvBaseFragment implements
 	private void updateUI() {
 		if (!sina_weibo_isBind) {
 			// sina_status.setText(R.string.setting_share_unbound);
-			sina_status.setVisibility(View.VISIBLE);
+			// sina_status.setVisibility(View.VISIBLE);
 		} else if (sina_weibo_isBind) {
 			// sina_status.setText(R.string.setting_share_bound);
-			sina_status.setVisibility(View.GONE);
+			// sina_status.setVisibility(View.GONE);
 		}
 
 		if (tencent_weibo_isBind == ShareConstant.BindState.UNBIND) {
 			// qq_status.setText(R.string.setting_share_unbound);
-			qq_status.setVisibility(View.VISIBLE);
+			// qq_status.setVisibility(View.VISIBLE);
 		} else if (tencent_weibo_isBind == ShareConstant.BindState.BIND) {
 			// qq_status.setText(R.string.setting_share_bound);
-			qq_status.setVisibility(View.GONE);
+			// qq_status.setVisibility(View.GONE);
 		} else if (tencent_weibo_isBind == ShareConstant.BindState.BINDPASS) {
 			// qq_status.setText(R.string.setting_bind_pass);
-			qq_status.setVisibility(View.VISIBLE);
+			// qq_status.setVisibility(View.VISIBLE);
 		}
 
 		if (qzone_isBind == ShareConstant.BindState.UNBIND) {

@@ -2145,22 +2145,32 @@ public class PlayLiveController extends PlayController implements
 	public void setVideo(Video video) {
 		this.video = video;
 	}
-
-	// 生成直播用的分享文案
-	public String getShare() {
+	//微信用的分享文案
+	public String getWeixinShare() {
 		String liveShare = "";
 		if (game.vs.equalsIgnoreCase("1"))
-			liveShare = "【乐视体育超清直播】" + game.home + "vs" + game.guest
-					+ " 直播地址：http://m.letv.com/live/play_sports.html?id="
-					+ game.id + " @乐视体育 看球APP http://mobile.letv.com/?p=12";
+			liveShare = "【乐视体育超清直播】" + game.home + "vs" + game.guest;
 		else if (game.level.equalsIgnoreCase("其他"))
-			liveShare = "【乐视体育超清直播】" + game.title
-					+ " 直播地址：http://m.letv.com/live/play_sports.html?id="
-					+ game.id + " @乐视体育 看球APP http://mobile.letv.com/?p=12";
+			liveShare = "【乐视体育超清直播】" + game.title;
 		else
-			liveShare = "【乐视体育超清直播】" + game.level + game.title
-					+ " 直播地址：http://m.letv.com/live/play_sports.html?id="
-					+ game.id + " @乐视体育 看球APP http://mobile.letv.com/?p=12";
+			liveShare = "【乐视体育超清直播】" + game.level + "-" + game.title;
+		return liveShare;
+	}
+	// 生成直播用的微博的分享文案
+	public String getSinaShare() {
+		String liveShare = "";
+		if (game.vs.equalsIgnoreCase("1"))
+			liveShare = "我正在@乐视体育 http://weibo.com/p/1004041157006 看#" + game.home + "vs" + game.guest
+					+ "#，超清直播地址：http://live.letv.com/sports/play/index.shtml?type=zb&id="
+					+ game.id;
+		else if (game.level.equalsIgnoreCase("其他"))
+			liveShare = "我正在@乐视体育 http://weibo.com/p/1004041157006 看#" + game.title
+					+ "#，超清直播地址：http://live.letv.com/sports/play/index.shtml?type=zb&id="
+					+ game.id;
+		else
+			liveShare = "我正在@乐视体育 http://weibo.com/p/1004041157006 看#" + game.level + "-" + game.title
+			+ "#，超清直播地址：http://live.letv.com/sports/play/index.shtml?type=zb&id="
+			+ game.id;
 		return liveShare;
 	}
 

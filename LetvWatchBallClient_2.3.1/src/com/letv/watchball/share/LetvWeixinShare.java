@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.widget.Toast;
 
 import com.letv.watchball.R;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -18,12 +19,11 @@ import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.mm.sdk.openapi.WXMediaMessage;
 import com.tencent.mm.sdk.openapi.WXVideoObject;
+import com.tencent.mm.sdk.openapi.WXWebpageObject;
 
 public class LetvWeixinShare {
 
-	/**
-	 * 分享图片
-	 * */
+
 	public static void share(Activity context, String caption, String imaUrl,
 			String playUrl) {
 		try {
@@ -36,52 +36,49 @@ public class LetvWeixinShare {
 
 			if (bmp != null) {
 
-				// WXImageObject imgObj = new WXImageObject();
-				// imgObj.setImagePath(path);
-
 				WXVideoObject videoObject = new WXVideoObject();
 				videoObject.videoUrl = playUrl;
 
-				WXMediaMessage msg = new WXMediaMessage();
-				msg.title = "看球";
-				msg.mediaObject = videoObject;
-				msg.description = caption;
-
-				Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 60, 80, true);
+				WXMediaMessage msg = new WXMediaMessage(videoObject);
+				msg.title = caption;
+				//msg.description = caption;
+				
+				Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 80, 80, true);
 				bmp.recycle();
 				msg.thumbData = bmpToByteArray(thumbBmp, true);
 
 				SendMessageToWX.Req req = new SendMessageToWX.Req();
-				req.transaction = buildTransaction("img");
+				req.transaction = buildTransaction("video");
 				req.message = msg;
+				//req.scene = SendMessageToWX.Req.WXSceneTimeline;
 
 				api.sendReq(req);
 			} else {
-
 				WXVideoObject videoObject = new WXVideoObject();
 				videoObject.videoUrl = playUrl;
-				// WXTextObject textObj = new WXTextObject();
-				// textObj.text = caption;
+				
 				InputStream is = context.getResources().openRawResource(
 						R.drawable.icon);
 				bmp = BitmapFactory.decodeStream(is);
-				Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 60, 80, true);
+				Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 80, 80, true);
 				bmp.recycle();
-				WXMediaMessage msg = new WXMediaMessage();
+				WXMediaMessage msg = new WXMediaMessage(videoObject);
 				msg.thumbData = bmpToByteArray(thumbBmp, true);
-				msg.title = "看球";
-				msg.mediaObject = videoObject;
-				msg.description = caption;
+				msg.title = caption;
+				//msg.description = caption;
 
 				// 构造一个Req
 				SendMessageToWX.Req req = new SendMessageToWX.Req();
-				req.transaction = buildTransaction("text"); // transaction字段用于唯一标识一个请求
+				req.transaction = buildTransaction("video"); // transaction字段用于唯一标识一个请求
 				req.message = msg;
-
+				//req.scene = SendMessageToWX.Req.WXSceneTimeline;
 				// 调用api接口发送数据到微信
 				api.sendReq(req);
 			}
+			
 		} catch (Exception e) {
+			Toast.makeText(context, "分享失败",
+					Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
 	}
