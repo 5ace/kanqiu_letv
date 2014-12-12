@@ -44,9 +44,6 @@ import com.letv.watchball.ui.impl.BasePlayActivity;
 import com.letv.watchball.utils.LetvUtil;
 import com.letv.watchball.utils.TextUtil;
 import com.letv.watchball.utils.UIs;
-import com.renren.api.connect.android.common.AbstractRequestListener;
-import com.renren.api.connect.android.exception.RenrenError;
-import com.renren.api.connect.android.photos.PhotoUploadResponseBean;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
 import com.sina.weibo.sdk.auth.AuthInfo;
@@ -650,106 +647,7 @@ public class SharePageActivity extends PimBaseActivity implements
 			}
 
 			if (renrenIsLogin && renrenIsShare) {
-				AbstractRequestListener<PhotoUploadResponseBean> renrenListener = new AbstractRequestListener<PhotoUploadResponseBean>() {
-					@Override
-					public void onRenrenError(RenrenError renrenError) {
-						String newpath = LetvCacheTools.StringTool
-								.createFilePath2(icon);
-						File newfile = new File(newpath);
-						if (newfile != null && newfile.exists()) {
-							newfile.delete();
-						}
-						SharePageActivity.this.runOnUiThread(new Runnable() {
-
-							@Override
-							public void run() {
-								NotificationManager notificationManager = (NotificationManager) SharePageActivity.this
-										.getSystemService(Context.NOTIFICATION_SERVICE);
-								Notification notification = new Notification();
-								PendingIntent contentIntent = PendingIntent
-										.getActivity(SharePageActivity.this, 0,
-												new Intent(), 0);
-								notification.setLatestEventInfo(
-										SharePageActivity.this, null, null,
-										contentIntent);
-								notification.icon = R.drawable.notification_renren_icon;
-								notification.tickerText = TextUtil
-										.getString(R.string.shareactivity_sina_fail);
-								notification.flags = Notification.FLAG_AUTO_CANCEL;
-								notificationManager
-										.notify(444444, notification);
-								notificationManager.cancel(444444);
-							}
-						});
-					}
-
-					@Override
-					public void onFault(Throwable fault) {
-						String newpath = LetvCacheTools.StringTool
-								.createFilePath2(icon);
-						File newfile = new File(newpath);
-						if (newfile != null && newfile.exists()) {
-							newfile.delete();
-						}
-						SharePageActivity.this.runOnUiThread(new Runnable() {
-
-							@Override
-							public void run() {
-								NotificationManager notificationManager = (NotificationManager) SharePageActivity.this
-										.getSystemService(Context.NOTIFICATION_SERVICE);
-								Notification notification = new Notification();
-								PendingIntent contentIntent = PendingIntent
-										.getActivity(SharePageActivity.this, 0,
-												new Intent(), 0);
-								notification.setLatestEventInfo(
-										SharePageActivity.this, null, null,
-										contentIntent);
-								notification.icon = R.drawable.notification_renren_icon;
-								notification.tickerText = TextUtil
-										.getString(R.string.shareactivity_sina_fail);
-								notification.flags = Notification.FLAG_AUTO_CANCEL;
-								notificationManager
-										.notify(444444, notification);
-								notificationManager.cancel(444444);
-							}
-						});
-					}
-
-					@Override
-					public void onComplete(PhotoUploadResponseBean photoResponse) {
-						String newpath = LetvCacheTools.StringTool
-								.createFilePath2(icon);
-						File newfile = new File(newpath);
-						if (newfile != null && newfile.exists()) {
-							newfile.delete();
-						}
-						SharePageActivity.this.runOnUiThread(new Runnable() {
-
-							@Override
-							public void run() {
-								NotificationManager notificationManager = (NotificationManager) SharePageActivity.this
-										.getSystemService(Context.NOTIFICATION_SERVICE);
-								Notification notification = new Notification();
-								PendingIntent contentIntent = PendingIntent
-										.getActivity(SharePageActivity.this, 0,
-												new Intent(), 0);
-								notification.setLatestEventInfo(
-										SharePageActivity.this, null, null,
-										contentIntent);
-								notification.icon = R.drawable.notification_renren_icon;
-								notification.tickerText = TextUtil
-										.getString(R.string.shareactivity_sina_ok);
-								notification.flags = Notification.FLAG_AUTO_CANCEL;
-								notificationManager
-										.notify(444444, notification);
-								notificationManager.cancel(444444);
-							}
-						});
-					}
-				};
-				LetvRenrenShare.share(SharePageActivity.this,
-						getShareContent(userContent.getText().toString()),
-						SharePageActivity.this.icon, renrenListener);
+				
 			}
 
 			if (letvStarIsLogin && letvStarIsShare) {
