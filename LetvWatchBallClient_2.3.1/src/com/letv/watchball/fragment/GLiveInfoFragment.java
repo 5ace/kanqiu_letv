@@ -152,9 +152,8 @@ public class GLiveInfoFragment extends Fragment {
 				case MotionEvent.ACTION_UP:
 					refresh.setAlpha(255);
 					resetThread();
-					if (prePageIndex == 0) {
-						loadFirstPage(true, false);
-					}
+					new RequestMatchList(getActivity(), 0, true, true, false,
+							null).start();
 					UpdateToast();
 					break;
 				case MotionEvent.ACTION_MOVE:
@@ -208,7 +207,8 @@ public class GLiveInfoFragment extends Fragment {
 
 					UpdateToast();
 					if (prePageIndex == 0) {
-						loadFirstPage(true, false);
+						new RequestMatchList(getActivity(), prePageIndex, true,
+								false, false, null).start();
 					}
 					mHomeFragmentLsn.loadRightFragmentData();
 				}
@@ -298,10 +298,10 @@ public class GLiveInfoFragment extends Fragment {
 
 	}
 
-	public void refreshData(){
-		prePageIndex=0;
-		loadFirstPage(false,false);
+	public void refreshData() {
+		new RequestMatchList(getActivity(), 0, true, true, false, null).start();
 	}
+
 	/**
 	 * 获取/刷新 首页数据
 	 * 
@@ -309,7 +309,7 @@ public class GLiveInfoFragment extends Fragment {
 	 */
 	private void loadFirstPage(boolean dialog, boolean needSetSelection) {
 		new RequestMatchList(getActivity(), prePageIndex, dialog,
-				needSetSelection, null).start();
+				needSetSelection, true, null).start();
 	}
 
 	/**
@@ -317,7 +317,7 @@ public class GLiveInfoFragment extends Fragment {
 	 */
 	private void loadPrePage() {
 		prePageIndex--;
-		new RequestMatchList(getActivity(), prePageIndex, false, true,
+		new RequestMatchList(getActivity(), prePageIndex, false, false, false,
 				new Runnable() {
 
 					@Override
@@ -332,9 +332,9 @@ public class GLiveInfoFragment extends Fragment {
 	 * 加载下一页数据
 	 */
 	private void loadNextPage() {
-		
+
 		nextPageIndex++;
-		new RequestMatchList(getActivity(), nextPageIndex, false, false,
+		new RequestMatchList(getActivity(), nextPageIndex, false, false, false,
 				new Runnable() {
 
 					@Override
@@ -377,12 +377,15 @@ public class GLiveInfoFragment extends Fragment {
 
 		private boolean LoacalDateSelection = true;
 
+		private boolean load = false;
+
 		public RequestMatchList(Context context, int pageIndex, boolean dialog,
-				boolean needSetSelection, Runnable errorCb) {
+				boolean needSetSelection, boolean load, Runnable errorCb) {
 			super(context, dialog);
 			this.pageIndex = pageIndex;
 			this.needSetSelection = needSetSelection;
 			this.errorCb = errorCb;
+			this.load = load;
 
 		}
 
@@ -437,9 +440,10 @@ public class GLiveInfoFragment extends Fragment {
 								}
 								childrens.add(game);
 							}
-
-							adapter.listParent.add(result.body[i].date);
-							adapter.listChild.add(childrens);
+							if (load) {
+								adapter.listParent.add(result.body[i].date);
+								adapter.listChild.add(childrens);
+							}
 							// adapter.listParent.add(i + firstPageIndex,
 							// result.body[i].date);
 							// adapter.listChild.add(i + firstPageIndex,
@@ -557,7 +561,7 @@ public class GLiveInfoFragment extends Fragment {
 				firstPageIndex += result.body.length;
 				for (int i = result.body.length - 1; i >= 0; i--) {
 					if (i == 0) {// 最后一条数据时候，上面的for循环汉之写的。
-					// LoacalDateSelection=false;
+						// LoacalDateSelection=false;
 						selection = selection - 1;
 					}
 
@@ -594,10 +598,22 @@ public class GLiveInfoFragment extends Fragment {
 				return;
 			}
 			adapter.notifyDataSetChanged();
-			if (needSetSelection && selection >= 0) {
-				System.out.println("selection====" + (selection));
-				mPullToRefreshListViewHeader.getRefreshableView().setSelection(
-						selection);
+			if (needSetSelection) {
+				selection = 0;
+				for (int i = 0; i < adapter.getSectionCount(); i++) {
+					selection++;
+					for (Game g : adapter.listChild.get(i)) {
+						if (g.status == 1 || g.status == 0) {
+							System.out.println("selection====" + (selection));
+							mPullToRefreshListViewHeader.getRefreshableView()
+									.setSelection(selection);
+							resetThread();
+							return;
+						}
+						selection++;
+					}
+				}
+
 			}
 
 			resetThread();

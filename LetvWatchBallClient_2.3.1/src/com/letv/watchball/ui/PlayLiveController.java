@@ -469,7 +469,7 @@ public class PlayLiveController extends PlayController implements
 						String pid = game.id;
 						String liveid = game.liveid;
 						String from = "mobile";
-						String streamId = game.live_350.streamId;
+						String streamId = game.live_800.streamId;
 						String splatId = "1013";
 						String lsstart = String.valueOf(game.status);
 						// (pid,liveid,from,streamId,splatId,userId,version,pcode)
@@ -518,7 +518,7 @@ public class PlayLiveController extends PlayController implements
 						String pid = game.id;
 						String liveid = game.liveid;
 						String from = "mobile";
-						String streamId = game.live_350.streamId;
+						String streamId = game.live_1300.streamId;
 						String splatId = "1013";
 						String lsstart = String.valueOf(game.status);
 						// (pid,liveid,from,streamId,splatId,userId,version,pcode)
@@ -613,6 +613,7 @@ public class PlayLiveController extends PlayController implements
 					.append(list.get(i) + "=" + map.get(list.get(i)) + "&");
 		}
 		stringBuilder.append(LetvConstant.Global.ASIGN_KEY);
+		Log.e("gongmeng", stringBuilder.toString());
 		String apisign = MD5.toMd5(stringBuilder.toString());
 
 		// String pid, String liveid,
@@ -1792,7 +1793,7 @@ public class PlayLiveController extends PlayController implements
 			if (!(token == null) && !token.equalsIgnoreCase("")) {
 				builder.append("&token=" + token);
 			}
-			// Log.i("oyys", builder.toString());
+			 Log.e("gongmeng", builder.toString());
 			LeService p2pService = LetvApplication.getInstance()
 					.getP2pService();
 			if (isP2PMode && null != p2pService) {

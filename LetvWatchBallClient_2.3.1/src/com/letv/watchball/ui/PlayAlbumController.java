@@ -494,13 +494,13 @@ public class PlayAlbumController extends PlayController implements
 
 	@Override
 	public void create() {
-		switch(PreferencesManager.getInstance().isPlayHd()){
+		switch (PreferencesManager.getInstance().isPlayHd()) {
 		case 0:
-		 streamLevel = "13";
-		break;
+			streamLevel = "13";
+			break;
 		case 1:
-			
-			 streamLevel = "21";
+
+			streamLevel = "21";
 			break;
 		case 2:
 			streamLevel = "24";
@@ -2633,20 +2633,20 @@ public class PlayAlbumController extends PlayController implements
 		public boolean onPreExecute() {
 			if (mid.equals(video.getMid())) {
 				int isHd = PreferencesManager.getInstance().isPlayHd();
-				if (isHd==0) {
+				if (isHd != 0) {
 					if (!PlayUtils.isSupportHd(video.getBrList())) {
 						isHd = 0;
 					}
 				}
 				Log.e("gongmeng", video.getBrList());
+
 				DDUrlsResult ddUrlsResult = PlayUtils.getDDUrls(videoFile,
 						isHd, isDolby);
 				if (ddUrlsResult != null && ddUrlsResult.getDdurls() != null
 						&& ddUrlsResult.getDdurls().length > 0) {
 					// TODO 能够播放超清
-					
-						PlayAlbumController.this.isHd = ddUrlsResult.isHd();
-					
+
+					PlayAlbumController.this.isHd = ddUrlsResult.isHd();
 					PlayAlbumController.this.isDolby = ddUrlsResult.isDolby();
 					PlayAlbumController.this.hasHd = ddUrlsResult.isHasHigh();
 					PlayAlbumController.this.hasStandard = ddUrlsResult

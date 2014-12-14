@@ -68,7 +68,7 @@ public class LetvUtil {
 		}
 		try {
 			PackageInfo packInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-			return packInfo.versionName;
+			return "2.3.2";
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

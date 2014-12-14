@@ -659,6 +659,7 @@ public class LetvHttpApi {
 	public static void initialize(String pcode, String version, String deviceId) {
 		PCODE = pcode;
 		VERSION = version;
+		Log.e("gongmeng", "version:"+VERSION);
 		DEVICEID = deviceId;
 	}
 
