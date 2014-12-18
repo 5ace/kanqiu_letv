@@ -23,7 +23,7 @@ public class SettingsAboutActivity extends Activity implements OnClickListener {
 		findViewById(R.id.head_back).setOnClickListener(this);
 		findViewById(R.id.settings_mail).setOnClickListener(this);
 		findViewById(R.id.setting_tel).setOnClickListener(this);
-		String versionName = " V2.4.0";//+ LetvUtil.getClientVersionName();
+		String versionName = " V2.3.3";//+ LetvUtil.getClientVersionName();
 		mail = getResources().getString(R.string.settings_about_mail);
 		tel = getResources().getString(R.string.settings_about_tel);
 		((TextView) findViewById(R.id.settings_about_version_name)).append(versionName);

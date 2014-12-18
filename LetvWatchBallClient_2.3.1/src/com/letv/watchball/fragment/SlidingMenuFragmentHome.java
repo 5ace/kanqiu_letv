@@ -145,7 +145,7 @@ public class SlidingMenuFragmentHome extends Fragment implements OnClickListener
 		// TODO Auto-generated method stub
 		super.onResume();
         Log.i("oyys", "onResume");
-       
+        reloadFragment();
  //		if (null != mHomeFragmentLsn) {
 //			mHomeFragmentLsn.toggleRight();
 //		}

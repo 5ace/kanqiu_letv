@@ -13,20 +13,20 @@
 	
     <!-- 应用名称 -->
     <property name="appName" value="${ant.project.name}"/>
-     <property name="sdk-folder" value="D:\androidADT\adt-bundle-windows-x86-20131030\sdk" />
+     <property name="sdk-folder" value="D:\QQDownload\adt-bundle-windows-x86_64-20140321\adt-bundle-windows-x86_64-20140321\sdk" />
     <!-- SDK指定平台目录 -->
-    <property name="sdk-platform-folder" value="${sdk-folder}/platforms/android-16"/>
+    <property name="sdk-platform-folder" value="${sdk-folder}/platforms/android-17"/>
     <!-- SDK中tools目录 -->
     <property name="sdk-tools" value="${sdk-folder}/tools" />
     <!-- SDK指定平台中tools目录 -->
-    <property name="sdk-platform-tools" value="${sdk-folder}/platform-tools" />
+    <property name="sdk-platform-tools" value="D:\QQDownload\adt-bundle-windows-x86_64-20140321\adt-bundle-windows-x86_64-20140321\sdk\build-tools\17.0.0" />
 	 
     <!-- 使用到的命令(当前系统为windows,如果系统为linux,可将.bat文件替换成相对应的命令) -->  
     <property name="aapt" value="${sdk-platform-tools}/aapt" />  
     <property name="aidl" value="${sdk-platform-tools}/aidl" />  
     <property name="dx" value="${sdk-platform-tools}/dx.bat" />  
     <property name="apkbuilder" value="${sdk-tools}/apkbuilder.bat" />  
-    <property name="jarsigner" value="C:\Java\jdk1.6.0_37\bin\jarsigner" />  
+    <property name="jarsigner" value="C:\Program Files\Java\jdk1.8.0_11\bin\jarsigner" />  
 	<property name="zipalign" value="${sdk-tools}/zipalign.exe" />
 	<property name="proguard" value="${sdk-tools}/proguard/lib" />
       
@@ -41,7 +41,7 @@
     <property name="framework-aidl" value="${sdk-platform-folder}/framework.aidl" />  
   
     <!-- 签名文件   -->
-	<property name="key_file" value="F:\letvClientKey\letvAndroidClientKey" />
+	<property name="key_file" value="C:\letvAndroidClientKey" />
 
     <!-- 清单文件 -->  
     <property name="manifest-xml" value="AndroidManifest.xml" />  
@@ -59,18 +59,15 @@
 	
 	<property
 	    name="key"
-		value="appnt1:120110415,appnt2:120110416,appnt3:120110417,appnt4:120110418,appnt5:120110419"/> 
-  		<!-- value="letvwwwaphone:120110000,360:120110106,hiapk:120110014,baidu:120110263,baiduso:120110264,goapk:120110013,
-				google:120110016,91:120110042,wandoujia:120110105,miui:120110065,tencent:120110041,letvm:120110183,yingyonghui:120110043,
+  		 value="hiapk:120110014,baidu:120110263,baiduso:120110264,goapk:120110013,
+				google:120110016,91:120110042,wandoujia:120110105,miui:120110065,tencent:120110041,yingyonghui:120110043,
 				jifeng:120110012,nduoa:120110015,yidongmm:120110052,eoemarket:120110017,mumayi:120110022,wangyi:120110072,sougou:120110169,
 				taobao:120110380,lenovostore:120110045,nearme:120110174,huawei:120110175,yiyonghui:120110170,
-				letvm1:120110374,letvm2:120110375,letvm3:120110376,letvm4:120110377,letvm5:120110378,
 				meizu:120110061,kupai:120110173,samsung:120110039,haixin:120110401,bbkstore:120110313,zhongxing:120110182,storewo:120110172,
-				3gcn:120110108,LeshiC1:120110413,LeshiC2:120110414,LeshiC3:120110421,LeshiC4:120110422"/>   -->
-		
+				"/>  
 	<!-- <property name="key" value="hiapk:120110014"/>   -->
 	<!-- 版本 -->
-	<property name="version" value="2.3.1" />
+	<property name="version" value="2.3.3" />
 
 	
 	<!-- 初始化工作 -->  
@@ -92,16 +89,10 @@
 			  
 			<!-- 证书文件 -->  
 			<var name="keystore-file" value="${key_file}" />  
-			  
-			<!-- 已认证apk包 -->  
-<!--            <var name="out-signed-package" value="${outdir-bin}/${appName}_${version}_${channelname}.apk" />   -->
-<!--            <var name="out-signed-package-ospath" value="${basedir}/${out-signed-package}" />   -->
-<!--            <var name="out-signed-package-align" value="${outdir-bin}/${appName}_V${version}_${channelname}.apk" /> -->
-<!--            <var name="out-signed-package-align-ospath" value="${basedir}/${out-signed-package-align}" /> -->
-            
-            <var name="out-signed-package" value="${outdir-bin}/V${channelkey}.apk" />  
+		
+            <var name="out-signed-package" value="${outdir-bin}/V${channelname}.apk" />  
             <var name="out-signed-package-ospath" value="${basedir}/${out-signed-package}" />  
-            <var name="out-signed-package-align" value="${outdir-bin}/${channelkey}.apk" />
+            <var name="out-signed-package-align" value="${outdir-bin}/${channelname}.apk" />
             <var name="out-signed-package-align-ospath" value="${basedir}/${out-signed-package-align}" />
 			
 			<mkdir dir="${outdir-classes}" />
@@ -110,7 +101,7 @@
 	<!--循环打包 -->
 	<target name="deploy">
 	    <!-- 编译后的文件放置目录 -->  
-		<var name="outdir-bin" value="deploy" />  
+		<var name="outdir-bin" value="output" />  
 		    
 	    <delete dir="${outdir-bin}" />  
         <mkdir dir="${outdir-bin}" />  
@@ -157,21 +148,19 @@
             <arg value="-S" /> <!-- res文件夹路径 -->
             <arg value="res" />
     		<arg value="-S" />
-        	<arg value="../umeng-sdk-example_watchball_lib1.0/res" />
+        	<arg value="../lib_2.3.1/umeng-sdk-example_watchball_lib1.0/res" />
     		<arg value="-S" />
-    		<arg value="../letv_slidingmenu_watchball_lib1.0/res" />
+    		<arg value="../lib_2.3.1/letv_slidingmenu_watchball_lib1.0/res" />
     		<arg value="-S" />
-    		<arg value="../letv_pulltorefresh_lib1.0/res" />
+    		<arg value="../lib_2.3.1/letv_pulltorefresh_lib1.0/res" />
     		<arg value="-S" />
-    		<arg value="../QQ_SDK_v1.2_5.0/res" />
+    		<arg value="../lib_2.3.1/QQ_SDK_v1.2_5.0/res" />
     		<arg value="-S" />
-    		<arg value="../weibo.sdk.android_5.0/res" />
+    		<arg value="../lib_2.3.1/WeiboSDK/res" />
     		<arg value="-S" />
-    		<arg value="../renren_android_connect_5.0/res" />
+    		<arg value="../lib_2.3.1/letv_star_android_5.0/res" />
     		<arg value="-S" />
-    		<arg value="../letv_star_android_5.0/res" />
-    		<arg value="-S" />
-    		<arg value="../Letv_Ads_5.3/res" />
+    		<arg value="../lib_2.3.1/Letv_Ads_5.3/res" />
     		
         	<!-- <arg value="-S" />
         	<arg value="../LetvZXing/res" />
@@ -188,7 +177,7 @@
         	<arg value="-A" />
             <arg value="${asset-dir}" />
         	<arg value="--extra-packages" /><!--extra-packages. 其参数的说明如下:generate R.java for libraries. Separate libraries with ':'-->
-        	<arg value="com.umeng.example:com.letv.android.slidingmenu.lib:com.handmark.pulltorefresh.library:com.tencent.weibo:com.weibo.sdk.android:com.renren.api.connect.android:com.letv.star:com.letv.watchball.ads" />
+        	<arg value="com.umeng.example:com.letv.android.slidingmenu.lib:com.handmark.pulltorefresh.library:com.tencent.weibo:com.sina.weibo.sdk:com.letv.star:com.letv.watchball.ads:cn.com.iresearch.mvideotracker" />
             <arg value="-I" />  <!-- 某个版本平台的android.jar的路径 -->
             <arg value="${android-jar}" />
         </exec>
@@ -273,27 +262,28 @@
             <src path="../Letv_Alipay/src" />
             <src path="../LetvLoader/src" />
             <src path="../Letv_Ads/src" />-->
-        	<src path="../umeng-sdk-example_watchball_lib1.0/src" />
-        	<src path="../letv_cache_5.0/src" />
-        	<src path="../letv_pinnedHeaderListView_lib/src" />
-        	<src path="../Letv_player_5.2.2/src" />
-        	<src path="../letv_pulltorefresh_lib1.0/src" />
-			<src path="../letv_http_api_3.0/src" />
-        	<src path="../Letv_DataStatistics_5.0/src" />
-        	<src path="../letv_slidingmenu_watchball_lib1.0/src" />
-        	<src path="../letv_star_android_5.0/src" />
-        	<src path="../QQ_SDK_v1.2_5.0/src" />
-        	<src path="../renren_android_connect_5.0/src" />
-        	<src path="../weibo.sdk.android_5.0/src" />
-        	<src path="../weibo.sdk.android_5.0/gen/com/sina/sso " />
-        	<src path="../Letv_Ads_5.3/src" />
-        	<src path="../ImageLoader/src" />
+        	<src path="../lib_2.3.1/umeng-sdk-example_watchball_lib1.0/src" />
+        	<src path="../lib_2.3.1/letv_cache_5.0/src" />
+        	<src path="../lib_2.3.1/letv_pinnedHeaderListView_lib/src" />
+        	<src path="../lib_2.3.1/Letv_player_5.2.2/src" />
+        	<src path="../lib_2.3.1/letv_pulltorefresh_lib1.0/src" />
+			<src path="../lib_2.3.1/letv_http_api_3.0/src" />
+        	<src path="../lib_2.3.1/Letv_DataStatistics_5.0/src" />
+        	<src path="../lib_2.3.1/letv_slidingmenu_watchball_lib1.0/src" />
+        	<src path="../lib_2.3.1/letv_star_android_5.0/src" />
+        	<src path="../lib_2.3.1/QQ_SDK_v1.2_5.0/src" />
+        	
+        	<src path="../lib_2.3.1/WeiboSDK/src" />
+    
+        	<src path="../lib_2.3.1/Letv_Ads_5.3/src" />
+        	<src path="../lib_2.3.1/ImageLoader/src" />
 			<src path="src" />
 			<src path="gen" />
 			<compilerarg line="-encoding UTF-8 "/> 
             <classpath>  
                 <fileset dir="${external-lib}" includes="*.jar"/>
             </classpath>
+            <compilerarg value="-Xlint:unchecked"/>
         </javac>  
     </target> 
     
@@ -328,21 +318,21 @@
             <arg value="-S" />  <!-- res文件夹路径 -->
             <arg value="${resource-dir}" />
     		<arg value="-S" />
-        	<arg value="../umeng-sdk-example_watchball_lib1.0/res" />
+        	<arg value="../lib_2.3.1/umeng-sdk-example_watchball_lib1.0/res" />
     		<arg value="-S" />
-    		<arg value="../letv_slidingmenu_watchball_lib1.0/res" />
+    		<arg value="../lib_2.3.1/letv_slidingmenu_watchball_lib1.0/res" />
     		<arg value="-S" />
-    		<arg value="../letv_pulltorefresh_lib1.0/res" />
+    		<arg value="../lib_2.3.1/letv_pulltorefresh_lib1.0/res" />
     		<arg value="-S" />
-    		<arg value="../QQ_SDK_v1.2_5.0/res" />
+    		<arg value="../lib_2.3.1/QQ_SDK_v1.2_5.0/res" />
     		<arg value="-S" />
-    		<arg value="../weibo.sdk.android_5.0/res" />
+    		<arg value="../lib_2.3.1/WeiboSDK/res" />
+    		
     		<arg value="-S" />
-    		<arg value="../renren_android_connect_5.0/res" />
+    		<arg value="../lib_2.3.1/letv_star_android_5.0/res" />
     		<arg value="-S" />
-    		<arg value="../letv_star_android_5.0/res" />
-    		<arg value="-S" />
-    		<arg value="../Letv_Ads_5.3/res" />
+    		<arg value="../lib_2.3.1/Letv_Ads_5.3/res" />
+    		
           <!--   <arg value="-S" />
             <arg value="../LetvZXing/res" />
         	<arg value="-S" />
@@ -369,7 +359,7 @@
 	<!-- 打包成未签证的apk -->  
     <target name="package"  depends="dex,package-res-and-assets">   
         <echo>打包成未签证的apk....</echo>  
-        <exec executable="${apkbuilder}" failonerror="true">  
+        <java classpath="${sdk-tools}/lib/sdklib.jar" classname="com.android.sdklib.build.ApkBuilderMain">  
             <arg value="${out-unsigned-package-ospath}" />  
             <arg value="-u" />  
             <arg value="-z" />  
@@ -382,7 +372,7 @@
             <arg value="${external-lib-ospath}" />
             <arg value="-nf" />
             <arg value="${external-lib-ospath}" />
-        </exec>
+        </java>
     	
     	<delete file="${resources-package-ospath}" />
     </target>  

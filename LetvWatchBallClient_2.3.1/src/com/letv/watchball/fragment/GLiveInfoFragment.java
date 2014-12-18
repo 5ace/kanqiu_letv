@@ -475,10 +475,11 @@ public class GLiveInfoFragment extends Fragment {
 				mPullToRefreshListViewHeader.onRefreshComplete();
 
 				adapter.notifyDataSetChanged();
+				/*
 				if (needSetSelection && selection >= 0) {
 					mPullToRefreshListViewHeader.getRefreshableView()
 							.setSelection(selection);
-				}
+				}*/
 			}
 			resetThread();
 			return true;
@@ -606,7 +607,7 @@ public class GLiveInfoFragment extends Fragment {
 						if (g.status == 1 || g.status == 0) {
 							System.out.println("selection====" + (selection));
 							mPullToRefreshListViewHeader.getRefreshableView()
-									.setSelection(selection);
+									.setSelection(selection-1);
 							resetThread();
 							return;
 						}
