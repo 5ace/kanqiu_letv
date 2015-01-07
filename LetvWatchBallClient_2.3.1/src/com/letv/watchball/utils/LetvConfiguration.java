@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+
+import com.letv.watchball.LetvApplication;
+
 public class LetvConfiguration {
 
 	private static String source;
@@ -37,8 +42,11 @@ public class LetvConfiguration {
 			source = properties.getProperty("letv.source");
 			flurryKey = properties.getProperty("letv.flurry.key");
 			debug = Boolean.parseBoolean(properties.getProperty("letv.debug"));
-			pcode = properties.getProperty("letv.pcode");
-
+			ApplicationInfo appInfo = null;
+			
+			
+			//pcode = properties.getProperty("letv.pcode");
+			
 			String errorCatchStr = properties.getProperty("letv.error.catch");
 			errorCatch = Boolean.parseBoolean(errorCatchStr);
 

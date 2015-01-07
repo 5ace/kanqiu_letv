@@ -4,7 +4,9 @@ import java.util.Formatter;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.NetworkInfo;
@@ -19,11 +21,11 @@ import com.letv.watchball.LetvApplication;
 import com.letv.watchball.bean.AlbumNew;
 
 public class LetvTools {
-	
+
 	/**
 	 * 生存videofile接口的key
 	 * */
-	public static String generateVideoFileKey(String mid , String tm) {
+	public static String generateVideoFileKey(String mid, String tm) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(mid);
 		builder.append(",");
@@ -32,11 +34,11 @@ public class LetvTools {
 		builder.append("bh65OzqYYYmHRQ");
 		return MD5.toMd5(builder.toString());
 	}
-	
+
 	/**
 	 * 生成直播加密的key
 	 * */
-	public static String generateLiveEncryptKey(String streamId , String tm) {
+	public static String generateLiveEncryptKey(String streamId, String tm) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(streamId);
 		builder.append(",");
@@ -84,7 +86,8 @@ public class LetvTools {
 
 			long hours = time_second / 3600;
 
-			return formatter.format("%02d:%02d:%02d", hours, minutes, seconds).toString();
+			return formatter.format("%02d:%02d:%02d", hours, minutes, seconds)
+					.toString();
 
 		} finally {
 			formatter.close();
@@ -95,7 +98,21 @@ public class LetvTools {
 	 * 得到渠道号
 	 */
 	public static String getPcode() {
-		return LetvConfiguration.getPcode();
+		String pcode = "120110000";
+		try {
+			ApplicationInfo appInfo = LetvApplication
+					.getInstance()
+					.getPackageManager()
+					.getApplicationInfo(
+							LetvApplication.getInstance().getPackageName(), PackageManager.GET_META_DATA);
+			pcode = String.valueOf(appInfo.metaData.getInt("pcode"));
+
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// return LetvConfiguration.getPcode();
+		return pcode;
 	}
 
 	/**
@@ -103,7 +120,12 @@ public class LetvTools {
 	 */
 	public static String getClientVersionName() {
 		try {
-			PackageInfo packInfo = LetvApplication.getInstance().getPackageManager().getPackageInfo(LetvApplication.getInstance().getPackageName(), 0);
+			PackageInfo packInfo = LetvApplication
+					.getInstance()
+					.getPackageManager()
+					.getPackageInfo(
+							LetvApplication.getInstance().getPackageName(), 0);
+
 			return packInfo.versionName;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
@@ -116,7 +138,11 @@ public class LetvTools {
 	 */
 	public static int getClientVersionCode() {
 		try {
-			PackageInfo packInfo = LetvApplication.getInstance().getPackageManager().getPackageInfo(LetvApplication.getInstance().getPackageName(), 0);
+			PackageInfo packInfo = LetvApplication
+					.getInstance()
+					.getPackageManager()
+					.getPackageInfo(
+							LetvApplication.getInstance().getPackageName(), 0);
 			return packInfo.versionCode;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
@@ -128,7 +154,8 @@ public class LetvTools {
 	 * 生成设备唯一ID
 	 * */
 	public static String generateDeviceId() {
-		String str = getIMEI() + getIMSI() + getDeviceName() + getBrandName() + getMacAddress();
+		String str = getIMEI() + getIMSI() + getDeviceName() + getBrandName()
+				+ getMacAddress();
 		return MD5.toMd5(str);
 	}
 
@@ -137,7 +164,8 @@ public class LetvTools {
 	 * */
 	public static String getIMEI() {
 		try {
-			String deviceId = ((TelephonyManager) LetvApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+			String deviceId = ((TelephonyManager) LetvApplication.getInstance()
+					.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
 			if (null == deviceId || deviceId.length() <= 0) {
 				return "";
 			} else {
@@ -150,7 +178,8 @@ public class LetvTools {
 	}
 
 	public static String getIMSI() {
-		String subscriberId = ((TelephonyManager) LetvApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getSubscriberId();
+		String subscriberId = ((TelephonyManager) LetvApplication.getInstance()
+				.getSystemService(Context.TELEPHONY_SERVICE)).getSubscriberId();
 		if (null == subscriberId || subscriberId.length() <= 0) {
 			subscriberId = generate_DeviceId();
 		} else {
@@ -164,7 +193,8 @@ public class LetvTools {
 	}
 
 	private static String generate_DeviceId() {
-		String str = getIMEI() + getDeviceName() + getBrandName() + getMacAddress();
+		String str = getIMEI() + getDeviceName() + getBrandName()
+				+ getMacAddress();
 		return MD5.toMd5(str);
 	}
 
@@ -204,7 +234,8 @@ public class LetvTools {
 	 * */
 	public static String getMacAddress() {
 		String macAddress = null;
-		WifiInfo wifiInfo = ((WifiManager) LetvApplication.getInstance().getSystemService(Context.WIFI_SERVICE)).getConnectionInfo();
+		WifiInfo wifiInfo = ((WifiManager) LetvApplication.getInstance()
+				.getSystemService(Context.WIFI_SERVICE)).getConnectionInfo();
 		if (wifiInfo != null) {
 			macAddress = wifiInfo.getMacAddress();
 			if (macAddress == null || macAddress.length() <= 0) {
@@ -224,7 +255,8 @@ public class LetvTools {
 	 */
 	public static boolean sdCardMounted() {
 		final String state = Environment.getExternalStorageState();
-		if (state.equals(Environment.MEDIA_MOUNTED) && !state.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
+		if (state.equals(Environment.MEDIA_MOUNTED)
+				&& !state.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
 			return true;
 		}
 		return false;
@@ -237,7 +269,9 @@ public class LetvTools {
 	 * @return
 	 */
 	public static int getScreenWidth(Context context) {
-		return ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
+		return ((WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
+				.getWidth();
 	}
 
 	/**
@@ -291,7 +325,8 @@ public class LetvTools {
 		case 2:
 			if (LetvApplication.getInstance().getIp() != null) {
 				if (LetvApplication.getInstance().getIp().getUser_country() != null) {
-					if (controlAreas.contains(LetvApplication.getInstance().getIp().getUser_country())) {
+					if (controlAreas.contains(LetvApplication.getInstance()
+							.getIp().getUser_country())) {
 						allowforeign = AlbumNew.Copyright.ALL_P_D;
 					} else {
 						allowforeign = AlbumNew.Copyright.NEITHER_P_D;
@@ -308,7 +343,8 @@ public class LetvTools {
 			break;
 		case 4:
 			if (LetvApplication.getInstance().getIp() != null) {
-				if (controlAreas.contains(LetvApplication.getInstance().getIp().getUser_country())) {
+				if (controlAreas.contains(LetvApplication.getInstance().getIp()
+						.getUser_country())) {
 					allowforeign = AlbumNew.Copyright.NEITHER_P_D;
 				} else {
 					allowforeign = AlbumNew.Copyright.ALL_P_D;

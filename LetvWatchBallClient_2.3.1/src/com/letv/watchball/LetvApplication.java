@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -115,8 +117,11 @@ public class LetvApplication extends Application {
 		mApplicationContext = getApplicationContext();
 		AccessTokenKeeper.clear(this);
 		setVType();
-		LetvHttpApi.initialize(LetvConstant.Global.PCODE,
-				LetvConstant.Global.VERSION, LetvUtil.generateDeviceId(this));
+		
+		
+		Log.e("gongmeng", "pcode:" + LetvConstant.Global.PCODE);
+		LetvHttpApi.initialize(LetvConstant.Global.PCODE, LetvConstant.Global.VERSION,
+				LetvUtil.generateDeviceId(this));
 		/**
 		 * 启动推送
 		 * */
@@ -127,7 +132,7 @@ public class LetvApplication extends Application {
 		 * LetvWbPushService.schedule(this); } else {
 		 * LetvWbPushService.unschedule(this); } }
 		 */
-		
+
 		regid = getRegistrationId(mApplicationContext);
 		LogInfo.log("push token:" + regid.toString());
 		if (regid.isEmpty()) {
@@ -137,8 +142,7 @@ public class LetvApplication extends Application {
 			Log.i(TAG, "application already register");
 		}
 		this.getTokenInBackground();
-		
-		
+
 		CrashHandler mCrashHandler = CrashHandler.getInstance();
 		initAds();
 		if (isAlowThrowException) {
@@ -500,7 +504,7 @@ public class LetvApplication extends Application {
 					}
 					regid = mLpm.register(SENDER_ID);
 					msg = "Device registered, registration ID=" + regid;
-			//		Log.d("gongmeng", msg);
+					// Log.d("gongmeng", msg);
 					// You should send the registration ID to your server over
 					// HTTP, so it
 					// can send messages to your app.

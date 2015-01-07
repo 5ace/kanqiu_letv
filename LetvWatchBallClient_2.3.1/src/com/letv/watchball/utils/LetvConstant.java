@@ -134,7 +134,7 @@ public class LetvConstant {
 
 		public static final String DEVICEID = LetvTools.generateDeviceId();
 
-		public static final String PCODE = LetvTools.getPcode();
+		public static String PCODE = LetvTools.getPcode();
 
 		public static final String VERSION = LetvTools.getClientVersionName();
 

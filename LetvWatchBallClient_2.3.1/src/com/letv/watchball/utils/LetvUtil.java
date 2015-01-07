@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -166,8 +167,15 @@ public class LetvUtil {
 	 * @return pcode
 	 */
 	public static String getPcode() {
-
-		return LetvConfiguration.getPcode();
+		 ApplicationInfo appInfo = null;
+		 try {
+			appInfo = LetvApplication.getInstance().getPackageManager().getApplicationInfo(LetvApplication.getInstance().getPackageName(), 0x00000080);
+			return String.valueOf(appInfo.metaData.getInt("pcode"));
+		 } catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			return "120110000";
+		}
+		
 	}
 	
 	/**
